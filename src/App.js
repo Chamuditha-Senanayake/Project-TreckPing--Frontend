@@ -10,6 +10,7 @@ import HomeScreen from "./screens/HomeScreen";
 import ProductScreen from './screens/ProductScreen';
 import SigninScreen from './screens/SigninScreen';
 import { Store } from './Store';
+import ShippingAddressScreen from './screens/ShippingAddressScreen';
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" })
     localStorage.removeItem('userInfo');
+    localStorage.removeItem('shippingAdress');
   }
 
   return (
@@ -70,6 +72,7 @@ function App() {
               <Route path='/' element={<HomeScreen />} />
               <Route path='/product/:slug' element={<ProductScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/shipping' element={<ShippingAddressScreen />} />
               <Route path='/cart' element={<CartScreen />} />
 
             </Routes>
