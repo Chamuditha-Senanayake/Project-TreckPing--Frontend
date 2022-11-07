@@ -23,17 +23,16 @@ const Product = (props) => {
     }
 
     return (
-        <Card >
+        <Card className='home-card'>
             <Link to={`/product/${product.slug}`}>
                 <img src={product.image} className='card-img-top' alt={product.name} width=' 679px' height='auto' />
             </Link>
             <Card.Body>
-                <Link to={`/product/${product.slug}`}>
-                    <Card.Title>{product.name}</Card.Title>
-
+                <Link to={`/product/${product.slug}`} className='card-title-link'>
+                    <Card.Title className='card-title'>{product.name}</Card.Title>
                 </Link>
                 <Rating rating={product.rating} numReviews={product.numReviews} />
-                <Card.Text>${product.price}</Card.Text>
+                <Card.Text>{product.price} LKR</Card.Text>
                 {product.countInStock === 0 ? (
                     <Button variant='light' disabled>Out of Stock</Button>)
                     : (<Button onClick={() => addToCartHandler(product)}>Add to cart</Button>)}

@@ -34,7 +34,7 @@ const CartScreen = () => {
             <Helmet>
                 <title>Shopping Cart</title>
             </Helmet>
-            <h1>Shopping Cart</h1>
+            <h2 className="mb-4 mt-5">Shopping Cart</h2>
             <Row>
                 <Col md={8}>
                     {cartItems.length === 0 ? (
@@ -47,9 +47,9 @@ const CartScreen = () => {
                                 {cartItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
                                         <Row className='align-items-center'>
-                                            <Col md={4}>
+                                            <Col md={6}>
                                                 <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail' />{' '}
-                                                <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                                                <Link to={`/product/${item.slug}`} className='card-title-link'><span className='cart-item-name'>{item.name}</span></Link>
                                             </Col>
                                             <Col md={3}>
                                                 <Button onClick={() => updateCartHandler(item, item.quantity - 1)} variant='light' disabled={item.quantity === 1}>
@@ -76,11 +76,11 @@ const CartScreen = () => {
                         <Card.Body >
                             <ListGroup variant='flush'>
                                 <ListGroup.Item>
-                                    <h3>
+                                    <h4>
                                         Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                                        items) : $
-                                        {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
-                                    </h3>
+                                        items) :  {' '}
+                                        {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)} LKR
+                                    </h4>
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     <div className='d-grid'>

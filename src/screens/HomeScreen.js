@@ -49,7 +49,7 @@ const HomeScreen = () => {
             <Helmet>
                 <title>TreckPing</title>
             </Helmet>
-            <h1>Featured products</h1>
+            <h2 className="mb-4 mt-5">Featured products</h2>
             <div className="products">
 
 
@@ -61,7 +61,7 @@ const HomeScreen = () => {
                 ) : (<Row>
                     {products.map((product) => (
                         <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                            <Product product={product}></Product>
+                            <Product product={product} ></Product>
                         </Col>
                     ))}
                 </Row>)

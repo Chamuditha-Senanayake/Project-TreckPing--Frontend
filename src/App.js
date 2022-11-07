@@ -11,6 +11,7 @@ import ProductScreen from './screens/ProductScreen';
 import SigninScreen from './screens/SigninScreen';
 import { Store } from './Store';
 import ShippingAddressScreen from './screens/ShippingAddressScreen';
+import SignupScreen from './screens/SignupScreen';
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" })
     localStorage.removeItem('userInfo');
-    localStorage.removeItem('shippingAdress');
+    localStorage.removeItem('shippingAddress');
   }
 
   return (
@@ -28,13 +29,15 @@ function App() {
 
       <div className='d-flex flex-column site-container'>
         <header>
-          <Navbar bg='dark' variant='dark'>
+          <Navbar className='navbar-custom' variant='dark'>
             <ToastContainer position='bottom-center' limit={1} />
             <Container>
+
               <LinkContainer to='/'>
-                <Navbar.Brand>TreckPing  </Navbar.Brand>
+                <Navbar.Brand className='nav-brand'>TreckPing  </Navbar.Brand>
               </LinkContainer>
-              <Nav className='me-auto'>
+
+              <Nav className='ms-auto'>
                 <Link to='/cart' className='nav-link'>
                   Cart
                   {cart.cartItems.length > 0 && (
@@ -62,6 +65,7 @@ function App() {
                   </Link>
                 )}
               </Nav>
+
             </Container>
           </Navbar>
 
@@ -72,6 +76,7 @@ function App() {
               <Route path='/' element={<HomeScreen />} />
               <Route path='/product/:slug' element={<ProductScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
+              <Route path='/signup' element={<SignupScreen />} />
               <Route path='/shipping' element={<ShippingAddressScreen />} />
               <Route path='/cart' element={<CartScreen />} />
 

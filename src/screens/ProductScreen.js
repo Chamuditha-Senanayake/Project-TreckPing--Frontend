@@ -89,7 +89,7 @@ const ProductScreen = () => {
                                     </ListGroup.Item>
 
                                     <ListGroup.Item>
-                                        Price : ${product.price}
+                                        Price : {product.price} LKR
                                     </ListGroup.Item>
 
                                     <ListGroup.Item>
@@ -106,14 +106,14 @@ const ProductScreen = () => {
                                             <ListGroup.Item>
                                                 <Row>
                                                     <Col>Price:</Col>
-                                                    <Col>${product.price}</Col>
+                                                    <Col>{product.price} LKR</Col>
                                                 </Row>
                                             </ListGroup.Item>
 
                                             <ListGroup.Item>
                                                 <Row>
                                                     <Col>Status:</Col>
-                                                    <Col>{product.countInStock > 0 ? <Badge bg="success">In Stock</Badge> : <Badge bg="danger">Out of Stock</Badge>}</Col>
+                                                    <Col>{product.countInStock > 0 ? <Badge bg="warning" className='text-dark'>In Stock</Badge> : <Badge bg="danger">Out of Stock</Badge>}</Col>
                                                 </Row>
                                             </ListGroup.Item>
 

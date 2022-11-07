@@ -11,13 +11,21 @@ body {
   min-height: 100vh;
 }
 
+.navbar-custom {
+  background-color: #2C302F;
+}
+
+.nav-brand {
+  font-size: 1.8rem;
+}
+
 main {
   flex: 1;
 }
 
 .btn-primary {
-  background-color: #f0c040;
-  color: black;
+  background-color: #067d43;
+  color: rgb(255, 255, 255);
   border: none;
 }
 
@@ -27,8 +35,10 @@ main {
   justify-content: center;
 }
 
+
 .rating span {
   color: #ffc000;
+  font-size: 80%;
 }
 
 .product {
@@ -66,4 +76,25 @@ main {
 .checkout-steps>div.active {
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
+}
+
+
+
+.home-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .06);
+}
+
+.card-title-link {
+  text-decoration: none;
+  color: #2C302F;
+
+}
+
+.card-title {
+  font-size: 150%;
+}
+
+.cart-item-name {
+  font-size: 1.2rem;
 }
