@@ -30,7 +30,7 @@ const PaymentMethodScreen = () => {
             <CheckoutSteps step1 step2 step3></CheckoutSteps>
             <div className='container small-container'>
                 <Helmet><title>Payment Method</title></Helmet>
-                <h1 className='my-3'>Payment Method</h1>
+                <h2 className='my-3'>Payment Method</h2>
                 <Form onSubmit={submitHandler}>
                     <div className='mb-3'>
                         <Form.Check type='radio' id='Visa' label='Visa' value='Visa' checked={paymentMethodName === 'Visa'} onChange={(e) => setPaymentMethod(e.target.value)} />

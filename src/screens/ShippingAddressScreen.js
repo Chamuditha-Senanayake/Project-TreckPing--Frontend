@@ -56,7 +56,7 @@ const ShippingAddressScreen = () => {
             </Helmet>
             <CheckoutSteps step1 step2></CheckoutSteps>
             <div className='container small-container'>
-                <h1 className='my-3'>Shipping Address</h1>
+                <h2 className='my-3'>Shipping Address</h2>
                 <Form onSubmit={submitHandler}>
 
                     <Form.Group className='mb-3' controlId='fullName'>
