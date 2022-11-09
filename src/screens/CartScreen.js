@@ -5,6 +5,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const CartScreen = () => {
     const navigate = useNavigate();
@@ -15,7 +16,7 @@ const CartScreen = () => {
         //get data from api/products/${item._id} and store it in {data} object
         const { data } = await axios.get(`/api/products/${item._id}`);
         if (data.countInStock < quantity) {
-            window.alert('Sorry. Product is out of stock');
+            toast.error('Sorry. Product is out of stock');
             return;
         }
         ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
