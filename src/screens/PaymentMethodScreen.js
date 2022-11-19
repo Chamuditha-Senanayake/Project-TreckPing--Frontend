@@ -4,7 +4,6 @@ import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Store } from '../Store'
-import ShippingAddressScreen from './ShippingAddressScreen'
 
 const PaymentMethodScreen = () => {
 
