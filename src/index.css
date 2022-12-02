@@ -175,6 +175,27 @@ button.thumbnail {
   padding: 0;
 }
 
+.filter-link {
+  color: #184209;
+  font-weight: 450;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.filter-link:hover {
+  color: #184209;
+  font-weight: 600;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+
 .text-bold {
   font-weight: bold;
+  color: #184209;
+}
+
+.text-bold:hover {
+  font-weight: 700;
+  color: #184209;
 }

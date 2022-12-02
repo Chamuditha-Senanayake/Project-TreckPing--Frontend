@@ -137,11 +137,11 @@ const SearchScreen = () => {
                 <div>
                     <ul>
                         <li>
-                            <Link className={'all' === category ? 'text-bold' : ''} to={getFilterUrl({ category: 'all' })}>Any</Link>
+                            <Link className={'all' === category ? 'text-bold filter-link' : 'filter-link'} to={getFilterUrl({ category: 'all' })}>Any</Link>
                         </li>
                         {categories.map((c) => (
                             <li key={c}>
-                                <Link className={c === category ? 'text-bold' : ''} to={getFilterUrl({ category: c })}>
+                                <Link className={c === category ? 'text-bold filter-link' : 'filter-link'} to={getFilterUrl({ category: c })}>
                                     {c}
                                 </Link>
                             </li>
@@ -155,11 +155,11 @@ const SearchScreen = () => {
                     <h3>Price</h3>
                     <ul>
                         <li>
-                            <Link className={'all' === price ? 'text-bold' : ''} to={getFilterUrl({ price: 'all' })}>Any</Link>
+                            <Link className={'all' === price ? 'text-bold filter-link' : 'filter-link'} to={getFilterUrl({ price: 'all' })}>Any</Link>
                         </li>
                         {prices.map((p) => (
                             <li key={p.value}>
-                                <Link className={p.value === price ? 'text-bold' : ''} to={getFilterUrl({ price: p.value })}>
+                                <Link className={p.value === price ? 'text-bold filter-link' : 'filter-link'} to={getFilterUrl({ price: p.value })}>
                                     {p.name}
                                 </Link>
                             </li>
@@ -174,13 +174,13 @@ const SearchScreen = () => {
                     <ul>
                         {ratings.map((r) => (
                             <li key={r.name}>
-                                <Link to={getFilterUrl({ rating: r.rating })} className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}>
+                                <Link to={getFilterUrl({ rating: r.rating })} className={`${r.rating}` === `${rating}` ? 'text-bold filter-link' : 'filter-link'}>
                                     <Rating caption={' & up'} rating={r.rating}></Rating>
                                 </Link>
                             </li>
                         ))}
                         <li>
-                            <Link to={getFilterUrl({ rating: 'all' ? 'text-bold' : '' })}>
+                            <Link to={getFilterUrl({ rating: 'all' })} className={rating === 'all' ? 'text-bold filter-link' : 'filter-link'}>
                                 <Rating caption={' & up'} rating={0}></Rating>
                             </Link>
                         </li>
