@@ -23,6 +23,10 @@ main {
   flex: 1;
 }
 
+.footer-container {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 .btn-primary,
 .btn-outline-primary {
   background-color: #067d43;
@@ -36,6 +40,9 @@ main {
   justify-content: center;
 }
 
+.featured-products {
+  background-color: rgb(244, 244, 244);
+}
 
 .rating span {
   color: #ffc000;
@@ -66,7 +73,7 @@ main {
 }
 
 .small-container {
-  max-width: 600px;
+  max-width: 500px;
 }
 
 .checkout-steps>div {

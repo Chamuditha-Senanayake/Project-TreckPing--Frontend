@@ -31,7 +31,7 @@ const ProfileScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     //const navigate = useNavigate();
-    const [{ loadingUpdate }, dispatch] = useReducer(reducer, {
+    const [dispatch] = useReducer(reducer, {
         loadingUpdate: false
     });
 

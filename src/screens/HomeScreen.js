@@ -49,11 +49,28 @@ const HomeScreen = () => {
             <Helmet>
                 <title>TreckPing</title>
             </Helmet>
-            <h2 className="mb-4 mt-5">Featured products</h2>
-            <div className="products">
 
+            <div className="products mb-4">
+                <h2 className="mb-4 mt-5">Newly Arrived</h2>
+                {loading ? (
+                    <LoadingBox />
+                ) : error ? (
+                    <MessageBox variant='danger'>{error}</MessageBox>
+                ) : (<Row>
+                    {products.map((product, index) => (
+                        // if(index==4){ }
+                        <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                            <Product product={product} ></Product>
 
+                        </Col>
+                    ))}
+                </Row>)
+                }
+            </div>
+            <hr />
 
+            <div className="products featured-products mb-4">
+                <h2 className="mb-4 mt-5">Featured Products</h2>
                 {loading ? (
                     <LoadingBox />
                 ) : error ? (
