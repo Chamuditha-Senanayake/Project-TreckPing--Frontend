@@ -6,6 +6,7 @@ import Product from '../components/product';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+//import Hero from '../hero-1.png'
 //import data from '../data';
 
 const reducer = (state, action) => {
@@ -49,7 +50,7 @@ const HomeScreen = () => {
             <Helmet>
                 <title>TreckPing</title>
             </Helmet>
-
+            <div className=' hero' ></div>
             <div className="products mb-4">
                 <h2 className="mb-4 mt-5">Newly Arrived</h2>
                 {loading ? (
