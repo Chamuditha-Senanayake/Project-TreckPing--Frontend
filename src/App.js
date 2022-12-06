@@ -24,6 +24,7 @@ import SearchScreen from './screens/SearchScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardScreen from './screens/DashboardScreen';
 import AdminRoute from './components/AdminRoute';
+import AddProductScreen from './screens/AddProductScreen';
 
 
 function App() {
@@ -54,24 +55,31 @@ function App() {
 
   }, [])
 
-
   return (
+
     <BrowserRouter>
       <div className='d-flex flex-column site-container'>
         <ToastContainer position='bottom-center' limit={1} />
         <header>
           <Navbar className='navbar-custom' variant='dark' expand='lg'>
-
             <Container>
               {/* logo */}
-              <LinkContainer to='/'>
-                <Navbar.Brand className='nav-brand'>TreckPing  </Navbar.Brand>
-              </LinkContainer>
+              {(userInfo == null || userInfo.isAdmin === "false") &&
+                <LinkContainer to='/'>
+                  <Navbar.Brand className='nav-brand'>TreckPing  </Navbar.Brand>
+                </LinkContainer>
+              }
+
+              {(userInfo && userInfo.isAdmin === "true") &&
+                <LinkContainer to='/admin/dashboard'>
+                  <Navbar.Brand className='nav-brand'>TreckPing  </Navbar.Brand>
+                </LinkContainer>
+              }
+
 
               <Navbar.Toggle aria-controls='basic-navbar-nav' />
               <Navbar.Collapse id='basic-navbar-nav'>
-                <div className='mx-5'><SearchBox /></div>
-
+                {(userInfo == null || userInfo.isAdmin === "false") && <div className='mx-5'><SearchBox /></div>}
 
                 <Nav className='ms-auto w-100 justify-content-end '>
 
@@ -85,15 +93,15 @@ function App() {
                     ))}
                   </NavDropdown>
 
-                  {/* cart */}
-                  <Link to='/cart' className='nav-link'>
-                    Cart
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg='danger'>
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </Link>
+                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                    <Link to='/cart' className='nav-link'>
+                      <i className='fas fa-shopping-cart'></i>
+                      {cart.cartItems.length > 0 && (
+                        <Badge pill bg='danger'>
+                          {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                        </Badge>
+                      )}
+                    </Link>}
 
                   {/* User Info */}
                   {userInfo ? (
@@ -140,7 +148,7 @@ function App() {
 
         </header>
 
-        <main>
+        <main className={userInfo && userInfo.isAdmin === 'true' && 'dashboard pt-5 pt-3'}>
           <Container className='mt-3'>
             <Routes>
               <Route path='/product/:slug' element={<ProductScreen />} />
@@ -173,6 +181,12 @@ function App() {
               <Route path='/admin/dashboard' element={
                 <AdminRoute>
                   <DashboardScreen />
+                </AdminRoute>
+              } />
+
+              <Route path='/admin/productlist' element={
+                <AdminRoute>
+                  <AddProductScreen />
                 </AdminRoute>
               } />
 

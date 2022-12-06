@@ -28,7 +28,13 @@ const SigninScreen = () => {
             });
             ctxDispatch({ type: 'USER_SIGNIN', payload: data })
             localStorage.setItem('userInfo', JSON.stringify(data));
-            navigate(redirect || '/');
+            if (data.isAdmin) {
+                navigate('/admin/dashboard');
+            }
+            else {
+                navigate(redirect || '/');
+            }
+
         } catch (err) {
             toast.error(getError(err));
         }

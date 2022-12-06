@@ -132,6 +132,11 @@ const ProductScreen = () => {
                                 </Card>
                             </Col>
                         </Row>
+
+
+
+
+
                     </div>)
     )
 }

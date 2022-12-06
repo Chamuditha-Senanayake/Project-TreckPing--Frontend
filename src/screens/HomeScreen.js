@@ -57,7 +57,7 @@ const HomeScreen = () => {
                 ) : error ? (
                     <MessageBox variant='danger'>{error}</MessageBox>
                 ) : (<Row>
-                    {products.map((product, index) => (
+                    {products.filter((product, index) => index <= 3).map((product, index) => (
                         // if(index==4){ }
                         <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
                             <Product product={product} ></Product>
