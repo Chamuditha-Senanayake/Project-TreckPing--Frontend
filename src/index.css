@@ -41,7 +41,8 @@ main {
 }
 
 .featured-products {
-  background-color: rgb(244, 244, 244);
+  background-color: rgb(236, 236, 236);
+  padding: 10px;
 }
 
 .rating span {
@@ -70,6 +71,14 @@ main {
 
 .img-thumbnail {
   height: 80px;
+}
+
+.card-img {
+  max-height: 225px;
+}
+
+.card-ttl {
+  font-weight: 400;
 }
 
 .small-container {

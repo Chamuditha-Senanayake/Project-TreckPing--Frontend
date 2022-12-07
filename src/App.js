@@ -3,7 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { Badge, Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import CartScreen from './screens/CartScreen';
 import HomeScreen from "./screens/HomeScreen";
@@ -85,7 +85,19 @@ function App() {
 
                 <Nav className='ms-auto w-100 justify-content-end '>
 
-                  <NavDropdown title="Categories" className='mx-5'>
+                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                    <Link className="nav-link mx-3" to="/all-products">
+                      Products
+                    </Link>
+                  }
+
+                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                    <Link className="nav-link mx-2" to="/signin?redirect=/suggestions">
+                      Need Help?
+                    </Link>
+                  }
+
+                  <NavDropdown title="Categories" className='mx-4'>
 
                     {/* select category dropdown */}
                     {categories.map((category) => (

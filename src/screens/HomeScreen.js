@@ -51,6 +51,9 @@ const HomeScreen = () => {
                 <title>TreckPing</title>
             </Helmet>
             <div className=' hero' ></div>
+
+            {/* Newly Arrived */}
+
             <div className="products mb-4">
                 <h2 className="mb-4 mt-5">Newly Arrived</h2>
                 {loading ? (
@@ -58,8 +61,7 @@ const HomeScreen = () => {
                 ) : error ? (
                     <MessageBox variant='danger'>{error}</MessageBox>
                 ) : (<Row>
-                    {products.filter((product, index) => index <= 3).map((product, index) => (
-                        // if(index==4){ }
+                    {products.reverse().filter((product, index) => index <= 3).map((product, index) => (
                         <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
                             <Product product={product} ></Product>
 
@@ -70,6 +72,8 @@ const HomeScreen = () => {
             </div>
             <hr />
 
+            {/* Featured Products */}
+
             <div className="products featured-products mb-4">
                 <h2 className="mb-4 mt-5">Featured Products</h2>
                 {loading ? (
@@ -77,7 +81,25 @@ const HomeScreen = () => {
                 ) : error ? (
                     <MessageBox variant='danger'>{error}</MessageBox>
                 ) : (<Row>
-                    {products.map((product) => (
+                    {products.reverse().filter((product, index) => index <= 3).map((product) => (
+                        <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                            <Product product={product} ></Product>
+                        </Col>
+                    ))}
+                </Row>)
+                }
+            </div>
+
+            {/* All Products */}
+
+            <div className="products mb-4">
+                <h2 className="mb-4 mt-5">All Products</h2>
+                {loading ? (
+                    <LoadingBox />
+                ) : error ? (
+                    <MessageBox variant='danger'>{error}</MessageBox>
+                ) : (<Row>
+                    {products.reverse().map((product) => (
                         <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
                             <Product product={product} ></Product>
                         </Col>

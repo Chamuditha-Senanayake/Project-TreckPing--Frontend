@@ -26,11 +26,11 @@ const Product = (props) => {
     return (
         <Card className='home-card'>
             <Link to={`/product/${product.slug}`}>
-                <img src={product.image} className='card-img-top cart-img' alt={product.name} width='auto' height='275px' />
+                <img src={product.image} className='card-img-top cart-img card-img pt-4' alt={product.name} width='auto' height='225px' />
             </Link>
             <Card.Body>
                 <Link to={`/product/${product.slug}`} className='card-title-link'>
-                    <Card.Title className='card-title'>{product.name}</Card.Title>
+                    <Card.Title className='card-title card-ttl'>{product.name}</Card.Title>
                 </Link>
                 <Rating rating={product.rating} numReviews={product.numReviews} />
                 <Card.Text>{product.price} LKR</Card.Text>
