@@ -27,6 +27,7 @@ import AdminRoute from './components/AdminRoute';
 import AddProductScreen from './screens/AddProductScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
+import RentHomeScreen from './screens/RentHomeScreen';
 
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
 
   //const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [buyOrRent, setBuyOrRent] = useState("Rent")
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -84,6 +86,12 @@ function App() {
                 {(userInfo == null || userInfo.isAdmin === "false") && <div className='mx-5'><SearchBox /></div>}
 
                 <Nav className='ms-auto w-100 justify-content-end '>
+
+                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                    <Link className="nav-link mx-3 " to={buyOrRent === "Rent" ? "/rent" : "/"} onClick={() => buyOrRent === "Rent" ? setBuyOrRent("Buy") : setBuyOrRent("Rent")}>
+                      <h5>{buyOrRent} ?</h5>
+                    </Link>
+                  }
 
                   {(userInfo == null || userInfo.isAdmin === "false") &&
                     <Link className="nav-link mx-3" to="/all-products">
@@ -213,18 +221,14 @@ function App() {
                 </AdminRoute>
               } />
 
+              <Route path='/rent' element={<RentHomeScreen />} />
               <Route path='/' element={<HomeScreen />} />
             </Routes>
           </Container>
         </main>
-        {/* <footer>
-          <div className='text-center'>All rights reserved</div>          
-        </footer> */}
 
         <footer class="bg-dark text-center text-white">
-
           <div class="container p-4 pb-0">
-
             <section class="mb-4">
 
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-facebook-f"></i></a>
@@ -235,16 +239,12 @@ function App() {
 
               <a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i class="fab fa-google"></i></a>
 
-
             </section>
-
           </div>
-
           <div class="text-center p-3 footer-container" >
             © 2022 Copyright :
             <a class="text-white" href="http://localhost:3000/">TreckPing</a>
           </div>
-
         </footer>
       </div>
     </BrowserRouter >
