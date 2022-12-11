@@ -28,11 +28,13 @@ import AddProductScreen from './screens/AddProductScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import RentHomeScreen from './screens/RentHomeScreen';
+import RentCartScreen from './screens/RentCartScreen';
+import PickupLocationScreen from './screens/PickupLocationScreen';
 
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { cart, rentCart, userInfo } = state;
 
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
@@ -116,14 +118,24 @@ function App() {
                   </NavDropdown>
 
                   {(userInfo == null || userInfo.isAdmin === "false") &&
-                    <Link to='/cart' className='nav-link'>
+                    buyOrRent === 'Rent' ? <Link to='/cart' className='nav-link'>
+                    <i className='fas fa-shopping-cart'></i>
+                    {cart.cartItems.length > 0 && (
+                      <Badge pill bg='danger'>
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </Badge>
+                    )}
+                  </Link>
+                    :
+                    <Link to='/rentcart' className='nav-link'>
                       <i className='fas fa-shopping-cart'></i>
-                      {cart.cartItems.length > 0 && (
+                      {rentCart.rentCartItems.length > 0 && (
                         <Badge pill bg='danger'>
-                          {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                          {rentCart.rentCartItems.reduce((a, c) => a + c.quantity, 0)}
                         </Badge>
                       )}
-                    </Link>}
+                    </Link>
+                  }
 
                   {/* User Info */}
                   {userInfo ? (
@@ -186,6 +198,7 @@ function App() {
               } />
 
               <Route path='/shipping' element={<ShippingAddressScreen />} />
+              <Route path='/pickuplocation' element={<PickupLocationScreen />} />
               <Route path='/payment' element={<PaymentMethodScreen />} />
               <Route path='/placeorder' element={<PlaceOrderScreen />} />
               <Route path='/order/:id' element={
@@ -200,6 +213,7 @@ function App() {
               } />
 
               <Route path='/cart' element={<CartScreen />} />
+              <Route path='/rentcart' element={<RentCartScreen />} />
               <Route path='/search' element={<SearchScreen />} />
 
               {/* Admin Routes */}
@@ -227,7 +241,7 @@ function App() {
           </Container>
         </main>
 
-        <footer class="bg-dark text-center text-white">
+        <footer class="bg-dark text-center text-white mt-5">
           <div class="container p-4 pb-0">
             <section class="mb-4">
 
@@ -241,9 +255,12 @@ function App() {
 
             </section>
           </div>
+          <h4>TreckPing </h4>
+          <p>No. 04, Polgolla Rd<br /> Kandy <br /> Sri Lanka</p>
+
           <div class="text-center p-3 footer-container" >
             © 2022 Copyright :
-            <a class="text-white" href="http://localhost:3000/">TreckPing</a>
+            <a class="text-white" href="http://localhost:3000/"> TreckPing</a>
           </div>
         </footer>
       </div>

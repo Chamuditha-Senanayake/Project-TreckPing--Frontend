@@ -62,6 +62,7 @@ const ProductEditScreen = () => {
     //const [images, setImages] = useState([]);
     const [category, setCategory] = useState('');
     const [countInStock, setCountInStock] = useState('');
+    const [countInStockForRent, setCountInStockForRent] = useState('');
     const [brand, setBrand] = useState('');
     const [description, setDescription] = useState('');
 
@@ -77,6 +78,7 @@ const ProductEditScreen = () => {
                 //setImages(data.images);
                 setCategory(data.category);
                 setCountInStock(data.countInStock);
+                setCountInStockForRent(data.countInStockForRent);
                 setBrand(data.brand);
                 setDescription(data.description);
                 dispatch({ type: 'FETCH_SUCCESS' });
@@ -106,6 +108,7 @@ const ProductEditScreen = () => {
                     category,
                     brand,
                     countInStock,
+                    countInStockForRent,
                     description,
                 },
                 {
@@ -249,6 +252,16 @@ const ProductEditScreen = () => {
                             onChange={(e) => setCountInStock(e.target.value)}
                             required
                         />
+
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="countInStockForRent">
+                        <Form.Label>Count In Stock For Rent</Form.Label>
+                        <Form.Control
+                            value={countInStockForRent}
+                            onChange={(e) => setCountInStockForRent(e.target.value)}
+                            required
+                        />
+
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="description">
                         <Form.Label>Description</Form.Label>

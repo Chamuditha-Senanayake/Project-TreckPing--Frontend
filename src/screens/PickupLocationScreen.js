@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 
-const ShippingAddressScreen = () => {
+const PickupLocationScreen = () => {
     const navigate = useNavigate();
     const { state, dispatch: ctxDispacth } = useContext(Store)
 
@@ -56,28 +56,26 @@ const ShippingAddressScreen = () => {
             </Helmet>
             <CheckoutSteps step1 step2></CheckoutSteps>
             <div className='container small-container'>
-                <h2 className='mt-5 mb-4'>Shipping Address</h2>
+                <h2 className='mt-5 mb-4'>Pickup & Return Locations</h2>
+                <p className='italic'>Choose locations that are most convenient for you to pickup and return your package. You can pick and return your packages by visiting our sales agents.</p>
                 <Form onSubmit={submitHandler}>
 
-                    <Form.Group className='mb-3' controlId='fullName'>
-                        <Form.Label>Full Name</Form.Label>
-                        <Form.Control value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+                    <Form.Group className='mt-5 mb-3' controlId='fullName'>
+                        <Form.Label>Pickup Location</Form.Label>
+                        <Form.Select size="lg" value={fullName} onChange={(e) => setFullName(e.target.value)} required >
+                            <option><p className='h-2'>TreckPing Showroom</p> - No.04, Polgolla, Kandy</option>
+                            <option>6/11, Badulla Rd, Bibila</option>
+                        </Form.Select>
                     </Form.Group>
 
-                    <Form.Group className='mb-3' controlId='address'>
-                        <Form.Label>Address</Form.Label>
-                        <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} required />
+                    <Form.Group className='mb-5' controlId='address'>
+                        <Form.Label>Return Location</Form.Label>
+                        <Form.Select size="lg" value={fullName} onChange={(e) => setFullName(e.target.value)} required >
+                            <option><p className='h-2'>TreckPing Showroom</p> - No.04, Polgolla, Kandy</option>
+                            <option>6/11, Badulla Rd, Bibila</option>
+                        </Form.Select >
                     </Form.Group>
 
-                    <Form.Group className='mb-3' controlId='city'>
-                        <Form.Label>City</Form.Label>
-                        <Form.Control value={city} onChange={(e) => setCity(e.target.value)} required />
-                    </Form.Group>
-
-                    <Form.Group className='mb-3' controlId='postalCode'>
-                        <Form.Label>Postal Code</Form.Label>
-                        <Form.Control value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required />
-                    </Form.Group>
 
                     <div className='mb-3'>
                         <Button variant='primary' type='submit'>Continue</Button>
@@ -88,4 +86,4 @@ const ShippingAddressScreen = () => {
     )
 }
 
-export default ShippingAddressScreen
+export default PickupLocationScreen;

@@ -11,21 +11,25 @@ const RentProduct = (props) => {
     const { product } = props;
 
     const { state, dispatch: ctxDispatch } = useContext(Store);
-    const { cart: { cartItems } } = state;
+    const { rentCart: { rentCartItems } } = state;
 
     const [startDate, setStartDate] = useState(Moment().add(2, 'day').format('YYYY-MM-DD'));
     const [endDate, setEndDate] = useState(Moment().format('YYYY-MM-DD'));
+    const [reserveOrCheck, setReserveOrCheck] = useState('Reserve');
     const today = Moment().add(2, 'day').format('YYYY-MM-DD');
 
     const addToCartHandler = async (item) => {
-        const existItem = cartItems.find((x) => x._id === product._id);
+        reserveOrCheck === "Reserve" ? setReserveOrCheck("Check Availability") : setReserveOrCheck("Add to cart")
+        const existItem = rentCartItems.find((x) => x._id === product._id);
         const quantity = existItem ? existItem.quantity + 1 : 1;
+        const createdAt = startDate;
+        const updatedAt = endDate;
         const { data } = await axios.get(`/api/products/${item._id}`);
-        if (data.countInStock < quantity) {
+        if (data.countInStockForRent < quantity) {
             toast.error('Sorry. Product is out of stock');
             return;
         }
-        ctxDispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+        ctxDispatch({ type: 'RENT_CART_ADD_ITEM', payload: { ...item, quantity, createdAt, updatedAt } });
     }
 
     return (
@@ -40,16 +44,17 @@ const RentProduct = (props) => {
                 <Rating rating={product.rating} numReviews={product.numReviews} />
                 <Card.Text>{product.rent} LKR per day</Card.Text>
                 <hr className='mt-5' />
-                <Form.Label >Starting Date</Form.Label>
-                <Form.Control className='mb-3' type="date" format='YYYY/MM-DD' min={today} name="startingDate" placeholder="DateRange" value={startDate} onChange={(e) => setStartDate(e.target.value)}></Form.Control>
-                <Form.Label>Ending Date</Form.Label>
-                <Form.Control className='mb-5' type="date" min={startDate} name="endingDate" placeholder="DateRange" value={endDate} onChange={(e) => setEndDate(e.target.value)}></Form.Control>
+                <Form.Label className={reserveOrCheck === "Reserve" ? 'd-none' : ''}>Starting Date</Form.Label>
+                <Form.Control className={reserveOrCheck === "Reserve" ? 'd-none mb-3' : 'mb-3'} type="date" format='YYYY/MM-DD' min={today} name="startingDate" placeholder="DateRange" value={startDate} onChange={(e) => setStartDate(e.target.value)}></Form.Control>
+                <Form.Label className={reserveOrCheck === "Reserve" ? 'd-none' : ''}>Ending Date</Form.Label>
+                <Form.Control className={reserveOrCheck === "Reserve" ? 'd-none mb-5' : 'mb-5'} type="date" min={startDate} name="endingDate" placeholder="DateRange" value={endDate > startDate ? endDate : startDate} onChange={(e) => setEndDate(e.target.value)}></Form.Control>
                 {product.countInStockForRent === 0 ? (
                     <Button variant='light' disabled>Out of Stock</Button>)
-                    : (<Button onClick={() => addToCartHandler(product)}>Reserve</Button>)}
+                    : (reserveOrCheck === "Add to cart" ? <Button onClick={() => addToCartHandler(product)}>{reserveOrCheck}</Button> :
+                        (reserveOrCheck === "Check availability" ? <Button onClick={() => setReserveOrCheck("Add to cart")}>{reserveOrCheck}</Button> : <Button onClick={() => setReserveOrCheck("Check availability")}>{reserveOrCheck}</Button>))}
 
             </Card.Body>
-        </Card>
+        </Card >
     )
 }
 
