@@ -30,6 +30,9 @@ import ProductEditScreen from './screens/ProductEditScreen';
 import RentHomeScreen from './screens/RentHomeScreen';
 import RentCartScreen from './screens/RentCartScreen';
 import PickupLocationScreen from './screens/PickupLocationScreen';
+import ReservationScreen from './screens/ReservationScreen';
+import RentPaymentMethodScreen from './screens/RentPaymentMethodScreen';
+import MakeReservationScreen from './screens/MakeReservationScreen';
 
 
 function App() {
@@ -200,10 +203,17 @@ function App() {
               <Route path='/shipping' element={<ShippingAddressScreen />} />
               <Route path='/pickuplocation' element={<PickupLocationScreen />} />
               <Route path='/payment' element={<PaymentMethodScreen />} />
+              <Route path='/rentpayment' element={<RentPaymentMethodScreen />} />
               <Route path='/placeorder' element={<PlaceOrderScreen />} />
+              <Route path='/reservation' element={<MakeReservationScreen />} />
               <Route path='/order/:id' element={
                 <ProtectedRoute>
                   <OrderScreen />
+                </ProtectedRoute>
+              } />
+              <Route path='/reservation/:id' element={
+                <ProtectedRoute>
+                  <ReservationScreen />
                 </ProtectedRoute>
               } />
               <Route path='/orderhistory' element={

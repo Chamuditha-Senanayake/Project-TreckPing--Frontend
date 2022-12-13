@@ -11,17 +11,15 @@ const PickupLocationScreen = () => {
 
     const {
         userInfo,
-        cart: { shippingAddress }
+        rentCart: { deliveryAddress }
     } = state;
 
-    const [fullName, setFullName] = useState(shippingAddress.fullName || '');
-    const [address, setAddress] = useState(shippingAddress.address || '');
-    const [city, setCity] = useState(shippingAddress.city || '');
-    const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
+    const [pickupLocation, setPickupLocation] = useState(deliveryAddress.pickupLocation || '');
+    const [returnLocation, setReturnLocation] = useState(deliveryAddress.returnLocation || '');
 
     useEffect(() => {
         if (!userInfo) {
-            navigate('/signin?redirect=/shipping');
+            navigate('/signin?redirect=/pickuplocation');
         }
     }, [userInfo, navigate]);
 
@@ -30,24 +28,20 @@ const PickupLocationScreen = () => {
         e.preventDefault();
 
         ctxDispacth({
-            type: 'SAVE_SHIPPING_ADDRESS',
+            type: 'SAVE_DELIVERY_ADDRESS',
             payload: {
-                fullName,
-                address,
-                city,
-                postalCode
+                pickupLocation,
+                returnLocation,
             }
         });
         localStorage.setItem(
-            'shippingAddress',
+            'deliveryAddress',
             JSON.stringify({
-                fullName,
-                address,
-                city,
-                postalCode
+                pickupLocation,
+                returnLocation,
             })
         );
-        navigate('/payment');
+        navigate('/rentpayment');
     }
     return (
         <div>
@@ -57,22 +51,22 @@ const PickupLocationScreen = () => {
             <CheckoutSteps step1 step2></CheckoutSteps>
             <div className='container small-container'>
                 <h2 className='mt-5 mb-4'>Pickup & Return Locations</h2>
-                <p className='italic'>Choose locations that are most convenient for you to pickup and return your package. You can pick and return your packages by visiting our sales agents.</p>
+                <p className='italic'>Choose locations that are most convenient for you to pickup and return your packages. You can pick and return your packages by visiting our sales agents at the selected location.</p>
                 <Form onSubmit={submitHandler}>
 
                     <Form.Group className='mt-5 mb-3' controlId='fullName'>
                         <Form.Label>Pickup Location</Form.Label>
-                        <Form.Select size="lg" value={fullName} onChange={(e) => setFullName(e.target.value)} required >
-                            <option><p className='h-2'>TreckPing Showroom</p> - No.04, Polgolla, Kandy</option>
-                            <option>6/11, Badulla Rd, Bibila</option>
+                        <Form.Select size="lg" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} required >
+                            <option value="TreckPing Showroom - No.04, Polgolla, Kandy">TreckPing Showroom - No.04, Polgolla, Kandy</option>
+                            <option value="6/11, Badulla Rd, Bibila">6/11, Badulla Rd, Bibila</option>
                         </Form.Select>
                     </Form.Group>
 
                     <Form.Group className='mb-5' controlId='address'>
                         <Form.Label>Return Location</Form.Label>
-                        <Form.Select size="lg" value={fullName} onChange={(e) => setFullName(e.target.value)} required >
-                            <option><p className='h-2'>TreckPing Showroom</p> - No.04, Polgolla, Kandy</option>
-                            <option>6/11, Badulla Rd, Bibila</option>
+                        <Form.Select size="lg" value={returnLocation} onChange={(e) => setReturnLocation(e.target.value)} required >
+                            <option value="TreckPing Showroom - No.04, Polgolla, Kandy">TreckPing Showroom - No.04, Polgolla, Kandy</option>
+                            <option value="6/11, Badulla Rd, Bibila">6/11, Badulla Rd, Bibila</option>
                         </Form.Select >
                     </Form.Group>
 

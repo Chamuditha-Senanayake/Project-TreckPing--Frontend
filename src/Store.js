@@ -22,8 +22,8 @@ const initialState = {
     },
 
     rentCart: {
-        shippingAddress: localStorage.getItem('shippingAddress')
-            ? JSON.parse(localStorage.getItem('shippingAddress'))
+        deliveryAddress: localStorage.getItem('deliveryAddress')
+            ? JSON.parse(localStorage.getItem('deliveryAddress'))
             : {},
 
         paymentMethod: localStorage.getItem('paymentMethod')
@@ -111,6 +111,7 @@ const reducer = (state, action) => {
                 cartItems: [],
                 rentCartItems: [],
                 shippingAddress: {},
+                deliveryAddress: {},
                 paymentMethod: ''
             };
 
@@ -120,6 +121,15 @@ const reducer = (state, action) => {
                 cart: {
                     ...state.cart,
                     shippingAddress: action.payload
+                }
+            };
+
+        case 'SAVE_DELIVERY_ADDRESS':
+            return {
+                ...state,
+                rentCart: {
+                    ...state.rentCart,
+                    deliveryAddress: action.payload
                 }
             };
 

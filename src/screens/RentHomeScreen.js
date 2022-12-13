@@ -2,7 +2,7 @@ import { React, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
 import { Row, Col } from 'react-bootstrap'
-import RentProduct from '../components/rentProduct';
+import RentProduct from '../components/RentProduct';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';

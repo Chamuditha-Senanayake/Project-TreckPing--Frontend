@@ -26,7 +26,7 @@ const RentCartScreen = () => {
     const removeItemHandler = (item) => {
         ctxDispatch({ type: 'RENT_CART_REMOVE_ITEM', payload: item });
     }
-    //////////////
+
     const checkoutHandler = () => {
         navigate('/signin?redirect=/pickuplocation')
     }
@@ -54,8 +54,8 @@ const RentCartScreen = () => {
 
                                             </Col>
                                             <Col md={3}><Link to={`/product/${item.slug}`} className='card-title-link'><span className='cart-item-name'>{item.name}</span></Link></Col>
-                                            <Col md={2}><Form.Label >From</Form.Label><Form.Control type="date" name="startingDate" className='form-control-sm' placeholder="DateRange" value={item.createdAt} ></Form.Control></Col>
-                                            <Col md={2}><Form.Label >To</Form.Label><Form.Control type="date" name="endingDate" className='form-control-sm' placeholder="DateRange" value={item.updatedAt} ></Form.Control></Col>
+                                            <Col md={2}><Form.Label >From</Form.Label><Form.Control type="date" name="startingDate" className='form-control-sm' placeholder="DateRange" value={item.pickupDate} ></Form.Control></Col>
+                                            <Col md={2}><Form.Label >To</Form.Label><Form.Control type="date" name="endingDate" className='form-control-sm' placeholder="DateRange" value={item.returnDate} ></Form.Control></Col>
                                             <Col md={2}>
                                                 <Button onClick={() => updateCartHandler(item, item.quantity - 1)} variant='light' disabled={item.quantity === 1}>
                                                     <i className='fas fa-minus-circle'></i>
@@ -84,7 +84,7 @@ const RentCartScreen = () => {
                                     <h4>
                                         Subtotal ({rentCartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
                                         items) :  {' '}
-                                        {rentCartItems.reduce((a, c) => a + c.rent * c.quantity * (moment(c.updatedAt).diff(c.createdAt, 'days')), 0)} LKR
+                                        {rentCartItems.reduce((a, c) => a + c.rent * c.quantity * (moment(c.returnDate).diff(c.pickupDate, 'days') != 0 ? moment(c.returnDate).diff(c.pickupDate, 'days') : 1), 0)} LKR
                                     </h4>
                                 </ListGroup.Item>
                                 <ListGroup.Item>

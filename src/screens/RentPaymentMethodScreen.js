@@ -5,24 +5,24 @@ import { useNavigate } from 'react-router-dom'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Store } from '../Store'
 
-const PaymentMethodScreen = () => {
+const RentPaymentMethodScreen = () => {
 
     const navigate = useNavigate();
     const { state, dispatch: ctxDispatch } = useContext(Store);
-    const { cart: { shippingAddress, paymentMethod } } = state;
+    const { rentCart: { deliveryAddress, paymentMethod } } = state;
     const [paymentMethodName, setPaymentMethod] = useState(paymentMethod || 'Visa');
 
     useEffect(() => {
-        if (!shippingAddress.address) {
-            navigate('/shipping');
+        if (!deliveryAddress.pickupLocation) {
+            navigate('/pickuplocation');
         }
-    }, [shippingAddress, navigate]);
+    }, [deliveryAddress, navigate]);
 
     const submitHandler = (e) => {
         e.preventDefault();
         ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName });
         localStorage.setItem('paymentMethod', paymentMethodName);
-        navigate('/placeorder')
+        navigate('/reservation')
     }
     return (
         <div>
@@ -46,4 +46,4 @@ const PaymentMethodScreen = () => {
     )
 }
 
-export default PaymentMethodScreen
+export default RentPaymentMethodScreen
