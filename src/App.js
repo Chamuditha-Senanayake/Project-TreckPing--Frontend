@@ -3,7 +3,7 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 import { Badge, Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import CartScreen from './screens/CartScreen';
 import HomeScreen from "./screens/HomeScreen";
@@ -24,7 +24,6 @@ import SearchScreen from './screens/SearchScreen';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardScreen from './screens/DashboardScreen';
 import AdminRoute from './components/AdminRoute';
-import AddProductScreen from './screens/AddProductScreen';
 import ProductListScreen from './screens/ProductListScreen';
 import ProductEditScreen from './screens/ProductEditScreen';
 import RentHomeScreen from './screens/RentHomeScreen';
@@ -33,6 +32,7 @@ import PickupLocationScreen from './screens/PickupLocationScreen';
 import ReservationScreen from './screens/ReservationScreen';
 import RentPaymentMethodScreen from './screens/RentPaymentMethodScreen';
 import MakeReservationScreen from './screens/MakeReservationScreen';
+import ReservationHistoryScreen from './screens/ReservationHistoryScreen';
 
 
 function App() {
@@ -141,26 +141,40 @@ function App() {
                   }
 
                   {/* User Info */}
-                  {userInfo ? (
-                    <NavDropdown title={userInfo.name} id="basc-nav-dropdown">
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>User Profile</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>Order History</NavDropdown.Item>
-                      </LinkContainer>
-                      <NavDropdown.Divider />
-                      <Link className='dropdown-item' to='#signout' onClick={signoutHandler}>
-                        Sign Out
+                  {userInfo ?
+                    (userInfo.isAdmin === "false" ?
+                      <NavDropdown title={userInfo.name} id="basc-nav-dropdown">
+                        <LinkContainer to="/profile">
+                          <NavDropdown.Item>User Profile</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/reservationhistory">
+                          <NavDropdown.Item>Reservations</NavDropdown.Item>
+                        </LinkContainer>
+                        <LinkContainer to="/orderhistory">
+                          <NavDropdown.Item>Order History</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Divider />
+                        <Link className='dropdown-item' to='#signout' onClick={signoutHandler}>
+                          Sign Out
+                        </Link>
+                      </NavDropdown>
+                      :
+                      <NavDropdown title={userInfo.name} id="basc-nav-dropdown">
+                        <LinkContainer to="/profile">
+                          <NavDropdown.Item>User Profile</NavDropdown.Item>
+                        </LinkContainer>
+                        <NavDropdown.Divider />
+                        <Link className='dropdown-item' to='#signout' onClick={signoutHandler}>
+                          Sign Out
+                        </Link>
+                      </NavDropdown>
+                    )
+                    :
+                    (
+                      <Link className="nav-link" to="/signin">
+                        Sign In
                       </Link>
-                    </NavDropdown>
-
-
-                  ) : (
-                    <Link className="nav-link" to="/signin">
-                      Sign In
-                    </Link>
-                  )}
+                    )}
 
                   {userInfo && userInfo.isAdmin === 'true' && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
@@ -169,6 +183,9 @@ function App() {
                       </LinkContainer>
                       <LinkContainer to="/admin/products">
                         <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/reservations">
+                        <NavDropdown.Item>Reservations</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/orders">
                         <NavDropdown.Item>Orders</NavDropdown.Item>
@@ -206,6 +223,7 @@ function App() {
               <Route path='/rentpayment' element={<RentPaymentMethodScreen />} />
               <Route path='/placeorder' element={<PlaceOrderScreen />} />
               <Route path='/reservation' element={<MakeReservationScreen />} />
+
               <Route path='/order/:id' element={
                 <ProtectedRoute>
                   <OrderScreen />
@@ -219,6 +237,11 @@ function App() {
               <Route path='/orderhistory' element={
                 <ProtectedRoute>
                   <OrderHistoryScreen />
+                </ProtectedRoute>
+              } />
+              <Route path='/reservationhistory' element={
+                <ProtectedRoute>
+                  <ReservationHistoryScreen />
                 </ProtectedRoute>
               } />
 

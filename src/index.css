@@ -28,8 +28,16 @@ main {
 }
 
 .btn-primary,
+.btn-primary:focus,
 .btn-outline-primary {
   background-color: #067d43;
+  color: rgb(255, 255, 255);
+  border: none;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: #064325 !important;
   color: rgb(255, 255, 255);
   border: none;
 }
@@ -253,3 +261,11 @@ button.thumbnail {
 
   color: #aab3af;
 } */
+
+.danger {
+  color: rgb(251, 20, 20);
+}
+
+.warning {
+  color: rgb(235, 198, 75);
+}

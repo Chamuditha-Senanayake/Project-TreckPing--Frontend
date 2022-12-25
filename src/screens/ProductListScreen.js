@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Button, Col, Row } from 'react-bootstrap';
+import { Button, Col, OverlayTrigger, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,6 +8,8 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
+import { Tooltip as ReactTooltip } from 'react-tooltip'
+import { Tooltip } from 'bootstrap';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -168,6 +170,7 @@ const ProductListScreen = () => {
                         <thead>
                             <tr>
                                 {/* <th>ID</th> */}
+                                <th></th>
                                 <th>NAME</th>
                                 <th>PRICE</th>
                                 <th>QUANTITY</th>
@@ -180,6 +183,7 @@ const ProductListScreen = () => {
                             {products.map((product) => (
                                 <tr key={product._id}>
                                     {/* <td>{product._id}</td> */}
+                                    <td>{product.countInStock <= 10 ? (product.countInStock <= 5 ? <i className='fas fa-exclamation-circle danger'></i> : <i className='fas fa-exclamation-circle warning'></i>) : <></>}</td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
                                     <td>{product.countInStock}</td>

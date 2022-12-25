@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react'
-import { Button, Container, Form, ListGroup } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -58,6 +58,8 @@ const ProductEditScreen = () => {
     const [name, setName] = useState('');
     const [slug, setSlug] = useState('');
     const [price, setPrice] = useState('');
+    const [rent, setRent] = useState('');
+    const [penalty, setPenalty] = useState('');
     const [image, setImage] = useState('');
     //const [images, setImages] = useState([]);
     const [category, setCategory] = useState('');
@@ -74,6 +76,8 @@ const ProductEditScreen = () => {
                 setName(data.name);
                 setSlug(data.slug);
                 setPrice(data.price);
+                setRent(data.rent);
+                setPenalty(data.penalty);
                 setImage(data.image);
                 //setImages(data.images);
                 setCategory(data.category);
@@ -103,6 +107,8 @@ const ProductEditScreen = () => {
                     name,
                     slug,
                     price,
+                    rent,
+                    penalty,
                     image,
                     //images,
                     category,
@@ -183,6 +189,22 @@ const ProductEditScreen = () => {
                         <Form.Control
                             value={price}
                             onChange={(e) => setPrice(e.target.value)}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="name">
+                        <Form.Label>Rent per day</Form.Label>
+                        <Form.Control
+                            value={rent}
+                            onChange={(e) => setRent(e.target.value)}
+                            required
+                        />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="name">
+                        <Form.Label>Penalty charges per day</Form.Label>
+                        <Form.Control
+                            value={penalty}
+                            onChange={(e) => setPenalty(e.target.value)}
                             required
                         />
                     </Form.Group>

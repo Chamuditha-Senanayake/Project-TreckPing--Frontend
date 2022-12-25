@@ -1,7 +1,8 @@
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import axios from 'axios';
+import moment from 'moment';
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -70,7 +71,7 @@ export default function ReservationScreen() {
             try {
                 dispatch({ type: 'PAY_REQUEST' });
                 const { data } = await axios.put(
-                    `/api/orders/${order._id}/pay`,
+                    `/api/reservations/${order._id}/pay`,
                     details,
                     {
                         headers: { authorization: `Bearer ${userInfo.token}` }
@@ -95,7 +96,7 @@ export default function ReservationScreen() {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
                 const { data } = await axios.get(
-                    `/api/orders/${orderId}`,
+                    `/api/reservations/${orderId}`,
                     { headers: { authorization: `Bearer ${userInfo.token}` } }
                 );
                 dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -139,16 +140,16 @@ export default function ReservationScreen() {
         <MessageBox variant="danger"></MessageBox>
     ) : (
         <div>
-            <Helmet><title>Order {orderId}</title></Helmet>
-            <h2 className='my-3'>Order {orderId}</h2>
+            <Helmet><title>Reservation {orderId}</title></Helmet>
+            <h2 className='my-3'>Reservation {orderId}</h2>
             <Row>
                 <Col md={8}>
                     <Card className='mb-3'>
                         <Card.Body>
                             <Card.Title>Shipping</Card.Title>
                             <Card.Text>
-                                <strong>Name:</strong> {order.shippingAddress.fullName} <br />
-                                <strong>Address:</strong> {order.shippingAddress.address},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
+                                <strong>Pickup Location:</strong> {order.shippingAddress.pickupLocation} <br />
+                                <strong>Return Location:</strong> {order.shippingAddress.returnLocation},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
                             </Card.Text>
                             {order.isDelivered ? (
                                 <MessageBox variant='success'>Delivered at {order.deliveredAt}</MessageBox>
@@ -179,18 +180,29 @@ export default function ReservationScreen() {
                                 {order.orderItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
                                         <Row className='align-items-center'>
-                                            <Col md={6}>
+                                            <Col md={2}>
                                                 <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail'></img>{' '}
-                                                <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                                            </Col >
+                                            <Col md={10}>
+                                                <Row>
+                                                    <Col md={6}><Link to={`/product/${item.slug}`} className='card-title-link'>{item.name}</Link></Col>
+                                                    <Col md={2}><span>{item.quantity}</span></Col>
+                                                    <Col md={2}>{item.price}</Col>
+                                                </Row>
+                                                <br />
+                                                <Row>
+                                                    <Col md={5}><Form.Label > <strong>From : </strong></Form.Label> {moment(item.pickupDate).utc().format('DD/MM/YYYY')}</Col>
+                                                    <Col md={5}><Form.Label > <strong>To : </strong></Form.Label>  {moment(item.returnDate).utc().format('DD/MM/YYYY')}</Col>
+                                                </Row>
                                             </Col>
-                                            <Col md={3}><span>{item.quantity}</span></Col>
-                                            <Col md={3}>{item.price}</Col>
                                         </Row>
+
                                     </ListGroup.Item>
                                 ))}
                             </ListGroup>
                         </Card.Body>
                     </Card>
+
                 </Col>
 
                 <Col md={4}>
@@ -233,6 +245,27 @@ export default function ReservationScreen() {
                     </Card>
                 </Col>
             </Row >
+            {/* <Row>
+                <Card className='mb-3'>
+                    <Card.Body>
+                        <Card.Title>Items</Card.Title>
+                        <ListGroup variant='flush'>
+                            {order.orderItems.map((item) => (
+                                <ListGroup.Item key={item._id}>
+                                    <Row className='align-items-center'>
+                                        <Col md={8}>
+                                            <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail'></img>{' '}
+                                            <Link to={`/product/${item.slug}`} className='card-title-link'>{item.name}</Link>
+                                        </Col>
+                                        <Col md={2}><span>{item.quantity}</span></Col>
+                                        <Col md={2}>{item.price}</Col>
+                                    </Row>
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    </Card.Body>
+                </Card>
+            </Row> */}
         </div >)
 
 

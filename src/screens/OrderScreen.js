@@ -179,12 +179,12 @@ export default function OrderScreen() {
                                 {order.orderItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
                                         <Row className='align-items-center'>
-                                            <Col md={6}>
+                                            <Col md={8}>
                                                 <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail'></img>{' '}
-                                                <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                                                <Link to={`/product/${item.slug}`} className='card-title-link'>{item.name}</Link>
                                             </Col>
-                                            <Col md={3}><span>{item.quantity}</span></Col>
-                                            <Col md={3}>{item.price}</Col>
+                                            <Col md={2}><span>{item.quantity}</span></Col>
+                                            <Col md={2}>{item.price}</Col>
                                         </Row>
                                     </ListGroup.Item>
                                 ))}

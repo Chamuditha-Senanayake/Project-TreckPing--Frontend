@@ -90,7 +90,7 @@ const PlaceOrderScreen = () => {
                                 <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
                                 <strong>Address:</strong> {cart.shippingAddress.address},  {cart.shippingAddress.city},  {cart.shippingAddress.postalCode}
                             </Card.Text>
-                            <Link to="/shipping">Edit</Link>
+                            <Link to="/shipping"><button className='mt-3 btn btn-outline-secondary'>Edit</button></Link>
                         </Card.Body>
                     </Card>
                     <Card className='mb-3'>
@@ -99,7 +99,7 @@ const PlaceOrderScreen = () => {
                             <Card.Text>
                                 <strong>Method:</strong> {cart.paymentMethod}
                             </Card.Text>
-                            <Link to="/payment">Edit</Link>
+                            <Link to="/payment"><button className='mt-3 btn btn-outline-secondary'>Edit</button></Link>
                         </Card.Body>
                     </Card>
                     <Card className='mb-3'>
@@ -109,17 +109,17 @@ const PlaceOrderScreen = () => {
                                 {cart.cartItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
                                         <Row className='align-items-center'>
-                                            <Col md={6}>
+                                            <Col md={8}>
                                                 <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail'></img>{' '}
-                                                <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                                                <Link to={`/product/${item.slug}`} className='card-title-link'>{item.name}</Link>
                                             </Col>
-                                            <Col md={3}><span>{item.quantity}</span></Col>
-                                            <Col md={3}>{item.price}</Col>
+                                            <Col md={2}><span>{item.quantity}</span></Col>
+                                            <Col md={2}>{item.price}</Col>
                                         </Row>
                                     </ListGroup.Item>
                                 ))}
                             </ListGroup>
-                            <Link to="/cart">Edit</Link>
+                            <Link to="/cart"><button className='mt-4 btn btn-outline-secondary'>Edit</button></Link>
                         </Card.Body>
                     </Card>
                 </Col>

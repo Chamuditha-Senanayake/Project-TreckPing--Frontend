@@ -62,9 +62,18 @@ const RentHomeScreen = () => {
                     <MessageBox variant='danger'>{error}</MessageBox>
                 ) : (<Row>
                     {products.reverse().map((product) => (
-                        <Col key={product.slug} sm={6} md={4} lg={3} className="mb-5">
-                            <RentProduct product={product} ></RentProduct>
-                        </Col>
+
+                        <>
+                            {
+                                product.rent != 0 ?
+                                    <Col key={product.slug} sm={6} md={4} lg={3} className="mb-5">
+                                        <RentProduct product={product} ></RentProduct>
+                                    </Col>
+                                    :
+                                    <></>
+                            }
+
+                        </>
                     ))}
                 </Row>)
                 }

@@ -48,8 +48,10 @@ const CartScreen = () => {
                                 {cartItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
                                         <Row className='align-items-center'>
-                                            <Col md={6}>
+                                            <Col md={2}>
                                                 <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail' />{' '}
+                                            </Col>
+                                            <Col md={6}>
                                                 <Link to={`/product/${item.slug}`} className='card-title-link'><span className='cart-item-name'>{item.name}</span></Link>
                                             </Col>
                                             <Col md={3}>
@@ -61,7 +63,7 @@ const CartScreen = () => {
                                                     <i className='fas fa-plus-circle'></i>
                                                 </Button>{' '}
                                             </Col>
-                                            <Col md={2}>
+                                            <Col md={1}>
                                                 <Button onClick={() => removeItemHandler(item)} variant='light'>
                                                     <i className='fas fa-trash'></i>
                                                 </Button>

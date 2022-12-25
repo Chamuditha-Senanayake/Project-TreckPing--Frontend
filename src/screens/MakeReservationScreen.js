@@ -1,7 +1,7 @@
 import Axios from 'axios'
 import moment from 'moment'
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap'
+import { Button, Card, Col, Form, ListGroup, Row } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -91,7 +91,7 @@ const MakeReservationScreen = () => {
                                 <strong>Pickup Location:</strong> {rentCart.deliveryAddress.pickupLocation} <br />
                                 <strong>Return Location:</strong> {rentCart.deliveryAddress.returnLocation},
                             </Card.Text>
-                            <Link to="/pickuplocation">Edit</Link>
+                            <Link to="/pickuplocation"><button className='mt-3 btn btn-outline-secondary'>Edit</button></Link>
                         </Card.Body>
                     </Card>
                     <Card className='mb-3'>
@@ -100,29 +100,41 @@ const MakeReservationScreen = () => {
                             <Card.Text>
                                 <strong>Method:</strong> {rentCart.paymentMethod}
                             </Card.Text>
-                            <Link to="/rentpayment">Edit</Link>
+                            <Link to="/rentpayment"><button className='mt-3 btn btn-outline-secondary'>Edit</button></Link>
                         </Card.Body>
                     </Card>
+
                     <Card className='mb-3'>
                         <Card.Body>
-                            <Card.Title>Cart Items</Card.Title>
+                            <Card.Title>Items</Card.Title>
                             <ListGroup variant='flush'>
                                 {rentCart.rentCartItems.map((item) => (
                                     <ListGroup.Item key={item._id}>
                                         <Row className='align-items-center'>
-                                            <Col md={8}>
+                                            <Col md={2}>
                                                 <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail'></img>{' '}
-                                                <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                                            </Col >
+                                            <Col md={10}>
+                                                <Row>
+                                                    <Col md={6}><Link to={`/product/${item.slug}`} className='card-title-link'>{item.name}</Link></Col>
+                                                    <Col md={2}><span>{item.quantity}</span></Col>
+                                                    <Col md={2}>{item.price}</Col>
+                                                </Row>
+                                                <br />
+                                                <Row>
+                                                    <Col md={5}><Form.Label > <strong>From : </strong></Form.Label> {moment(item.pickupDate).utc().format('DD/MM/YYYY')}</Col>
+                                                    <Col md={5}><Form.Label > <strong>To : </strong></Form.Label>  {moment(item.returnDate).utc().format('DD/MM/YYYY')}</Col>
+                                                </Row>
                                             </Col>
-                                            <Col md={2}><span>{item.quantity}</span></Col>
-                                            <Col md={2}>{item.price}</Col>
                                         </Row>
+
                                     </ListGroup.Item>
                                 ))}
                             </ListGroup>
-                            <Link to="/rentCart">Edit</Link>
                         </Card.Body>
                     </Card>
+
+
                 </Col>
 
                 <Col md={4}>

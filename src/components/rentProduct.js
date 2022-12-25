@@ -45,16 +45,18 @@ const RentProduct = (props) => {
                 </Link>
                 <Rating rating={product.rating} numReviews={product.numReviews} />
                 <Card.Text>{product.rent} LKR per day</Card.Text>
-                <hr className='mt-5' />
+                <hr className='mt-4' />
                 <Form.Label className={reserveOrCheck === "Reserve" ? 'd-none' : ''}>Starting Date</Form.Label>
                 <Form.Control className={reserveOrCheck === "Reserve" ? 'd-none mb-3' : 'mb-3'} type="date" min={today} name="startingDate" placeholder="DateRange" value={startDate} onChange={(e) => { setStartDate(e.target.value); moment(endDate).diff(startDate, 'days') > 0 ? setEndDate(endDate) : setEndDate(e.target.value) }}></Form.Control>
                 <Form.Label className={reserveOrCheck === "Reserve" ? 'd-none' : ''}>Ending Date</Form.Label>
                 <Form.Control className={reserveOrCheck === "Reserve" ? 'd-none mb-5' : 'mb-5'} type="date" min={startDate} name="endingDate" placeholder="DateRange" value={endDate} onChange={(e) => setEndDate(e.target.value)}></Form.Control>
                 {product.countInStockForRent === 0 ? (
-                    <Button variant='light' disabled>Out of Stock</Button>)
-                    : (reserveOrCheck === "Add to cart" ? <Button onClick={() => addToCartHandler(product)}>{reserveOrCheck}</Button> :
+                    <Button variant='light' disabled>Out of Stock</Button>
+                )
+                    :
+                    (reserveOrCheck === "Add to cart" ? <Button onClick={() => addToCartHandler(product)}>{reserveOrCheck}</Button> :
                         (reserveOrCheck === "Check availability" ? <Button onClick={() => setReserveOrCheck("Add to cart")}>{reserveOrCheck}</Button> : <Button onClick={() => setReserveOrCheck("Check availability")}>{reserveOrCheck}</Button>))}
-
+                <i className={reserveOrCheck === "Reserve" ? 'd-none' : 'fas fa-sort-up d-flex justify-content-end '} onClick={() => setReserveOrCheck("Reserve")}></i>
             </Card.Body>
         </Card >
     )
