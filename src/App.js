@@ -33,6 +33,10 @@ import ReservationScreen from './screens/ReservationScreen';
 import RentPaymentMethodScreen from './screens/RentPaymentMethodScreen';
 import MakeReservationScreen from './screens/MakeReservationScreen';
 import ReservationHistoryScreen from './screens/ReservationHistoryScreen';
+import OrderListScreen from './screens/OrderListScreen';
+import ReservationListScreen from './screens/ReservationListScreen';
+import UserListScreen from './screens/UserListScreen';
+import UserEditScreen from './screens/UserEditScreen';
 
 
 function App() {
@@ -121,23 +125,24 @@ function App() {
                   </NavDropdown>
 
                   {(userInfo == null || userInfo.isAdmin === "false") &&
-                    buyOrRent === 'Rent' ? <Link to='/cart' className='nav-link'>
-                    <i className='fas fa-shopping-cart'></i>
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg='danger'>
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </Link>
-                    :
-                    <Link to='/rentcart' className='nav-link'>
-                      <i className='fas fa-shopping-cart'></i>
-                      {rentCart.rentCartItems.length > 0 && (
-                        <Badge pill bg='danger'>
-                          {rentCart.rentCartItems.reduce((a, c) => a + c.quantity, 0)}
-                        </Badge>
-                      )}
-                    </Link>
+                    (buyOrRent === 'Rent' ?
+                      (<Link to='/cart' className='nav-link'>
+                        <i className='fas fa-shopping-cart'></i>
+                        {cart.cartItems.length > 0 && (
+                          <Badge pill bg='danger'>
+                            {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                          </Badge>
+                        )}
+                      </Link>)
+                      :
+                      (<Link to='/rentcart' className='nav-link'>
+                        <i className='fas fa-shopping-cart'></i>
+                        {rentCart.rentCartItems.length > 0 && (
+                          <Badge pill bg='danger'>
+                            {rentCart.rentCartItems.reduce((a, c) => a + c.quantity, 0)}
+                          </Badge>
+                        )}
+                      </Link>))
                   }
 
                   {/* User Info */}
@@ -262,9 +267,33 @@ function App() {
                 </AdminRoute>
               } />
 
+              <Route path='/admin/orders' element={
+                <AdminRoute>
+                  <OrderListScreen />
+                </AdminRoute>
+              } />
+
+              <Route path='/admin/reservations' element={
+                <AdminRoute>
+                  <ReservationListScreen />
+                </AdminRoute>
+              } />
+
               <Route path='/admin/product/:id' element={
                 <AdminRoute>
                   <ProductEditScreen />
+                </AdminRoute>
+              } />
+
+              <Route path='/admin/users' element={
+                <AdminRoute>
+                  <UserListScreen />
+                </AdminRoute>
+              } />
+
+              <Route path='/admin/user/:id' element={
+                <AdminRoute>
+                  <UserEditScreen />
                 </AdminRoute>
               } />
 
@@ -289,7 +318,7 @@ function App() {
             </section>
           </div>
           <h4>TreckPing </h4>
-          <p>No. 04, Polgolla Rd<br /> Kandy <br /> Sri Lanka</p>
+          <p>No. 04, Polgolla Rd,<br /> Kandy, <br /> Sri Lanka.</p>
 
           <div class="text-center p-3 footer-container" >
             © 2022 Copyright :

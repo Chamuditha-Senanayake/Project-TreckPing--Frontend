@@ -71,7 +71,7 @@ const ReservationHistoryScreen = () => {
                             <th>Date</th>
                             <th>Total</th>
                             <th>Paid</th>
-                            <th>Deliversy</th>
+                            <th>Delivered</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -84,7 +84,7 @@ const ReservationHistoryScreen = () => {
                                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                                 <td>{order.isDelivered ? order.deliveredAt.substring(0, 10) : 'No'}</td>
                                 <td>
-                                    <Button type='button' variant='light' onClick={() => { navigate(`/order/${order._id}`) }}>
+                                    <Button type='button' variant='light' onClick={() => { navigate(`/reservation/${order._id}`) }}>
                                         View
                                     </Button>
                                 </td>
