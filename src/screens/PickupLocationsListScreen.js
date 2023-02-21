@@ -16,7 +16,7 @@ const reducer = (state, action) => {
         case 'FETCH_SUCCESS':
             return {
                 ...state,
-                products: action.payload.products,
+                locations: action.payload.locations,
                 page: action.payload.page,
                 pages: action.payload.pages,
                 loading: false,
@@ -52,13 +52,13 @@ const reducer = (state, action) => {
     }
 };
 
-const ProductListScreen = () => {
+const PickupLocationsListScreen = () => {
 
     const [
         {
             loading,
             error,
-            products,
+            locations,
             pages,
             loadingCreate,
             loadingDelete,
@@ -69,7 +69,6 @@ const ProductListScreen = () => {
         loading: true,
         error: '',
     });
-
 
     //pagination
     const navigate = useNavigate();
@@ -83,7 +82,7 @@ const ProductListScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const { data } = await axios.get(`/api/products/admin?page=${page} `, {
+                const { data } = await axios.get(`/api/locations/admin?page=${page} `, {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });
 
@@ -102,16 +101,16 @@ const ProductListScreen = () => {
     const createHandler = async () => {
         if (true) {
             try {
-                dispatch({ type: 'CREATE_REQUEST' });
-                const { data } = await axios.post(
-                    '/api/products',
-                    {},
-                    {
-                        headers: { Authorization: `Bearer ${userInfo.token}` },
-                    }
-                );
-                dispatch({ type: 'CREATE_SUCCESS' });
-                navigate(`/admin/product/${data.product._id}`);
+                // dispatch({ type: 'CREATE_REQUEST' });
+                // const { data } = await axios.post(
+                //     '/api/locations/addpickuplocations',
+                //     {},
+                //     {
+                //         headers: { Authorization: `Bearer ${userInfo.token}` },
+                //     }
+                // );
+                // dispatch({ type: 'CREATE_SUCCESS' });
+                navigate(`/admin/addpickuplocations`);
             } catch (err) {
                 toast.error(getError(error));
                 dispatch({
@@ -121,13 +120,13 @@ const ProductListScreen = () => {
         }
     };
 
-    const deleteHandler = async (product) => {
+    const deleteHandler = async (location) => {
         if (window.confirm('Are you sure to delete?')) {
             try {
-                await axios.delete(`/api/products/${product._id}`, {
+                await axios.delete(`/api/locations/${location._id}`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });
-                toast.success('Product deleted successfully');
+                toast.success('Location deleted successfully');
                 dispatch({ type: 'DELETE_SUCCESS' });
             } catch (err) {
                 toast.error(getError(error));
@@ -144,12 +143,12 @@ const ProductListScreen = () => {
 
             <Row>
                 <Col>
-                    <h2 className="mb-5">Products</h2>
+                    <h2 className="mb-5">Locations</h2>
                 </Col>
                 <Col className="col text-end">
                     <div>
                         <Button type="button" onClick={createHandler}>
-                            Create Product
+                            Add Location
                         </Button>
                     </div>
                 </Col>
@@ -168,30 +167,25 @@ const ProductListScreen = () => {
                         <thead>
                             <tr>
                                 {/* <th>ID</th> */}
-                                <th></th>
                                 <th>NAME</th>
                                 <th>PRICE</th>
                                 <th>QUANTITY</th>
-                                <th>CATEGORY</th>
-                                <th>BRAND</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {products.map((product) => (
-                                <tr key={product._id}>
+                            {locations.map((location) => (
+                                <tr key={location._id}>
                                     {/* <td>{product._id}</td> */}
-                                    <td>{product.countInStock <= 10 ? (product.countInStock <= 5 ? <i className='fas fa-exclamation-circle danger'></i> : <i className='fas fa-exclamation-circle warning'></i>) : <></>}</td>
-                                    <td>{product.name}</td>
-                                    <td>{product.price}</td>
-                                    <td>{product.countInStock}</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.brand}</td>
+                                    <td>{location.address} </td>
+                                    <td>{(location.enabledAsPickupLocation) === true ? "Active" : "Deactive"}</td>
+                                    <td>{(location.enabledAsDeliveryLocation) === true ? "Active" : "Deactive"}</td>
+
                                     <td>
                                         <Button
                                             type="button"
                                             variant="light"
-                                            onClick={() => navigate(`/admin/product/${product._id}`)}
+                                            onClick={() => navigate(`/admin/locations/${location._id}`)}
                                         >
                                             Edit
                                         </Button>
@@ -199,7 +193,7 @@ const ProductListScreen = () => {
                                         <Button
                                             type="button"
                                             variant="light"
-                                            onClick={() => deleteHandler(product)}
+                                            onClick={() => deleteHandler(location)}
                                         >
                                             Delete
                                         </Button>
@@ -213,7 +207,7 @@ const ProductListScreen = () => {
                             <Link
                                 className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
                                 key={x + 1}
-                                to={`/admin/products?page=${x + 1}`}
+                                to={`/admin/pickuplocationslist?page=${x + 1}`}
                             >
                                 {x + 1}
                             </Link>
@@ -225,4 +219,4 @@ const ProductListScreen = () => {
 }
 
 
-export default ProductListScreen
+export default PickupLocationsListScreen

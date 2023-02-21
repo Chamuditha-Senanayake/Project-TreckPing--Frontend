@@ -122,7 +122,7 @@ const UserEditScreen = () => {
                         className="mb-3"
                         type="checkbox"
                         id="isAdmin"
-                        label="isAdmin"
+                        label="Is Admin?"
                         checked={isAdmin}
                         onChange={(e) => setIsAdmin(e.target.checked)}
                     />

@@ -297,7 +297,7 @@ const ProductEditScreen = () => {
                         <Button
                             disabled={loadingUpdate}
                             type="submit">
-                            Update
+                            Save
                         </Button>
                         {loadingUpdate && <LoadingBox></LoadingBox>}
                     </div>

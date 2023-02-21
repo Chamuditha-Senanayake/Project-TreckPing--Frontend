@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
-import { Badge, Container, Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { Badge, Container, Navbar, Nav, NavDropdown, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
@@ -37,23 +37,28 @@ import OrderListScreen from './screens/OrderListScreen';
 import ReservationListScreen from './screens/ReservationListScreen';
 import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
+import AddPickupLocationScreen from './screens/AddPickupLocationScreen';
+import PickupLocationsListScreen from './screens/PickupLocationsListScreen';
 
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, rentCart, userInfo } = state;
 
+
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
+    localStorage.removeItem('setBuyOrRent');
     window.location.href = 'signin';
   }
 
   //const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
+  localStorage.getItem('BuyOrRent')
   const [categories, setCategories] = useState([]);
-  const [buyOrRent, setBuyOrRent] = useState("Rent")
+  const [buyOrRent, setBuyOrRent] = useState("Buy")
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -65,8 +70,12 @@ function App() {
       }
     };
     fetchCategories();
-
   }, [])
+
+  const navigateRentorBuy = () => {
+    localStorage.setItem('BuyOrRent', buyOrRent);
+    window.location.href = buyOrRent === "Buy" ? "/" : "rent";
+  }
 
   return (
 
@@ -83,6 +92,7 @@ function App() {
                 </LinkContainer>
               }
 
+
               {(userInfo && userInfo.isAdmin === "true") &&
                 <LinkContainer to='/admin/dashboard'>
                   <Navbar.Brand className='nav-brand'>TreckPing  </Navbar.Brand>
@@ -97,9 +107,14 @@ function App() {
                 <Nav className='ms-auto w-100 justify-content-end '>
 
                   {(userInfo == null || userInfo.isAdmin === "false") &&
-                    <Link className="nav-link mx-3 " to={buyOrRent === "Rent" ? "/rent" : "/"} onClick={() => buyOrRent === "Rent" ? setBuyOrRent("Buy") : setBuyOrRent("Rent")}>
-                      <h5>{buyOrRent} ?</h5>
-                    </Link>
+                    <ToggleButtonGroup type="radio" name="options" onChange={navigateRentorBuy}>
+                      <ToggleButton id="tbg-radio-1" className={localStorage.getItem('BuyOrRent') == "Buy" ? 'bg-success ' : 'bg-secondary '} onClick={() => setBuyOrRent("Buy")}>
+                        Buy
+                      </ToggleButton>
+                      <ToggleButton id="tbg-radio-2" className={localStorage.getItem('BuyOrRent') == "Rent" ? 'bg-success' : 'bg-secondary '} onClick={() => setBuyOrRent("Rent")}>
+                        Rent
+                      </ToggleButton>
+                    </ToggleButtonGroup>
                   }
 
                   {(userInfo == null || userInfo.isAdmin === "false") &&
@@ -114,6 +129,7 @@ function App() {
                     </Link>
                   }
 
+
                   <NavDropdown title="Categories" className='mx-4'>
 
                     {/* select category dropdown */}
@@ -125,7 +141,7 @@ function App() {
                   </NavDropdown>
 
                   {(userInfo == null || userInfo.isAdmin === "false") &&
-                    (buyOrRent === 'Rent' ?
+                    (localStorage.getItem('BuyOrRent') == "Buy" ?
                       (<Link to='/cart' className='nav-link'>
                         <i className='fas fa-shopping-cart'></i>
                         {cart.cartItems.length > 0 && (
@@ -194,6 +210,9 @@ function App() {
                       </LinkContainer>
                       <LinkContainer to="/admin/orders">
                         <NavDropdown.Item>Orders</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/pickuplocationslist">
+                        <NavDropdown.Item>Pickup Locations</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/users">
                         <NavDropdown.Item>Users</NavDropdown.Item>
@@ -276,6 +295,18 @@ function App() {
               <Route path='/admin/reservations' element={
                 <AdminRoute>
                   <ReservationListScreen />
+                </AdminRoute>
+              } />
+
+              <Route path='/admin/pickuplocationslist' element={
+                <AdminRoute>
+                  <PickupLocationsListScreen />
+                </AdminRoute>
+              } />
+
+              <Route path='/admin/addpickuplocations' element={
+                <AdminRoute>
+                  <AddPickupLocationScreen />
                 </AdminRoute>
               } />
 
