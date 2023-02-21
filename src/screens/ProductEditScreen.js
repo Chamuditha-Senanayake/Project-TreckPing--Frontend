@@ -285,7 +285,7 @@ const ProductEditScreen = () => {
                         />
 
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="description">
+                    <Form.Group className="mb-5" controlId="description">
                         <Form.Label>Description</Form.Label>
                         <Form.Control
                             value={description}

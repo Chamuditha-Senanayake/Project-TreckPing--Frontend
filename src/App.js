@@ -310,6 +310,12 @@ function App() {
                 </AdminRoute>
               } />
 
+              <Route path='/admin/addpickuplocations/:id' element={
+                <AdminRoute>
+                  <AddPickupLocationScreen />
+                </AdminRoute>
+              } />
+
               <Route path='/admin/product/:id' element={
                 <AdminRoute>
                   <ProductEditScreen />

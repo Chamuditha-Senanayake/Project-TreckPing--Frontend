@@ -75,6 +75,7 @@ const UserListScreen = () => {
                             <th>NAME</th>
                             <th>EMAIL</th>
                             <th>IS ADMIN</th>
+                            <th>IS AGENT</th>
                             <th>ACTIONS</th>
                         </tr>
                     </thead>
@@ -85,6 +86,7 @@ const UserListScreen = () => {
                                 <td>{user.name}</td>
                                 <td>{user.email}</td>
                                 <td>{user.isAdmin === 'true' ? 'YES' : 'NO'}</td>
+                                <td>{user.isAgent === 'true' ? 'YES' : 'NO'}</td>
                                 <td>
                                     <Button
                                         type="button"

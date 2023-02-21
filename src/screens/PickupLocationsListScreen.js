@@ -167,9 +167,13 @@ const PickupLocationsListScreen = () => {
                         <thead>
                             <tr>
                                 {/* <th>ID</th> */}
-                                <th>NAME</th>
-                                <th>PRICE</th>
-                                <th>QUANTITY</th>
+                                <th>City</th>
+                                <th>Address</th>
+                                <th>Agent</th>
+                                <th>Email</th>
+                                <th>Contact</th>
+                                <th>Enabled As a Pickup Location</th>
+                                <th>Enabled As a Delivery Location</th>
                                 <th>ACTIONS</th>
                             </tr>
                         </thead>
@@ -177,7 +181,11 @@ const PickupLocationsListScreen = () => {
                             {locations.map((location) => (
                                 <tr key={location._id}>
                                     {/* <td>{product._id}</td> */}
+                                    <td>{location.location} </td>
                                     <td>{location.address} </td>
+                                    <td>{location.agent} </td>
+                                    <td>{location.email} </td>
+                                    <td>{location.contact} </td>
                                     <td>{(location.enabledAsPickupLocation) === true ? "Active" : "Deactive"}</td>
                                     <td>{(location.enabledAsDeliveryLocation) === true ? "Active" : "Deactive"}</td>
 
@@ -185,7 +193,7 @@ const PickupLocationsListScreen = () => {
                                         <Button
                                             type="button"
                                             variant="light"
-                                            onClick={() => navigate(`/admin/locations/${location._id}`)}
+                                            onClick={() => navigate(`/admin/addpickuplocations/${location._id}`)}
                                         >
                                             Edit
                                         </Button>
