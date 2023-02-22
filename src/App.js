@@ -51,12 +51,12 @@ function App() {
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
     localStorage.removeItem('paymentMethod');
-    localStorage.removeItem('setBuyOrRent');
-    window.location.href = 'signin';
+    localStorage.setItem('BuyOrRent', 'Buy');
+    localStorage.removeItem('cartItems');
+    localStorage.removeItem('rentCartItems');
+    window.location.href = '/signin';
   }
 
-  //const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  localStorage.getItem('BuyOrRent')
   const [categories, setCategories] = useState([]);
   const [buyOrRent, setBuyOrRent] = useState("Buy")
 
@@ -70,6 +70,7 @@ function App() {
       }
     };
     fetchCategories();
+
   }, [])
 
   const navigateRentorBuy = () => {
@@ -86,7 +87,7 @@ function App() {
           <Navbar className='navbar-custom' variant='dark' expand='lg'>
             <Container>
               {/* logo */}
-              {(userInfo == null || userInfo.isAdmin === "false") &&
+              {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                 <LinkContainer to='/'>
                   <Navbar.Brand className='nav-brand'>TreckPing  </Navbar.Brand>
                 </LinkContainer>
@@ -99,14 +100,20 @@ function App() {
                 </LinkContainer>
               }
 
+              {(userInfo && userInfo.isAgent === "true") &&
+                <LinkContainer to='/agent/dashboard'>
+                  <Navbar.Brand className='nav-brand'>TreckPing  </Navbar.Brand>
+                </LinkContainer>
+              }
+
 
               <Navbar.Toggle aria-controls='basic-navbar-nav' />
               <Navbar.Collapse id='basic-navbar-nav'>
-                {(userInfo == null || userInfo.isAdmin === "false") && <div className='mx-5'><SearchBox /></div>}
+                {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) && <div className='mx-5'><SearchBox /></div>}
 
                 <Nav className='ms-auto w-100 justify-content-end '>
 
-                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                  {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                     <ToggleButtonGroup type="radio" name="options" onChange={navigateRentorBuy}>
                       <ToggleButton id="tbg-radio-1" className={localStorage.getItem('BuyOrRent') == "Buy" ? 'bg-success ' : 'bg-secondary '} onClick={() => setBuyOrRent("Buy")}>
                         Buy
@@ -117,13 +124,13 @@ function App() {
                     </ToggleButtonGroup>
                   }
 
-                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                  {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                     <Link className="nav-link mx-3" to="/all-products">
                       Products
                     </Link>
                   }
 
-                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                  {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                     <Link className="nav-link mx-2" to="/signin?redirect=/suggestions">
                       Need Help?
                     </Link>
@@ -140,7 +147,7 @@ function App() {
                     ))}
                   </NavDropdown>
 
-                  {(userInfo == null || userInfo.isAdmin === "false") &&
+                  {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                     (localStorage.getItem('BuyOrRent') == "Buy" ?
                       (<Link to='/cart' className='nav-link'>
                         <i className='fas fa-shopping-cart'></i>
@@ -163,7 +170,7 @@ function App() {
 
                   {/* User Info */}
                   {userInfo ?
-                    (userInfo.isAdmin === "false" ?
+                    ((userInfo.isAdmin === "false" && userInfo.isAgent === "false") ?
                       <NavDropdown title={userInfo.name} id="basc-nav-dropdown">
                         <LinkContainer to="/profile">
                           <NavDropdown.Item>User Profile</NavDropdown.Item>
@@ -222,6 +229,26 @@ function App() {
                       </LinkContainer>
                     </NavDropdown>
                   )}
+
+                  {userInfo && userInfo.isAgent === 'true' && (
+                    <NavDropdown title="Sales Agent" id="admin-nav-dropdown">
+                      <LinkContainer to="/admin/dashboard">
+                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/reservations">
+                        <NavDropdown.Item>Reservations</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/orders">
+                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/pickuplocationslist">
+                        <NavDropdown.Item>Pickup Locations</NavDropdown.Item>
+                      </LinkContainer>
+                    </NavDropdown>
+                  )}
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -229,7 +256,7 @@ function App() {
 
         </header>
 
-        <main className={userInfo && userInfo.isAdmin === 'true' && 'dashboard pt-5 pt-3'}>
+        <main className={userInfo && (userInfo.isAdmin === 'true' || userInfo.isAgent === 'true') && 'dashboard pt-5 pt-3'}>
           <Container className='mt-3'>
             <Routes>
               <Route path='/product/:slug' element={<ProductScreen />} />
@@ -272,6 +299,13 @@ function App() {
               <Route path='/cart' element={<CartScreen />} />
               <Route path='/rentcart' element={<RentCartScreen />} />
               <Route path='/search' element={<SearchScreen />} />
+
+              {/* Agent Routes */}
+              <Route path='/agent/dashboard' element={
+
+                <DashboardScreen />
+
+              } />
 
               {/* Admin Routes */}
               <Route path='/admin/dashboard' element={
