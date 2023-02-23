@@ -28,10 +28,11 @@ const SigninScreen = () => {
             });
             ctxDispatch({ type: 'USER_SIGNIN', payload: data })
             localStorage.setItem('userInfo', JSON.stringify(data));
-            if (data.isAdmin) {
+            if (data.isAdmin == "true") {
                 navigate('/admin/dashboard');
-            }
-            else {
+            } else if (data.isAgent == "true") {
+                navigate('/agent/dashboard');
+            } else {
                 navigate(redirect || '/');
             }
 

@@ -101,15 +101,6 @@ const PickupLocationsListScreen = () => {
     const createHandler = async () => {
         if (true) {
             try {
-                // dispatch({ type: 'CREATE_REQUEST' });
-                // const { data } = await axios.post(
-                //     '/api/locations/addpickuplocations',
-                //     {},
-                //     {
-                //         headers: { Authorization: `Bearer ${userInfo.token}` },
-                //     }
-                // );
-                // dispatch({ type: 'CREATE_SUCCESS' });
                 navigate(`/admin/addpickuplocations`);
             } catch (err) {
                 toast.error(getError(error));
@@ -167,14 +158,13 @@ const PickupLocationsListScreen = () => {
                         <thead>
                             <tr>
                                 {/* <th>ID</th> */}
-                                <th>City</th>
+                                <th>Nearest City</th>
                                 <th>Address</th>
-                                <th>Agent</th>
                                 <th>Email</th>
                                 <th>Contact</th>
-                                <th>Enabled As a Pickup Location</th>
-                                <th>Enabled As a Delivery Location</th>
-                                <th>ACTIONS</th>
+                                <th width="150px">Enabled As a Pickup Location</th>
+                                <th width="150px">Enabled As a Delivery Location</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -183,7 +173,6 @@ const PickupLocationsListScreen = () => {
                                     {/* <td>{product._id}</td> */}
                                     <td>{location.location} </td>
                                     <td>{location.address} </td>
-                                    <td>{location.agent} </td>
                                     <td>{location.email} </td>
                                     <td>{location.contact} </td>
                                     <td>{(location.enabledAsPickupLocation) === true ? "Active" : "Deactive"}</td>
@@ -222,7 +211,8 @@ const PickupLocationsListScreen = () => {
                         ))}
                     </div>
                 </>
-            )}
+            )
+            }
         </div >)
 }
 

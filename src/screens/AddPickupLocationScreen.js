@@ -50,9 +50,10 @@ const AddPickupLocationScreen = () => {
             error: '',
         });
 
+    const [agentsList, setAgentsList] = useState([]);
     const [nearestCity, setNearestCity] = useState("");
     const [address, setAddress] = useState("");
-    const [agent, setAgent] = useState("");
+    const [agentId, setAgentId] = useState("");
     const [email, setEmail] = useState("");
     const [contact, setContact] = useState("");
     const [enabledAsPickupLocation, setEnabledAsPickupLocation] = useState(true);
@@ -60,13 +61,27 @@ const AddPickupLocationScreen = () => {
 
     useEffect(() => {
 
+        const fetchAgentData = async () => {
+            try {
+                const { data } = await axios.get(`/api/users/agents/get-all-agents`, {
+                    headers: { Authorization: `Bearer ${userInfo.token}` }
+                }
+                );
+                setAgentsList(data);
+            } catch (err) {
+                dispatch({
+                    payload: getError(err),
+                });
+            }
+        };
+
         const fetchData = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
                 const { data } = await axios.get(`/api/locations/${locationId}`);
                 setNearestCity(data.location)
                 setAddress(data.address);
-                setAgent(data.agent);
+                setAgentId(data.agent);
                 setEmail(data.email);
                 setContact(data.contact);
                 setEnabledAsPickupLocation(data.enabledAsPickupLocation);
@@ -81,11 +96,14 @@ const AddPickupLocationScreen = () => {
             }
         };
 
+        fetchAgentData();
+
         if (locationId != null) {
             fetchData();
         }
 
     }, [locationId]);
+
 
     const submitHandler = async (e) => {
         e.preventDefault();
@@ -98,7 +116,7 @@ const AddPickupLocationScreen = () => {
                         _id: locationId,
                         nearestCity,
                         address,
-                        agent,
+                        agentId,
                         email,
                         contact,
                         enabledAsPickupLocation,
@@ -128,7 +146,7 @@ const AddPickupLocationScreen = () => {
                     {
                         nearestCity,
                         address,
-                        agent,
+                        agentId,
                         email,
                         contact,
                         enabledAsPickupLocation,
@@ -156,6 +174,7 @@ const AddPickupLocationScreen = () => {
         }
     }
 
+
     return (
         <div className='container small-container'>
             <Helmet>{locationId != null ? "Update " : "Add "}Pickup Location</Helmet>
@@ -173,8 +192,23 @@ const AddPickupLocationScreen = () => {
                 </Form.Group>
 
                 <Form.Group className='mb-3' >
-                    <Form.Label>Agent</Form.Label>
-                    <Form.Control value={agent} onChange={(e) => setAgent(e.target.value)} required />
+                    <Form.Label>Select Agent</Form.Label>
+                    <Form.Select onChange={(e) => setAgentId(e.target.value)}>
+                        {
+                            locationId != null ?
+                                <option disabled={true} >- Select agent-</option> :
+                                <option disabled={true} selected>- Select agent-</option>
+                        }
+
+                        {
+                            agentsList.map((agent) => {
+                                return (
+                                    agent._id === agentId ?
+                                        <option value={agent._id} selected>{agent.name}</option> :
+                                        <option value={agent._id}>{agent.name}</option>)
+                            })
+                        }
+                    </Form.Select>
                 </Form.Group>
 
                 <Form.Group className='mb-3' >
@@ -206,7 +240,6 @@ const AddPickupLocationScreen = () => {
                 />
 
                 <Button type='submit'>Save</Button>
-
             </form>
 
         </div>

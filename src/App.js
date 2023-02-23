@@ -39,6 +39,7 @@ import UserListScreen from './screens/UserListScreen';
 import UserEditScreen from './screens/UserEditScreen';
 import AddPickupLocationScreen from './screens/AddPickupLocationScreen';
 import PickupLocationsListScreen from './screens/PickupLocationsListScreen';
+import DashboardScreenAgent from './screens/DashboardScreenAgent';
 
 
 function App() {
@@ -136,16 +137,17 @@ function App() {
                     </Link>
                   }
 
+                  {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
+                    <NavDropdown title="Categories" className='mx-4'>
 
-                  <NavDropdown title="Categories" className='mx-4'>
-
-                    {/* select category dropdown */}
-                    {categories.map((category) => (
-                      <LinkContainer to={`/search?category=${category}`}>
-                        <NavDropdown.Item>{category}</NavDropdown.Item>
-                      </LinkContainer>
-                    ))}
-                  </NavDropdown>
+                      {/* select category dropdown */}
+                      {categories.map((category) => (
+                        <LinkContainer to={`/search?category=${category}`}>
+                          <NavDropdown.Item>{category}</NavDropdown.Item>
+                        </LinkContainer>
+                      ))}
+                    </NavDropdown>
+                  }
 
                   {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                     (localStorage.getItem('BuyOrRent') == "Buy" ?
@@ -303,7 +305,7 @@ function App() {
               {/* Agent Routes */}
               <Route path='/agent/dashboard' element={
 
-                <DashboardScreen />
+                <DashboardScreenAgent />
 
               } />
 

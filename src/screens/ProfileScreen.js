@@ -39,7 +39,7 @@ const ProfileScreen = () => {
         e.preventDefault();
         try {
             const { data } = await axios.put(
-                'api/users/profile',
+                'api/users/profile/edit',
                 {
                     name,
                     email,
@@ -50,12 +50,11 @@ const ProfileScreen = () => {
                 }
 
             );
-            dispatch({
-                type: 'UPDATE_SUCCESS'
-            });
+
             ctxDispatch({ type: 'USER_SIGNIN', payload: data });
             localStorage.setItem('userInfo', JSON.stringify(data));
-            toast.success('User updated Successfully');
+            toast.success('User updated successfully');
+
         } catch (err) {
             dispatch({
                 type: 'FETCH_FAIL',
