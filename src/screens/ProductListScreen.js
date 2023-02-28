@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
 
@@ -80,6 +81,7 @@ const ProductListScreen = () => {
     const { state } = useContext(Store);
     const { userInfo } = state;
 
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -122,20 +124,34 @@ const ProductListScreen = () => {
     };
 
     const deleteHandler = async (product) => {
-        if (window.confirm('Are you sure to delete?')) {
-            try {
-                await axios.delete(`/api/products/${product._id}`, {
-                    headers: { Authorization: `Bearer ${userInfo.token}` },
-                });
-                toast.success('Product deleted successfully');
-                dispatch({ type: 'DELETE_SUCCESS' });
-            } catch (err) {
-                toast.error(getError(error));
-                dispatch({
-                    type: 'DELETE_FAIL',
-                });
-            }
-        }
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover these details !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willDelete) => {
+                if (willDelete) {
+                    try {
+                        await axios.delete(`/api/products/${product._id}`, {
+                            headers: { Authorization: `Bearer ${userInfo.token}` },
+                        });
+                        dispatch({ type: 'DELETE_SUCCESS' });
+                    } catch (err) {
+                        toast.error(getError(error));
+                        dispatch({
+                            type: 'DELETE_FAIL',
+                        });
+                    }
+
+                    swal("Product has been removed!", {
+                        icon: "success",
+                    });
+
+                }
+            })
+
     };
 
 
@@ -199,7 +215,7 @@ const ProductListScreen = () => {
                                         <Button
                                             type="button"
                                             variant="light"
-                                            onClick={() => deleteHandler(product)}
+                                            onClick={() => { deleteHandler(product) }}
                                         >
                                             Delete
                                         </Button>
@@ -221,7 +237,9 @@ const ProductListScreen = () => {
                     </div>
                 </>
             )}
-        </div >)
+        </div >
+    )
+
 }
 
 

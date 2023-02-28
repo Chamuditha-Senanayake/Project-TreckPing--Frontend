@@ -133,9 +133,9 @@ const ProductScreen = () => {
                                     </ListGroup.Item>
 
                                     <ListGroup.Item>
-                                        <Rating rating={product.rating}>
+                                        <Rating rating={product.rating}
                                             numReviews={product.numReviews}
-                                        </Rating>
+                                        />
                                     </ListGroup.Item>
 
                                     <ListGroup.Item>

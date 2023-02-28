@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
 
@@ -112,20 +113,33 @@ const PickupLocationsListScreen = () => {
     };
 
     const deleteHandler = async (location) => {
-        if (window.confirm('Are you sure to delete?')) {
-            try {
-                await axios.delete(`/api/locations/${location._id}`, {
-                    headers: { Authorization: `Bearer ${userInfo.token}` },
-                });
-                toast.success('Location deleted successfully');
-                dispatch({ type: 'DELETE_SUCCESS' });
-            } catch (err) {
-                toast.error(getError(error));
-                dispatch({
-                    type: 'DELETE_FAIL',
-                });
+        swal({
+            title: "Are you sure?",
+            text: "Once deleted, you will not be able to recover these details !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+
+            .then(async (willDelete) => {
+                if (willDelete) {
+                    try {
+                        await axios.delete(`/api/locations/${location._id}`, {
+                            headers: { Authorization: `Bearer ${userInfo.token}` },
+                        });
+                        dispatch({ type: 'DELETE_SUCCESS' });
+                    } catch (err) {
+                        toast.error(getError(error));
+                        dispatch({
+                            type: 'DELETE_FAIL',
+                        });
+                    }
+                    swal("Location has been removed!", {
+                        icon: "success",
+                    });
+                }
             }
-        }
+            )
     };
 
 

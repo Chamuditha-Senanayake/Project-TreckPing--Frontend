@@ -185,9 +185,9 @@ export default function OrderScreen() {
                                 <strong>Address:</strong> {order.shippingAddress.address},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
                             </Card.Text>
                             {order.isDelivered ? (
-                                <MessageBox variant='success'>Delivered at {order.deliveredAt}</MessageBox>
+                                <MessageBox variant='success'>Dispatched at {order.deliveredAt}</MessageBox>
                             ) : (
-                                <MessageBox variant='danger'>Not delivered</MessageBox>
+                                <MessageBox variant='danger'>Not Dispatched</MessageBox>
                             )}
                         </Card.Body>
                     </Card>
@@ -262,7 +262,7 @@ export default function OrderScreen() {
                                         {loadingPay && <LoadingBox></LoadingBox>}
                                     </ListGroup.Item>
                                 )}
-                                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                {userInfo.isAdmin == "true" && order.isPaid && !order.isDelivered && (
                                     <ListGroup.Item>
                                         {loadingDeliver && <LoadingBox></LoadingBox>}
                                         <div className="d-grid">

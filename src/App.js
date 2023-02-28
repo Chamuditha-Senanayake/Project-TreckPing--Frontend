@@ -40,6 +40,7 @@ import UserEditScreen from './screens/UserEditScreen';
 import AddPickupLocationScreen from './screens/AddPickupLocationScreen';
 import PickupLocationsListScreen from './screens/PickupLocationsListScreen';
 import DashboardScreenAgent from './screens/DashboardScreenAgent';
+import StaffListScreen from './screens/StaffListScreen';
 
 
 function App() {
@@ -76,7 +77,7 @@ function App() {
 
   const navigateRentorBuy = () => {
     localStorage.setItem('BuyOrRent', buyOrRent);
-    window.location.href = buyOrRent === "Buy" ? "/" : "rent";
+    window.location.href = buyOrRent === "Buy" ? "/" : "/rent";
   }
 
   return (
@@ -220,11 +221,11 @@ function App() {
                       <LinkContainer to="/admin/orders">
                         <NavDropdown.Item>Orders</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to="/admin/pickuplocationslist">
-                        <NavDropdown.Item>Pickup Locations</NavDropdown.Item>
-                      </LinkContainer>
                       <LinkContainer to="/admin/users">
                         <NavDropdown.Item>Users</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/pickuplocationslist">
+                        <NavDropdown.Item>Pickup Locations</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/staff">
                         <NavDropdown.Item>Staff</NavDropdown.Item>
@@ -247,7 +248,7 @@ function App() {
                         <NavDropdown.Item>Orders</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/pickuplocationslist">
-                        <NavDropdown.Item>Pickup Locations</NavDropdown.Item>
+                        <NavDropdown.Item>Location Status</NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
                   )}
@@ -367,6 +368,12 @@ function App() {
               <Route path='/admin/user/:id' element={
                 <AdminRoute>
                   <UserEditScreen />
+                </AdminRoute>
+              } />
+
+              <Route path='/admin/staff' element={
+                <AdminRoute>
+                  <StaffListScreen />
                 </AdminRoute>
               } />
 

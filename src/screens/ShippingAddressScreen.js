@@ -1,9 +1,12 @@
+import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
+import getError from '../utils';
 
 const ShippingAddressScreen = () => {
     const navigate = useNavigate();
@@ -14,18 +17,34 @@ const ShippingAddressScreen = () => {
         cart: { shippingAddress },
     } = state;
 
-
     const [isPickup, setIsPickup] = useState(false);
     const [fullName, setFullName] = useState(shippingAddress.fullName || '');
     const [address, setAddress] = useState(shippingAddress.address || '');
     const [city, setCity] = useState(shippingAddress.city || '');
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
+    const [locationList, setLocationList] = useState([]);
 
     useEffect(() => {
         if (!userInfo) {
             navigate('/signin?redirect=/shipping');
         }
     }, [userInfo, navigate]);
+
+    useEffect(() => {
+        const fetchLoactionData = async () => {
+            try {
+                const { data } = await axios.get(`/api/users/agents/get-all-agents`, {
+                    headers: { Authorization: `Bearer ${userInfo.token}` }
+                }
+                );
+                setLocationList(data);
+            } catch (err) {
+                toast.error(getError(err));;
+            }
+        };
+
+    }, [])
+
 
 
     const addressHandler = (e) => {
@@ -132,8 +151,8 @@ const ShippingAddressScreen = () => {
                                     </Form.Group>
 
                                     <Form.Group className='mb-3' controlId='address'>
-                                        <Form.Label>Address</Form.Label>
-                                        <Form.Control value={address} onChange={(e) => setAddress(e.target.value)} required />
+                                        <Form.Label>Address Line</Form.Label>
+                                        <Form.Control as="textarea" rows={5} value={address} onChange={(e) => setAddress(e.target.value)} required />
                                     </Form.Group>
 
                                     <Form.Group className='mb-3' controlId='city'>

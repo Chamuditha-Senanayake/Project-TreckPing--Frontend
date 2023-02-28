@@ -26,7 +26,7 @@ const reducer = (state, action) => {
     }
 };
 
-const UserListScreen = () => {
+const StaffListScreen = () => {
 
     const navigate = useNavigate();
     const [{ loading, error, users }, dispatch] =
@@ -42,7 +42,7 @@ const UserListScreen = () => {
         const fetchData = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
-                const { data } = await axios.get(`/api/users`, {
+                const { data } = await axios.get(`/api/users/staff/get-all-staff`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });
                 dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -59,9 +59,9 @@ const UserListScreen = () => {
     return (
         <div>
             <Helmet>
-                <title>Users</title>
+                <title>Staff Members</title>
             </Helmet>
-            <h2 className="mb-5">Users</h2>
+            <h2 className="mb-5">Staff Members</h2>
 
             {loading ? (
                 <LoadingBox></LoadingBox>
@@ -108,4 +108,4 @@ const UserListScreen = () => {
     )
 }
 
-export default UserListScreen
+export default StaffListScreen

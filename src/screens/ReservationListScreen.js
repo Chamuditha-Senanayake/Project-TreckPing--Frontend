@@ -58,7 +58,7 @@ const ReservationListScreen = () => {
         <Helmet>
             <title>Reservations</title>
         </Helmet>
-        <h1>Reservations</h1>
+        <h2 className="mb-5">Reservations</h2>
 
         {loadingDelete && <LoadingBox></LoadingBox>}
         {loading ? (

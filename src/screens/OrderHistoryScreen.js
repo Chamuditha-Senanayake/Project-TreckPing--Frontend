@@ -71,7 +71,7 @@ const OrderHistoryScreen = () => {
                             <th>Date</th>
                             <th>Total</th>
                             <th>Paid</th>
-                            <th>Delivered</th>
+                            <th>Dispatched</th>
                             <th>Actions</th>
                         </tr>
                     </thead>

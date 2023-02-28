@@ -60,6 +60,7 @@ const PlaceOrderScreen = () => {
             ctxDispatch({ type: 'CART_CLEAR' });
             dispatch({ type: 'CREATE_SUCCESS' });
             localStorage.removeItem('cartItems');
+            localStorage.removeItem('paymentMethod');
             navigate(`/order/${data.order._id}`)
 
         } catch (err) {

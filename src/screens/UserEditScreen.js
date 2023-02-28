@@ -98,7 +98,7 @@ const UserEditScreen = () => {
             <Helmet>
                 <title>Edit User ${userId}</title>
             </Helmet>
-            <h1>Edit User {userId}</h1>
+            <h2 className="mb-5">Edit User {userId}</h2>
 
             {loading ? (
                 <LoadingBox></LoadingBox>

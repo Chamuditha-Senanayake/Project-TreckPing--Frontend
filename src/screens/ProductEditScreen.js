@@ -208,14 +208,14 @@ const ProductEditScreen = () => {
                             required
                         />
                     </Form.Group>
-                    <Form.Group className="mb-3" controlId="image">
+                    {/* <Form.Group className="mb-3" controlId="image">
                         <Form.Label>Image File</Form.Label>
                         <Form.Control
                             value={image}
                             onChange={(e) => setImage(e.target.value)}
                             required
                         />
-                    </Form.Group>
+                    </Form.Group> */}
 
 
                     <Form.Group className="mb-3" controlId="imageFile">
@@ -287,7 +287,8 @@ const ProductEditScreen = () => {
                     </Form.Group>
                     <Form.Group className="mb-5" controlId="description">
                         <Form.Label>Description</Form.Label>
-                        <Form.Control
+                        <Form.Control as="textarea"
+                            rows={5}
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             required

@@ -14,7 +14,7 @@ const RentProduct = (props) => {
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { rentCart: { rentCartItems } } = state;
 
-    const today = Moment().add(2, 'day').format('YYYY-MM-DD');
+    const today = Moment().add(1, 'day').format('YYYY-MM-DD');
     const [startDate, setStartDate] = useState(today);
     const [endDate, setEndDate] = useState(today);         //Moment().format('YYYY-MM-DD')
     const [reserveOrCheck, setReserveOrCheck] = useState('Reserve');

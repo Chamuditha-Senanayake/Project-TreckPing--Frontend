@@ -225,8 +225,8 @@ export default function ReservationScreen() {
                                                 </Row>
                                                 <br />
                                                 <Row>
-                                                    <Col md={5}><Form.Label > <strong>From : </strong></Form.Label> {moment(item.pickupDate).utc().format('DD/MM/YYYY')}</Col>
-                                                    <Col md={5}><Form.Label > <strong>To : </strong></Form.Label>  {moment(item.returnDate).utc().format('DD/MM/YYYY')}</Col>
+                                                    <Col md={5}><Form.Label > <strong>From : </strong></Form.Label><strong> {moment(item.pickupDate).utc().format('DD/MM/YYYY')} </strong></Col>
+                                                    <Col md={5}><Form.Label > <strong>To : </strong></Form.Label><strong>  {moment(item.returnDate).utc().format('DD/MM/YYYY')} </strong></Col>
                                                 </Row>
                                             </Col>
                                         </Row>
@@ -274,7 +274,7 @@ export default function ReservationScreen() {
                                         {loadingPay && <LoadingBox></LoadingBox>}
                                     </ListGroup.Item>
                                 )}
-                                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                {userInfo.isAdmin == "true" && order.isPaid && !order.isDelivered && (
                                     <ListGroup.Item>
                                         {loadingDeliver && <LoadingBox></LoadingBox>}
                                         <div className="d-grid">

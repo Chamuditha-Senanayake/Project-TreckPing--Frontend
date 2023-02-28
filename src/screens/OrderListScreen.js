@@ -59,7 +59,7 @@ const OrderListScreen = () => {
         <Helmet>
             <title>Orders</title>
         </Helmet>
-        <h1>Orders</h1>
+        <h2 className="mb-5">Orders</h2>
 
         {loadingDelete && <LoadingBox></LoadingBox>}
         {loading ? (
