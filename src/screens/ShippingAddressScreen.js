@@ -23,6 +23,7 @@ const ShippingAddressScreen = () => {
     const [city, setCity] = useState(shippingAddress.city || '');
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
     const [locationList, setLocationList] = useState([]);
+    //const savedLocation = localStorage.getItem("shippingAddress")
 
     useEffect(() => {
         if (!userInfo) {
@@ -33,7 +34,7 @@ const ShippingAddressScreen = () => {
     useEffect(() => {
         const fetchLoactionData = async () => {
             try {
-                const { data } = await axios.get(`/api/users/agents/get-all-agents`, {
+                const { data } = await axios.get(`/api/locations/get-all`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` }
                 }
                 );
@@ -43,7 +44,9 @@ const ShippingAddressScreen = () => {
             }
         };
 
-    }, [])
+        fetchLoactionData();
+
+    }, [userInfo])
 
 
 
@@ -132,10 +135,27 @@ const ShippingAddressScreen = () => {
                             <div>
                                 <Form.Group className='mt-5 mb-3' controlId='fullName'>
                                     <Form.Label>Pickup Location</Form.Label>
-                                    <Form.Select size="lg" onChange={(e) => setAddress(e.target.value)} required >
+
+                                    <Form.Select size="lg" onChange={(e) => setAddress(e.target.value)}>
+                                        {/* {
+                            locationId != null ?
+                                <option disabled={true} >- Select agent-</option> :
+                                <option disabled={true} selected>- Select agent-</option>
+                        } */}
+                                        <option disabled={true} >- Select agent-</option>
+
+                                        {
+                                            locationList.map((location) => {
+                                                return (
+                                                    <option value={location.address}> {location.address}</option>)
+                                            })
+                                        }
+                                    </Form.Select>
+
+                                    {/* <Form.Select size="lg" onChange={(e) => setAddress(e.target.value)} required >
                                         <option value="TreckPing Showroom - No.04, Polgolla, Kandy">TreckPing Showroom - No.04, Polgolla, Kandy</option>
                                         <option value="6/11, Badulla Rd, Bibila">6/11, Badulla Rd, Bibila</option>
-                                    </Form.Select>
+                                    </Form.Select> */}
                                 </Form.Group>
                                 <br />
                                 <div className='mb-3'>

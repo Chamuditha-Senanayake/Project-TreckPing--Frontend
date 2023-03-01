@@ -88,7 +88,7 @@ const ReservationListScreen = () => {
                             <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
 
                             <td>
-                                {order.isDelivered
+                                {order.isDispatched
                                     ? order.deliveredAt.substring(0, 10)
                                     : 'No'}
                             </td>

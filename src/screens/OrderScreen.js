@@ -1,5 +1,6 @@
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import axios from 'axios';
+import moment from 'moment';
 import React, { useContext, useEffect, useReducer } from 'react'
 import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
@@ -8,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
+import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
 
@@ -148,22 +150,68 @@ export default function OrderScreen() {
         }
     }, [order, userInfo, orderId, navigate, paypalDispatch, successPay, successDeliver]);
 
-    async function deliverOrderHandler() {
-        try {
-            dispatch({ type: 'DELIVER_REQUEST' });
-            const { data } = await axios.put(
-                `/api/orders/${order._id}/deliver`,
-                {},
-                {
-                    headers: { authorization: `Bearer ${userInfo.token}` },
+
+    async function dispatchOrderHandler() {
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Dispatched !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/orders/${order._id}/dispatch`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is dispatched');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
                 }
-            );
-            dispatch({ type: 'DELIVER_SUCCESS', payload: data });
-            toast.success('Order is delivered');
-        } catch (err) {
-            toast.error(getError(err));
-            dispatch({ type: 'DELIVER_FAIL' });
-        }
+            })
+
+    }
+
+
+    async function deliverOrderHandler() {
+
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Delivered !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/orders/${order._id}/deliver`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is delivered');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
+                }
+            })
+
+
     }
 
 
@@ -184,8 +232,8 @@ export default function OrderScreen() {
                                 <strong>Name:</strong> {order.shippingAddress.fullName} <br />
                                 <strong>Address:</strong> {order.shippingAddress.address},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
                             </Card.Text>
-                            {order.isDelivered ? (
-                                <MessageBox variant='success'>Dispatched at {order.deliveredAt}</MessageBox>
+                            {order.isDispatched ? (
+                                <MessageBox variant='success'>Dispatched at {moment(order.dispatchedAt).format('LL')}</MessageBox>
                             ) : (
                                 <MessageBox variant='danger'>Not Dispatched</MessageBox>
                             )}
@@ -199,7 +247,7 @@ export default function OrderScreen() {
                                 <strong>Method:</strong> {order.paymentMethod}
                             </Card.Text>
                             {order.isPaid ? (
-                                <MessageBox variant='success'>Paid at {order.paidAt}</MessageBox>
+                                <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LL')}</MessageBox>
                             ) : (
                                 <MessageBox variant='danger'>Not paid</MessageBox>
                             )}
@@ -250,7 +298,8 @@ export default function OrderScreen() {
                                         <Col><strong>{order.totalPrice.toFixed(2)}LKR</strong></Col>
                                     </Row>
                                 </ListGroup.Item>
-                                {!order.isPaid && (
+
+                                {userInfo.isAdmin == "false" && userInfo.isAdmin == "false" && !order.isPaid && (
                                     <ListGroup.Item>
                                         {isPending ? (<LoadingBox />) :
                                             (
@@ -262,12 +311,23 @@ export default function OrderScreen() {
                                         {loadingPay && <LoadingBox></LoadingBox>}
                                     </ListGroup.Item>
                                 )}
-                                {userInfo.isAdmin == "true" && order.isPaid && !order.isDelivered && (
+                                {userInfo.isAdmin == "true" && order.isPaid && !order.isDispatched && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid">
+                                            <Button type="button" onClick={dispatchOrderHandler}>
+                                                Dispatch Order
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {userInfo.isAgent == "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Dispatched" && (
                                     <ListGroup.Item>
                                         {loadingDeliver && <LoadingBox></LoadingBox>}
                                         <div className="d-grid">
                                             <Button type="button" onClick={deliverOrderHandler}>
-                                                Dispatch Order
+                                                Order Delivered
                                             </Button>
                                         </div>
                                     </ListGroup.Item>

@@ -71,12 +71,13 @@ const OrderListScreen = () => {
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>USER</th>
-                        <th>DATE</th>
-                        <th>TOTAL</th>
-                        <th>PAID</th>
-                        <th>DISPATCHED</th>
-                        <th>ACTIONS</th>
+                        <th>User</th>
+                        <th>Date</th>
+                        <th>Total</th>
+                        <th>Paid</th>
+                        <th>Dispatched</th>
+                        <th>Order Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,12 +88,12 @@ const OrderListScreen = () => {
                             <td>{order.createdAt.substring(0, 10)}</td>
                             <td>{order.totalPrice.toFixed(2)}</td>
                             <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-
                             <td>
-                                {order.isDelivered
-                                    ? order.deliveredAt.substring(0, 10)
+                                {order.isDispatched
+                                    ? order.dispatchedAt.substring(0, 10)
                                     : 'No'}
                             </td>
+                            <td>{order.deliveryStatus}</td>
                             <td>
                                 <Button
                                     type="button"

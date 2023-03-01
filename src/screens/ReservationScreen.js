@@ -185,7 +185,7 @@ export default function ReservationScreen() {
                                 <strong>Pickup Location:</strong> {order.shippingAddress.pickupLocation} <br />
                                 <strong>Return Location:</strong> {order.shippingAddress.returnLocation},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
                             </Card.Text>
-                            {order.isDelivered ? (
+                            {order.isDispatched ? (
                                 <MessageBox variant='success'>Delivered at {order.deliveredAt}</MessageBox>
                             ) : (
                                 <MessageBox variant='danger'>Not delivered</MessageBox>
@@ -274,7 +274,7 @@ export default function ReservationScreen() {
                                         {loadingPay && <LoadingBox></LoadingBox>}
                                     </ListGroup.Item>
                                 )}
-                                {userInfo.isAdmin == "true" && order.isPaid && !order.isDelivered && (
+                                {userInfo.isAdmin == "true" && order.isPaid && !order.isDispatched && (
                                     <ListGroup.Item>
                                         {loadingDeliver && <LoadingBox></LoadingBox>}
                                         <div className="d-grid">
