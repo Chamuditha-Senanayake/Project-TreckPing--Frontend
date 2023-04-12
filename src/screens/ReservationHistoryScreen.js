@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Button } from 'react-bootstrap'
+import { Button, Badge } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import LoadingBox from '../components/LoadingBox'
@@ -68,10 +68,11 @@ const ReservationHistoryScreen = () => {
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Date</th>
+                            <th>Ordered Date</th>
                             <th>Total</th>
                             <th>Paid</th>
                             <th>Dispatched</th>
+                            <th>Order Status</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -82,7 +83,8 @@ const ReservationHistoryScreen = () => {
                                 <td>{order.createdAt.substring(0, 10)}</td>
                                 <td>{order.totalPrice.toFixed(2)}</td>
                                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
-                                <td>{order.isDispatched ? order.deliveredAt.substring(0, 10) : 'No'}</td>
+                                <td>{order.isDispatched ? order.dispatchedAt.substring(0, 10) : 'No'}</td>
+                                <td><Badge bg={order.isPaid ? (order.deliveryStatus == "Preparing" ? "primary" : order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Delivered" ? "danger" : order.deliveryStatus == "Released" ? "danger" : order.deliveryStatus == "Received" ? "success" : order.deliveryStatus == "Returned" ? "success" : order.deliveryStatus == "Completed" ? "success" : "success") : "light"} text={!order.isPaid ? "dark" : "light"}>{order.isPaid ? (order.deliveryStatus != "Received" && order.deliveryStatus != "Returned" && order.deliveryStatus != "Completed") ? order.deliveryStatus : "Completed" : "No"}</Badge></td>
                                 <td>
                                     <Button type='button' variant='light' onClick={() => { navigate(`/reservation/${order._id}`) }}>
                                         View
@@ -92,8 +94,9 @@ const ReservationHistoryScreen = () => {
                         ))}
                     </tbody>
                 </table>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
 

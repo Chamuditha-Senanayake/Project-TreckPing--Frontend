@@ -92,6 +92,7 @@ export default function OrderScreen() {
                 );
                 dispatch({ type: 'PAY_SUCCESS', payload: data })
                 toast.success('Order is paid');
+                console.log(details);
             } catch (err) {
                 dispatch({ type: 'PAY_FAIL', payload: getError(err) })
                 toast.error(getError(err));
@@ -233,7 +234,7 @@ export default function OrderScreen() {
                                 <strong>Address:</strong> {order.shippingAddress.address},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
                             </Card.Text>
                             {order.isDispatched ? (
-                                <MessageBox variant='success'>Dispatched at {moment(order.dispatchedAt).format('LL')}</MessageBox>
+                                <MessageBox variant='success'>Dispatched at {moment(order.dispatchedAt).format('LLL')}</MessageBox>
                             ) : (
                                 <MessageBox variant='danger'>Not Dispatched</MessageBox>
                             )}
@@ -247,7 +248,7 @@ export default function OrderScreen() {
                                 <strong>Method:</strong> {order.paymentMethod}
                             </Card.Text>
                             {order.isPaid ? (
-                                <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LL')}</MessageBox>
+                                <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LLL')}</MessageBox>
                             ) : (
                                 <MessageBox variant='danger'>Not paid</MessageBox>
                             )}

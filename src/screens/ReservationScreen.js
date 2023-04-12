@@ -1,7 +1,7 @@
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import axios from 'axios';
 import moment from 'moment';
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer, useState } from 'react'
 import { Button, Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import LoadingBox from '../components/LoadingBox'
 import MessageBox from '../components/MessageBox'
+import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
 
@@ -150,23 +151,210 @@ export default function ReservationScreen() {
         }
     }, [order, userInfo, orderId, navigate, paypalDispatch, successPay, successDeliver]);
 
-    async function deliverOrderHandler() {
-        try {
-            dispatch({ type: 'DELIVER_REQUEST' });
-            const { data } = await axios.put(
-                `/api/reservations/${order._id}/deliver`,
-                {},
-                {
-                    headers: { authorization: `Bearer ${userInfo.token}` },
+    // async function deliverOrderHandler() {
+    //     try {
+    //         dispatch({ type: 'DELIVER_REQUEST' });
+    //         const { data } = await axios.put(
+    //             `/api/reservations/${order._id}/deliver`,
+    //             {},
+    //             {
+    //                 headers: { authorization: `Bearer ${userInfo.token}` },
+    //             }
+    //         );
+    //         dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+    //         toast.success('Order is delivered');
+    //     } catch (err) {
+    //         toast.error(getError(err));
+    //         dispatch({ type: 'DELIVER_FAIL' });
+    //     }
+    // }
+
+    //handle dispatched orders
+    async function dispatchOrderHandler() {
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Dispatched !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/reservations/${order._id}/dispatch`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is dispatched');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
                 }
-            );
-            dispatch({ type: 'DELIVER_SUCCESS', payload: data });
-            toast.success('Order is delivered');
-        } catch (err) {
-            toast.error(getError(err));
-            dispatch({ type: 'DELIVER_FAIL' });
-        }
+            })
+
     }
+
+    //handle delivered orders
+    async function deliverOrderHandler() {
+
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Delivered !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/reservations/${order._id}/deliver`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is delivered');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
+                }
+            })
+    }
+
+    //handle released orders
+    async function releaseOrderHandler() {
+
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Released !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/reservations/${order._id}/release`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is released');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
+                }
+            })
+    }
+
+    //handle received orders
+    async function receiveOrderHandler() {
+
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Received !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/reservations/${order._id}/receive`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is received');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
+                }
+            })
+    }
+
+    //handle returned orders
+    async function returnOrderHandler() {
+
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Returned !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/reservations/${order._id}/return`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is returned');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
+                }
+            })
+    }
+
+    //handle completed orders
+    async function completeOrderHandler() {
+
+        swal({
+            title: "Are you sure?",
+            text: "Delivery status of this order will be changed as Completed !",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+            .then(async (willYes) => {
+                if (willYes) {
+                    try {
+                        dispatch({ type: 'DELIVER_REQUEST' });
+                        const { data } = await axios.put(
+                            `/api/reservations/${order._id}/complete`,
+                            {},
+                            {
+                                headers: { authorization: `Bearer ${userInfo.token}` },
+                            }
+                        );
+                        dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+                        toast.success('Order is completed');
+                    } catch (err) {
+                        toast.error(getError(err));
+                        dispatch({ type: 'DELIVER_FAIL' });
+                    }
+                }
+            })
+    }
+
 
     return loading ? (
         <LoadingBox></LoadingBox>
@@ -182,13 +370,15 @@ export default function ReservationScreen() {
                         <Card.Body>
                             <Card.Title>Shipping</Card.Title>
                             <Card.Text>
-                                <strong>Pickup Location:</strong> {order.shippingAddress.pickupLocation} <br />
-                                <strong>Return Location:</strong> {order.shippingAddress.returnLocation},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
+                                {/* todo */}
+                                <strong>Customer Name : </strong> {order.shippingAddress.customerName}<br />
+                                <strong>Pickup Location : </strong> {order.shippingAddress.pickupLocation} <br />
+                                <strong>Return Location : </strong> {order.shippingAddress.returnLocation},  {order.shippingAddress.city},  {order.shippingAddress.postalCode}
                             </Card.Text>
                             {order.isDispatched ? (
-                                <MessageBox variant='success'>Delivered at {order.deliveredAt}</MessageBox>
+                                <MessageBox variant='success'>{(order.deliveryStatus != "Received" && order.deliveryStatus != "Returned" && order.deliveryStatus != "Completed") ? order.deliveryStatus : "Completed"} at {moment(order.deliveryStatus == "Dispatched" ? order.dispatchedAt : order.deliveryStatus == "Delivered" ? order.deliveredAt : order.deliveryStatus == "Released" ? order.releasedAt : order.deliveryStatus == "Received" ? order.receivedAt : order.receivedAt).format('LLL')}</MessageBox>
                             ) : (
-                                <MessageBox variant='danger'>Not delivered</MessageBox>
+                                <MessageBox variant='danger'>Not Dispatched</MessageBox>
                             )}
                         </Card.Body>
                     </Card>
@@ -200,7 +390,7 @@ export default function ReservationScreen() {
                                 <strong>Method:</strong> {order.paymentMethod}
                             </Card.Text>
                             {order.isPaid ? (
-                                <MessageBox variant='success'>Paid at {order.paidAt}</MessageBox>
+                                <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LLL')}</MessageBox>
                             ) : (
                                 <MessageBox variant='danger'>Not paid</MessageBox>
                             )}
@@ -262,7 +452,7 @@ export default function ReservationScreen() {
                                         <Col><strong>{order.totalPrice.toFixed(2)}LKR</strong></Col>
                                     </Row>
                                 </ListGroup.Item>
-                                {!order.isPaid && (
+                                {userInfo.isAdmin == "false" && userInfo.isAdmin == "false" && !order.isPaid && (
                                     <ListGroup.Item>
                                         {isPending ? (<LoadingBox />) :
                                             (
@@ -277,9 +467,135 @@ export default function ReservationScreen() {
                                 {userInfo.isAdmin == "true" && order.isPaid && !order.isDispatched && (
                                     <ListGroup.Item>
                                         {loadingDeliver && <LoadingBox></LoadingBox>}
-                                        <div className="d-grid">
-                                            <Button type="button" onClick={deliverOrderHandler}>
+                                        <div className="d-grid mt-4">
+                                            <Button type="button" onClick={dispatchOrderHandler}>
                                                 Dispatch Order
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {/* for customers */}
+                                {userInfo.isAdmin != "true" && userInfo.isAgent != "true" && order.isPaid && order.deliveryStatus == "Preparing" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button variant="warning" disabled>
+                                                Order Preparing
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {/* for customers */}
+                                {userInfo.isAdmin != "true" && userInfo.isAgent != "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Dispatched" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button variant="warning" disabled>
+                                                Order Dispatched
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {userInfo.isAgent == "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Dispatched" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button type="button" onClick={deliverOrderHandler}>
+                                                Order Delivered
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {/* for customers */}
+                                {userInfo.isAdmin != "true" && userInfo.isAgent != "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Delivered" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button variant="danger" disabled>
+                                                Package Received to Agent
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {userInfo.isAgent == "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Delivered" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button type="button" variant="danger" onClick={releaseOrderHandler}>
+                                                Release To the Customer
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {/* for customers */}
+                                {userInfo.isAdmin != "true" && userInfo.isAgent != "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Released" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button variant="danger" disabled>
+                                                Pickedup the Package
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {userInfo.isAgent == "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Released" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button type="button" variant="danger" onClick={receiveOrderHandler}>
+                                                Received the Package
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {/* for customers */}
+                                {userInfo.isAdmin != "true" && userInfo.isAgent != "true" && order.isPaid && order.isDispatched && (order.deliveryStatus == "Received" || order.deliveryStatus == "Returned" || order.deliveryStatus == "Completed") && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button variant="success" disabled>
+                                                Order Completed
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {userInfo.isAgent == "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Received" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button type="button" onClick={returnOrderHandler}>
+                                                Return Package to Warehosue
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {userInfo.isAdmin == "true" && order.isPaid && order.isDispatched && order.deliveryStatus == "Returned" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button type="button" onClick={completeOrderHandler}>
+                                                Received Package
+                                            </Button>
+                                        </div>
+                                    </ListGroup.Item>
+                                )}
+
+                                {(userInfo.isAdmin == "true" || userInfo.isAgent == "true") && order.isPaid && order.isDispatched && order.deliveryStatus == "Completed" && (
+                                    <ListGroup.Item>
+                                        {loadingDeliver && <LoadingBox></LoadingBox>}
+                                        <div className="d-grid mt-4">
+                                            <Button variant="success" disabled>
+                                                Order Completed
                                             </Button>
                                         </div>
                                     </ListGroup.Item>

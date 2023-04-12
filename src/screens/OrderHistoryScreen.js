@@ -1,6 +1,6 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Button } from 'react-bootstrap'
+import { Badge, Button } from 'react-bootstrap'
 import { Helmet } from 'react-helmet-async'
 import { useNavigate } from 'react-router-dom'
 import LoadingBox from '../components/LoadingBox'
@@ -84,7 +84,7 @@ const OrderHistoryScreen = () => {
                                 <td>{order.totalPrice.toFixed(2)}</td>
                                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                                 <td>{order.isDispatched ? order.dispatchedAt.substring(0, 10) : 'No'}</td>
-                                <td>{order.deliveryStatus}</td>
+                                <td><Badge bg={order.isPaid ? (order.deliveryStatus == "Preparing" ? "primary" : order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Delivered" ? "success" : "success") : "light"} text={!order.isPaid ? "dark" : "light"}>{order.isPaid ? order.deliveryStatus : "No"}</Badge></td>
                                 <td>
                                     <Button type='button' variant='light' onClick={() => { navigate(`/order/${order._id}`) }}>
                                         View

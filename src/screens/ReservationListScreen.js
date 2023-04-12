@@ -75,6 +75,7 @@ const ReservationListScreen = () => {
                         <th>TOTAL</th>
                         <th>PAID</th>
                         <th>DISPATCHED</th>
+                        <th>Order Status</th>
                         <th>ACTIONS</th>
                     </tr>
                 </thead>
@@ -89,9 +90,10 @@ const ReservationListScreen = () => {
 
                             <td>
                                 {order.isDispatched
-                                    ? order.deliveredAt.substring(0, 10)
+                                    ? order.dispatchedAt.substring(0, 10)
                                     : 'No'}
                             </td>
+                            <td>{order.deliveryStatus}</td>
                             <td>
                                 <Button
                                     type="button"

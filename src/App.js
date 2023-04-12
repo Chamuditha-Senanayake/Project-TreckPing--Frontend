@@ -41,6 +41,7 @@ import AddPickupLocationScreen from './screens/AddPickupLocationScreen';
 import PickupLocationsListScreen from './screens/PickupLocationsListScreen';
 import StaffListScreen from './screens/StaffListScreen';
 import AgentViewOrderScreen from './screens/AgentViewOrderScreen';
+import AgentViewReservationScreen from './screens/AgentViewReservationScreen';
 
 
 function App() {
@@ -307,6 +308,12 @@ function App() {
               <Route path='/agent/view-orders' element={
 
                 <AgentViewOrderScreen />
+
+              } />
+
+              <Route path='/agent/reservations' element={
+
+                <AgentViewReservationScreen />
 
               } />
 

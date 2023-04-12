@@ -4,6 +4,9 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
+import axios from 'axios';
+import getError from '../utils';
+import { toast } from 'react-toastify';
 
 const PickupLocationScreen = () => {
     const navigate = useNavigate();
@@ -16,12 +19,34 @@ const PickupLocationScreen = () => {
 
     const [pickupLocation, setPickupLocation] = useState(deliveryAddress.pickupLocation || '');
     const [returnLocation, setReturnLocation] = useState(deliveryAddress.returnLocation || '');
+    const [customerName, setCustomerName] = useState('')
+    const [locationList, setLocationList] = useState([]);
 
     useEffect(() => {
         if (!userInfo) {
             navigate('/signin?redirect=/pickuplocation');
         }
+        else {
+            setCustomerName(userInfo.name)
+        }
     }, [userInfo, navigate]);
+
+    useEffect(() => {
+        const fetchLoactionData = async () => {
+            try {
+                const { data } = await axios.get(`/api/locations/get-all`, {
+                    headers: { Authorization: `Bearer ${userInfo.token}` }
+                }
+                );
+                setLocationList(data);
+            } catch (err) {
+                toast.error(getError(err));;
+            }
+        };
+
+        fetchLoactionData();
+
+    }, [userInfo])
 
 
     const submitHandler = (e) => {
@@ -30,6 +55,7 @@ const PickupLocationScreen = () => {
         ctxDispacth({
             type: 'SAVE_DELIVERY_ADDRESS',
             payload: {
+                customerName,
                 pickupLocation,
                 returnLocation,
             }
@@ -37,6 +63,7 @@ const PickupLocationScreen = () => {
         localStorage.setItem(
             'deliveryAddress',
             JSON.stringify({
+                customerName,
                 pickupLocation,
                 returnLocation,
             })
@@ -56,18 +83,29 @@ const PickupLocationScreen = () => {
 
                     <Form.Group className='mt-5 mb-3' controlId='fullName'>
                         <Form.Label>Pickup Location</Form.Label>
-                        <Form.Select size="lg" value={pickupLocation} onChange={(e) => setPickupLocation(e.target.value)} required >
-                            <option value="TreckPing Showroom - No.04, Polgolla, Kandy">TreckPing Showroom - No.04, Polgolla, Kandy</option>
-                            <option value="6/11, Badulla Rd, Bibila">6/11, Badulla Rd, Bibila</option>
+
+                        <Form.Select size="lg" onChange={(e) => setPickupLocation(e.target.value)} required>
+                            <option disabled={true} >- Select agent-</option>
+                            {
+                                locationList.map((location) => {
+                                    return (
+                                        <option value={location.address}> {location.address}</option>)
+                                })
+                            }
                         </Form.Select>
                     </Form.Group>
 
                     <Form.Group className='mb-5' controlId='address'>
                         <Form.Label>Return Location</Form.Label>
-                        <Form.Select size="lg" value={returnLocation} onChange={(e) => setReturnLocation(e.target.value)} required >
-                            <option value="TreckPing Showroom - No.04, Polgolla, Kandy">TreckPing Showroom - No.04, Polgolla, Kandy</option>
-                            <option value="6/11, Badulla Rd, Bibila">6/11, Badulla Rd, Bibila</option>
-                        </Form.Select >
+                        <Form.Select size="lg" onChange={(e) => setReturnLocation(e.target.value)} required>
+                            <option disabled={true} >- Select agent-</option>
+                            {
+                                locationList.map((location) => {
+                                    return (
+                                        <option value={location.address}> {location.address}</option>)
+                                })
+                            }
+                        </Form.Select>
                     </Form.Group>
 
 

@@ -42,7 +42,7 @@ const reducer = (state, action) => {
     }
 };
 
-const AgentViewOrderScreen = () => {
+const AgentViewReservationScreen = () => {
 
     const [
         {
@@ -68,12 +68,13 @@ const AgentViewOrderScreen = () => {
     const page = sp.get('page') || 1;
 
     const [notDeliveredOrders, setNotDeliveredOrders] = useState([])
+    const [customerName, setCustomerName] = useState("Nimal Fernando")
     const { state } = useContext(Store);
     const { userInfo } = state;
 
     const fetchOrdersBylocation = async () => {
         try {
-            const { data } = await axios.post(`/api/orders/by-location?page=${page} `,
+            const { data } = await axios.post(`/api/reservations/by-location?page=${page} `,
                 {
                     address: "No.28, Colombo Rd, Galle"
                 },
@@ -90,7 +91,7 @@ const AgentViewOrderScreen = () => {
 
     const fetchNotDeliveredOrdersBylocation = async () => {
         try {
-            const { data } = await axios.post(`/api/orders/by-location/not-delivered `,
+            const { data } = await axios.post(`/api/reservations/by-location/not-delivered `,
                 {
                     address: "No.28, Colombo Rd, Galle"
                 },
@@ -104,19 +105,25 @@ const AgentViewOrderScreen = () => {
         }
     };
 
-    useEffect(() => {
+    //To fecth the customer
+    const fetchUserByUserId = async (userId) => {
+        const { data } = await axios.get(`/api/users/${userId}`,
+            {
+                headers: { Authorization: `Bearer ${userInfo.token}` },
+            });
+        setCustomerName(data.name)
+    }
 
+    useEffect(() => {
         fetchOrdersBylocation();
         fetchNotDeliveredOrdersBylocation();
-
     }, [page, userInfo]);
-
 
     return (
         <div>
             <Row>
                 <Col>
-                    <h3 className="mb-5">Upcoming Orders</h3>
+                    <h3 className="mb-5">Upcoming Reservations</h3>
                 </Col>
             </Row>
 
@@ -140,18 +147,18 @@ const AgentViewOrderScreen = () => {
                         </thead>
                         <tbody>
                             {notDeliveredOrders.map((order) => (
+
                                 <tr key={order._id}>
-                                    {/* <td>{product._id}</td> */}
                                     <td>{order._id}</td>
-                                    <td>{order.shippingAddress.fullName}</td>
+                                    <td>{order.shippingAddress.customerName}</td>
                                     <td>{moment(order.createdAt).format('LLL')}</td>
                                     <td>{order.isDispatched ? moment(order.dispatchedAt).format('LLL') : "No"}</td>
-                                    <td><Badge bg={order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Preparing" ? "warning" : "success"}>{order.deliveryStatus}</Badge></td>
+                                    <td><Badge bg={order.deliveryStatus == "Preparing" ? "warning" : order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Delivered" ? "primary" : order.deliveryStatus == "Released" ? "danger" : order.deliveryStatus == "Received" ? "primary" : order.deliveryStatus == "Returned" ? "success" : "success"}>{order.deliveryStatus}</Badge></td>
                                     <td>
                                         <Button
                                             type="button"
                                             variant="light"
-                                            onClick={() => { navigate(`/order/${order._id}`) }}
+                                            onClick={() => { navigate(`/reservation/${order._id}`) }}
                                         >
                                             Update
                                         </Button>
@@ -159,6 +166,7 @@ const AgentViewOrderScreen = () => {
 
                                     </td>
                                 </tr>
+
                             ))}
                         </tbody>
                     </table>
@@ -167,7 +175,7 @@ const AgentViewOrderScreen = () => {
             )}
             <hr className="my-5" />
             <Col>
-                <h3 className="mb-5">Order History</h3>
+                <h3 className="mb-5">reservation History</h3>
             </Col>
             {loading ? (
                 <LoadingBox></LoadingBox>
@@ -191,16 +199,16 @@ const AgentViewOrderScreen = () => {
                             {orders.map((order) => (
                                 <tr key={order._id}>
                                     {/* <td>{product._id}</td> */}
-                                    <td>{order._id}</td>
-                                    <td>{order.shippingAddress.fullName}</td>
+                                    <td >{order._id}</td>
+                                    <td>{order.shippingAddress.customerName}</td>
                                     <td>{moment(order.createdAt).format('LLL')}</td>
                                     <td>{order.isDispatched ? moment(order.dispatchedAt).format('LLL') : "No"}</td>
-                                    <td><Badge bg={order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Preparing" ? "warning" : "success"}>{order.deliveryStatus}</Badge></td>
+                                    <td><Badge bg={order.deliveryStatus == "Preparing" ? "warning" : order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Delivered" ? "primary" : order.deliveryStatus == "Released" ? "danger" : order.deliveryStatus == "Received" ? "primary" : order.deliveryStatus == "Returned" ? "success" : "success"}>{order.deliveryStatus}</Badge></td>
                                     <td>
                                         <Button
                                             type="button"
                                             variant="light"
-                                            onClick={() => { navigate(`/order/${order._id}`) }}
+                                            onClick={() => { navigate(`/reservation/${order._id}`) }}
                                         >
                                             View
                                         </Button>
@@ -216,7 +224,7 @@ const AgentViewOrderScreen = () => {
                             <Link
                                 className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
                                 key={x + 1}
-                                to={`/agent/view-orders?page=${x + 1}`}
+                                to={`/agent/reservations?page=${x + 1}`}
                             >
                                 {x + 1}
                             </Link>
@@ -231,4 +239,4 @@ const AgentViewOrderScreen = () => {
 }
 
 
-export default AgentViewOrderScreen
+export default AgentViewReservationScreen
