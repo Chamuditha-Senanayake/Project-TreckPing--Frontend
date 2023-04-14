@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react'
-import { Button, Form } from 'react-bootstrap';
+import { Alert, Button, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
@@ -131,7 +131,8 @@ const AddPickupLocationScreen = () => {
                     type: 'UPDATE_SUCCESS',
                 });
                 toast.success('Location Updated Successfully');
-                navigate('/admin/pickuplocationslist');
+
+                { userInfo.isAdmin == "true" ? navigate('/admin/pickuplocationslist') : navigate('/agent/reservations') }
 
             } catch (err) {
                 toast.error(getError(err));
@@ -190,56 +191,60 @@ const AddPickupLocationScreen = () => {
                     <Form.Label>Address</Form.Label>
                     <Form.Control as="textarea" rows={5} value={address} onChange={(e) => setAddress(e.target.value)} required />
                 </Form.Group>
+                {userInfo.isAdmin == "true" &&
+                    <Form.Group className='mb-3' >
+                        <Form.Label>Select Agent</Form.Label>
+                        <Form.Select onChange={(e) => setAgentId(e.target.value)} >
+                            {
+                                locationId != null ?
+                                    <option disabled={true} >- Select agent-</option> :
+                                    <option disabled={true} selected>- Select agent-</option>
+                            }
 
-                <Form.Group className='mb-3' >
-                    <Form.Label>Select Agent</Form.Label>
-                    <Form.Select onChange={(e) => setAgentId(e.target.value)}>
-                        {
-                            locationId != null ?
-                                <option disabled={true} >- Select agent-</option> :
-                                <option disabled={true} selected>- Select agent-</option>
-                        }
-
-                        {
-                            agentsList.map((agent) => {
-                                return (
-                                    agent._id === agentId ?
-                                        <option value={agent._id} selected>{agent.name}</option> :
-                                        <option value={agent._id}>{agent.name}</option>)
-                            })
-                        }
-                    </Form.Select>
-                </Form.Group>
+                            {
+                                agentsList.map((agent) => {
+                                    return (
+                                        agent._id === agentId ?
+                                            <option value={agent._id} selected>{agent.name}</option> :
+                                            <option value={agent._id}>{agent.name}</option>)
+                                })
+                            }
+                        </Form.Select>
+                    </Form.Group>
+                }
 
                 <Form.Group className='mb-3' >
                     <Form.Label>Contact</Form.Label>
                     <Form.Control value={contact} onChange={(e) => setContact(e.target.value)} required />
                 </Form.Group>
 
-                <Form.Group className='mb-3' >
+                <Form.Group className='mb-4' >
                     <Form.Label>Email</Form.Label>
                     <Form.Control value={email} onChange={(e) => setEmail(e.target.value)} required />
                 </Form.Group>
+                <Alert variant={enabledAsPickupLocation ? "success" : "danger"}>
+                    <Form.Check
+                        className="mb-3"
+                        type="checkbox"
+                        id="enabledAsPickupLocation"
+                        label="Enabled As Pickup Location"
+                        checked={enabledAsPickupLocation}
+                        onChange={(e) => setEnabledAsPickupLocation(e.target.checked)}
+                    />
+                </Alert>
 
-                <Form.Check
-                    className="mb-4"
-                    type="checkbox"
-                    id="enabledAsPickupLocation"
-                    label="Enabled As Pickup Location"
-                    checked={enabledAsPickupLocation}
-                    onChange={(e) => setEnabledAsPickupLocation(e.target.checked)}
-                />
+                <Alert variant={enabledAsDeliveryLocation ? "success" : "danger"}>
+                    <Form.Check
+                        className="mb-3"
+                        type="checkbox"
+                        id="enabledAsDeliveryLocation"
+                        label="Enabled As Delivery Location"
+                        checked={enabledAsDeliveryLocation}
+                        onChange={(e) => setEnabledAsDeliveryLocation(e.target.checked)}
+                    />
+                </Alert>
 
-                <Form.Check
-                    className="mb-5"
-                    type="checkbox"
-                    id="enabledAsDeliveryLocation"
-                    label="Enabled As Delivery Location"
-                    checked={enabledAsDeliveryLocation}
-                    onChange={(e) => setEnabledAsDeliveryLocation(e.target.checked)}
-                />
-
-                <Button type='submit'>Save</Button>
+                <Button type='submit' className="mt-5">Save</Button>
             </form>
 
         </div>

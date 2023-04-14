@@ -84,7 +84,7 @@ const OrderHistoryScreen = () => {
                                 <td>{order.totalPrice.toFixed(2)}</td>
                                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
                                 <td>{order.isDispatched ? order.dispatchedAt.substring(0, 10) : 'No'}</td>
-                                <td><Badge bg={order.isPaid ? (order.deliveryStatus == "Preparing" ? "primary" : order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Delivered" ? "success" : "success") : "light"} text={!order.isPaid ? "dark" : "light"}>{order.isPaid ? order.deliveryStatus : "No"}</Badge></td>
+                                <td><Badge bg={order.isPaid ? (order.deliveryStatus == "Preparing" ? "primary" : order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Delivered" ? "success" : "success") : "light"} text={!order.isPaid ? "dark" : "light"}>{order.isPaid ? order.deliveryStatus : "Not paid"}</Badge></td>
                                 <td>
                                     <Button type='button' variant='light' onClick={() => { navigate(`/order/${order._id}`) }}>
                                         View

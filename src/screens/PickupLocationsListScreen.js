@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Button, Col, Row } from 'react-bootstrap';
+import { Alert, Badge, Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -189,8 +189,8 @@ const PickupLocationsListScreen = () => {
                                     <td>{location.address} </td>
                                     <td>{location.email} </td>
                                     <td>{location.contact} </td>
-                                    <td>{(location.enabledAsPickupLocation) === true ? "Active" : "Deactive"}</td>
-                                    <td>{(location.enabledAsDeliveryLocation) === true ? "Active" : "Deactive"}</td>
+                                    <td>{(location.enabledAsPickupLocation) === true ? <Badge bg="primary" disabled>Active</Badge> : <Badge bg="danger" disabled>Deactive</Badge>}</td>
+                                    <td>{(location.enabledAsDeliveryLocation) === true ? <Badge bg="primary" disabled>Active</Badge> : <Badge bg="danger" disabled>Deactive</Badge>}</td>
 
                                     <td>
                                         <Button

@@ -31,7 +31,7 @@ const SigninScreen = () => {
             if (data.isAdmin == "true") {
                 navigate('/admin/dashboard');
             } else if (data.isAgent == "true") {
-                navigate('/agent/dashboard');
+                navigate('/agent/reservations');
             } else {
                 navigate(redirect || '/');
             }

@@ -42,6 +42,7 @@ import PickupLocationsListScreen from './screens/PickupLocationsListScreen';
 import StaffListScreen from './screens/StaffListScreen';
 import AgentViewOrderScreen from './screens/AgentViewOrderScreen';
 import AgentViewReservationScreen from './screens/AgentViewReservationScreen';
+import AgentNotificationScreen from './screens/AgentNotificationScreen';
 
 
 function App() {
@@ -208,6 +209,7 @@ function App() {
                       </Link>
                     )}
 
+                  {/* admin nav options */}
                   {userInfo && userInfo.isAdmin === 'true' && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
                       <LinkContainer to="/admin/dashboard">
@@ -234,13 +236,11 @@ function App() {
                     </NavDropdown>
                   )}
 
+                  {/* agent nav options */}
                   {userInfo && userInfo.isAgent === 'true' && (
                     <NavDropdown title="Sales Agent" id="admin-nav-dropdown">
-                      <LinkContainer to="/agent/deliveries">
-                        <NavDropdown.Item>Deliveries</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/agent/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      <LinkContainer to="/agent/notifications">
+                        <NavDropdown.Item>Notifications</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/agent/reservations">
                         <NavDropdown.Item>Upcoming Reservations</NavDropdown.Item>
@@ -248,7 +248,10 @@ function App() {
                       <LinkContainer to="/agent/view-orders">
                         <NavDropdown.Item>Upcoming Orders</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to="/agent/pickuplocationslist">
+                      <LinkContainer to="/admin/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/admin/pickuplocationslist/63f76397dbea193340d57569">
                         <NavDropdown.Item>Location Status</NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
@@ -305,17 +308,15 @@ function App() {
               <Route path='/search' element={<SearchScreen />} />
 
               {/* Agent Routes */}
-              <Route path='/agent/view-orders' element={
+              <Route path='/agent/view-orders' element={<AgentViewOrderScreen />} />
 
-                <AgentViewOrderScreen />
+              <Route path='/agent/reservations' element={<AgentViewReservationScreen />} />
 
-              } />
+              <Route path='/admin/products' element={<ProductListScreen />} />
 
-              <Route path='/agent/reservations' element={
+              <Route path='/agent/notifications' element={<AgentNotificationScreen />} />
 
-                <AgentViewReservationScreen />
-
-              } />
+              <Route path='/admin/pickuplocationslist/:id' element={<AddPickupLocationScreen />} />
 
               {/* Admin Routes */}
               <Route path='/admin/dashboard' element={
@@ -405,7 +406,7 @@ function App() {
             </section>
           </div>
           <h4>TreckPing </h4>
-          <p>No. 04, Polgolla Rd,<br /> Kandy, <br /> Sri Lanka.</p>
+          <p>No. 04, Polgolla Rd,<br /> Kandy, <br /> Sri Lanka.  <br />TP : +94 812562415</p>
 
           <div class="text-center p-3 footer-container" >
             © 2022 Copyright :

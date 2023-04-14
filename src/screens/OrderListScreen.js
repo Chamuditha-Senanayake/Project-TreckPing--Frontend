@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Button } from 'react-bootstrap';
+import { Button, Badge } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
@@ -93,7 +93,7 @@ const OrderListScreen = () => {
                                     ? order.dispatchedAt.substring(0, 10)
                                     : 'No'}
                             </td>
-                            <td>{order.deliveryStatus}</td>
+                            <td><Badge bg={order.isPaid ? (order.deliveryStatus == "Preparing" ? "primary" : order.deliveryStatus == "Dispatched" ? "danger" : order.deliveryStatus == "Delivered" ? "success" : "success") : "light"} text={!order.isPaid ? "dark" : "light"}>{order.isPaid ? order.deliveryStatus : "Not paid"}</Badge></td>
                             <td>
                                 <Button
                                     type="button"

@@ -164,9 +164,11 @@ const ProductListScreen = () => {
                 </Col>
                 <Col className="col text-end">
                     <div>
-                        <Button type="button" onClick={createHandler}>
-                            Create Product
-                        </Button>
+                        {userInfo.isAdmin == "true" &&
+                            <Button type="button" onClick={createHandler}>
+                                Create Product
+                            </Button>
+                        }
                     </div>
                 </Col>
             </Row>
@@ -190,7 +192,7 @@ const ProductListScreen = () => {
                                 <th>QUANTITY</th>
                                 <th>CATEGORY</th>
                                 <th>BRAND</th>
-                                <th>ACTIONS</th>
+                                {userInfo.isAdmin == "true" && <th>ACTIONS</th>}
                             </tr>
                         </thead>
                         <tbody>
@@ -203,23 +205,25 @@ const ProductListScreen = () => {
                                     <td>{product.countInStock}</td>
                                     <td>{product.category}</td>
                                     <td>{product.brand}</td>
-                                    <td>
-                                        <Button
-                                            type="button"
-                                            variant="light"
-                                            onClick={() => navigate(`/admin/product/${product._id}`)}
-                                        >
-                                            Edit
-                                        </Button>
-                                        &nbsp;
-                                        <Button
-                                            type="button"
-                                            variant="light"
-                                            onClick={() => { deleteHandler(product) }}
-                                        >
-                                            Delete
-                                        </Button>
-                                    </td>
+                                    {userInfo.isAdmin == "true" &&
+                                        <td>
+                                            <Button
+                                                type="button"
+                                                variant="light"
+                                                onClick={() => navigate(`/admin/product/${product._id}`)}
+                                            >
+                                                Edit
+                                            </Button>
+                                            &nbsp;
+                                            <Button
+                                                type="button"
+                                                variant="light"
+                                                onClick={() => { deleteHandler(product) }}
+                                            >
+                                                Delete
+                                            </Button>
+                                        </td>
+                                    }
                                 </tr>
                             ))}
                         </tbody>
