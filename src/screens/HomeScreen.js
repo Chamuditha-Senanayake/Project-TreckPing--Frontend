@@ -1,7 +1,7 @@
 import { React, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import logger from 'use-reducer-logger';
-import { Row, Col } from 'react-bootstrap'
+import { Row, Col, Carousel } from 'react-bootstrap'
 import Product from '../components/product';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
@@ -60,19 +60,31 @@ const HomeScreen = () => {
                     <LoadingBox />
                 ) : error ? (
                     <MessageBox variant='danger'>{error}</MessageBox>
-                ) : (<Row>
-                    {products.reverse().filter((product, index) => index <= 3).map((product, index) => (
-                        <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                            <Product product={product} ></Product>
+                ) : (<Carousel interval={3000}>
 
-                        </Col>
-                    ))}
-                </Row>)
+
+                    <Carousel.Item>
+                        <Row>
+                            {products.reverse().filter((product, index) => index <= 3).map((product, index) => (
+
+                                <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+
+                                    <Product product={product} ></Product>
+
+                                </Col>
+
+                            ))}
+                        </Row>
+                    </Carousel.Item>
+
+                </Carousel>
+                )
                 }
             </div>
             <hr />
 
             {/* Featured Products */}
+
 
             <div className="products featured-products mb-4">
                 <h2 className="mb-4 mt-5">Featured Products</h2>
@@ -80,13 +92,29 @@ const HomeScreen = () => {
                     <LoadingBox />
                 ) : error ? (
                     <MessageBox variant='danger'>{error}</MessageBox>
-                ) : (<Row>
-                    {products.reverse().filter((product, index) => index <= 3).map((product) => (
-                        <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                            <Product product={product} ></Product>
-                        </Col>
-                    ))}
-                </Row>)
+                ) : (<Carousel interval={3000}>
+                    <Carousel.Item>
+                        <Row>
+                            {products.filter((product, index) => (7 <= index && index <= 10)).map((product) => (
+                                <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                                    <Product product={product} ></Product>
+                                </Col>
+                            ))}
+                        </Row>
+                    </Carousel.Item>
+
+                    <Carousel.Item>
+                        <Row>
+                            {products.reverse().filter((product, index) => (2 <= index && index <= 5)).map((product) => (
+                                <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                                    <Product product={product} ></Product>
+                                </Col>
+                            ))}
+                        </Row>
+                    </Carousel.Item>
+
+                </Carousel>
+                )
                 }
             </div>
 

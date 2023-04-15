@@ -225,7 +225,7 @@ const AddPickupLocationScreen = () => {
                 <Alert variant={enabledAsPickupLocation ? "success" : "danger"}>
                     <Form.Check
                         className="mb-3"
-                        type="checkbox"
+                        type="checkbox" s
                         id="enabledAsPickupLocation"
                         label="Enabled As Pickup Location"
                         checked={enabledAsPickupLocation}

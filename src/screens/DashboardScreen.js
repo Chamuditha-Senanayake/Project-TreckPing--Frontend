@@ -90,10 +90,9 @@ const DashboardScreen = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>
-                                        5
-                                        {/* {summary.orders && summary.users[0]
-                                            ? summary.orders[0].numOrders
-                                            : 0} */}
+                                        {summary.reservations && summary.reservations[0]
+                                            ? summary.reservations[0].numOrders
+                                            : 0}
                                     </Card.Title>
                                     <Card.Text> Reservations</Card.Text>
                                 </Card.Body>
@@ -138,7 +137,7 @@ const DashboardScreen = () => {
                         <Col md={6}>
                             <div className="my-5">
                                 <h3>Income from Reservations</h3>
-                                {summary.dailyOrders.length === 0 ? (
+                                {summary.dailyReservations.length === 0 ? (
                                     <MessageBox>No Sale</MessageBox>
                                 ) : (
                                     <Chart
@@ -148,7 +147,7 @@ const DashboardScreen = () => {
                                         loader={<div>Loading Chart...</div>}
                                         data={[
                                             ['Date', 'Sales'],
-                                            ...summary.dailyOrders.map((x) => [x._id, x.sales]),
+                                            ...summary.dailyReservations.map((x) => [x._id, x.sales]),
                                         ]}
 
                                     ></Chart>
