@@ -6,6 +6,7 @@ import Product from '../components/product';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+
 //import Hero from '../hero-1.png'
 //import data from '../data';
 
@@ -85,7 +86,6 @@ const HomeScreen = () => {
 
             {/* Featured Products */}
 
-
             <div className="products featured-products mb-4">
                 <h2 className="mb-4 mt-5">Featured Products</h2>
                 {loading ? (
@@ -134,6 +134,8 @@ const HomeScreen = () => {
                     ))}
                 </Row>)
                 }
+
+
             </div>
         </div >
     )

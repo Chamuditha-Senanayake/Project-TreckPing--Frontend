@@ -1,11 +1,12 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react'
-import { Card, Col, Row } from 'react-bootstrap';
+import { Col, Row, Card } from 'react-bootstrap';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Chart from 'react-google-charts'
 import { Store } from '../Store';
 import getError from '../utils';
+import { FaClipboardList, FaCoins, FaFileImport, FaUserAlt } from 'react-icons/fa';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -51,6 +52,7 @@ const DashboardScreen = () => {
         fetchData();
     }, [userInfo]);
 
+
     return (
         <div className='dashboard'>
             <h2 className="mb-5">Dashboard</h2>
@@ -66,9 +68,18 @@ const DashboardScreen = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>
-                                        {summary.users && summary.users[0]
-                                            ? summary.users[0].numUsers
-                                            : 0}
+                                        <Row>
+                                            <Col xs={9}>
+                                                {
+                                                    summary.users && summary.users[0]
+                                                        ? summary.users[0].numUsers
+                                                        : 0
+                                                }
+                                            </Col>
+                                            <Col xs={3}>
+                                                <FaUserAlt></FaUserAlt>
+                                            </Col>
+                                        </Row>
                                     </Card.Title>
                                     <Card.Text> Users</Card.Text>
                                 </Card.Body>
@@ -78,9 +89,18 @@ const DashboardScreen = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>
-                                        {summary.orders && summary.users[0]
-                                            ? summary.orders[0].numOrders
-                                            : 0}
+                                        <Row>
+                                            <Col xs={9}>
+                                                {
+                                                    summary.orders && summary.users[0]
+                                                        ? summary.orders[0].numOrders
+                                                        : 0
+                                                }
+                                            </Col>
+                                            <Col xs={3}>
+                                                <FaFileImport></FaFileImport>
+                                            </Col>
+                                        </Row>
                                     </Card.Title>
                                     <Card.Text> Orders</Card.Text>
                                 </Card.Body>
@@ -90,9 +110,18 @@ const DashboardScreen = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>
-                                        {summary.reservations && summary.reservations[0]
-                                            ? summary.reservations[0].numOrders
-                                            : 0}
+                                        <Row>
+                                            <Col xs={9}>
+                                                {
+                                                    summary.reservations && summary.reservations[0]
+                                                        ? summary.reservations[0].numOrders
+                                                        : 0
+                                                }
+                                            </Col>
+                                            <Col xs={3}>
+                                                <FaClipboardList></FaClipboardList>
+                                            </Col>
+                                        </Row>
                                     </Card.Title>
                                     <Card.Text> Reservations</Card.Text>
                                 </Card.Body>
@@ -102,10 +131,18 @@ const DashboardScreen = () => {
                             <Card>
                                 <Card.Body>
                                     <Card.Title>
-
-                                        {summary.orders && summary.users[0]
-                                            ? summary.orders[0].totalSales.toFixed(2)
-                                            : 0} LKR
+                                        <Row>
+                                            <Col xs={9}>
+                                                {
+                                                    summary.orders && summary.users[0]
+                                                        ? (parseInt(summary.orders[0].totalSales) + parseInt(summary.reservations[0].totalSales)).toFixed(2)
+                                                        : 0
+                                                } LKR
+                                            </Col>
+                                            <Col xs={3}>
+                                                <FaCoins></FaCoins>
+                                            </Col>
+                                        </Row>
                                     </Card.Title>
                                     <Card.Text> Total Sales</Card.Text>
                                 </Card.Body>
@@ -217,7 +254,6 @@ const DashboardScreen = () => {
                             </div>
                         </Col>
                     </Row>
-
                 </>
             )}
 

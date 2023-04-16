@@ -1,12 +1,14 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react'
-import { Button, Badge } from 'react-bootstrap';
+import React, { useContext, useEffect, useReducer, useState } from 'react'
+import { Button, Badge, Card, Col, Row, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
+import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch } from 'react-icons/fa';
+import moment from 'moment';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -20,17 +22,28 @@ const reducer = (state, action) => {
             };
         case 'FETCH_FAIL':
             return { ...state, loading: false, error: action.payload };
+        case 'FETCH_SUCCESS_ORDERS':
+            return {
+                ...state,
+                summary: action.payload,
+            };
+        case 'FETCH_FAIL_ORDERS':
+            return { ...state, loading: false, error: action.payload };
         default:
             return state;
     }
 };
+
 
 const ReservationListScreen = () => {
 
     const navigate = useNavigate();
     const { state } = useContext(Store);
     const { userInfo } = state;
-    const [{ loading, error, orders, loadingDelete, successDelete }, dispatch] =
+    const [startDate, setStartDate] = useState();
+    const [endDate, setEndDate] = useState();
+
+    const [{ loading, error, summary, orders, loadingDelete }, dispatch] =
         useReducer(reducer, {
             loading: true,
             error: '',
@@ -52,13 +65,136 @@ const ReservationListScreen = () => {
             }
         };
         fetchData();
+
+        const fetchDataSummary = async () => {
+            try {
+                dispatch({ type: 'FETCH_REQUEST' });
+                const { data } = await axios.get('/api/orders/summary', {
+                    headers: { Authorization: `Bearer ${userInfo.token}` },
+                });
+                dispatch({ type: 'FETCH_SUCCESS_ORDERS', payload: data });
+                //setSummary(data);
+            } catch (err) {
+                dispatch({
+                    type: 'FETCH_FAIL_ORDERS',
+                    payload: getError(err),
+                });
+            }
+        };
+        fetchDataSummary();
+
     }, [userInfo]);
 
-    return <div>
+    console.log(startDate)
+    console.log(endDate)
+    return (<div>
         <Helmet>
             <title>Reservations</title>
         </Helmet>
-        <h2 className="mb-5">Reservations</h2>
+        <Row className="mb-5">
+            <Col md={5} className="mt-4 mb-2"><h2 >Reservations</h2></Col>
+            <Col md={3} className="mb-3">
+                <Form.Label >From :</Form.Label>
+                <Form.Control type="date" name="startingDate" placeholder="DateRange" onChange={(e) => { setStartDate(e.target.value); moment(endDate).diff(startDate, 'days') > 0 ? setEndDate(endDate) : setEndDate(e.target.value) }}></Form.Control>
+            </Col>
+            <Col md={3} className="mb-3">
+                <Form.Label >To :</Form.Label>
+                <Form.Control type="date" name="endingDate" min={startDate} placeholder="DateRange" onChange={(e) => setEndDate(e.target.value)}></Form.Control>
+            </Col>
+            <Col md={1} className="mt-4 mb-2"><Button variant='light' className="mt-2"><FaSearch></FaSearch></Button></Col>
+        </Row>
+        <hr />
+        <Row className="mb-5 mt-5">
+            <Col md={3}>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>
+                            <Row>
+                                <Col xs={9}>
+                                    {
+                                        summary && summary.reservations && summary.reservations[0]
+                                            ? summary.reservations[0].numOrders
+                                            : 0
+                                    }
+                                </Col>
+                                <Col xs={3}>
+                                    <FaClipboardList></FaClipboardList>
+                                </Col>
+                            </Row>
+                        </Card.Title>
+                        <Card.Text>Total Reservations</Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+
+            <Col md={3}>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>
+                            <Row>
+                                <Col xs={9}>
+                                    {
+                                        summary && summary.preparingReservations && summary.preparingReservations[0]
+                                            ? summary.preparingReservations[0].count
+                                            : 0
+                                    }
+                                </Col>
+                                <Col xs={3}>
+                                    <FaHourglassHalf></FaHourglassHalf>
+                                </Col>
+                            </Row>
+                        </Card.Title>
+                        <Card.Text>Preparing Reservations</Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+
+            <Col md={3}>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>
+                            <Row>
+                                <Col xs={9}>
+                                    {
+                                        summary && summary.completedReservations && summary.completedReservations[0]
+                                            ? summary.completedReservations[0].count
+                                            : 0
+                                    }
+                                </Col>
+                                <Col xs={3}>
+                                    <FaClipboardCheck></FaClipboardCheck>
+                                </Col>
+                            </Row>
+                        </Card.Title>
+                        <Card.Text>Completed Reservations</Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+
+            <Col md={3}>
+                <Card>
+                    <Card.Body>
+                        <Card.Title>
+                            <Row>
+                                <Col xs={9}>
+                                    {
+                                        summary && summary.reservations && summary.reservations[0]
+                                            ? summary.reservations[0].totalSales.toFixed(2)
+                                            : 0
+                                    }
+                                </Col>
+                                <Col xs={3}>
+                                    <FaCoins></FaCoins>
+                                </Col>
+                            </Row>
+                        </Card.Title>
+                        <Card.Text> Income</Card.Text>
+                    </Card.Body>
+                </Card>
+            </Col>
+        </Row>
+
+        <hr />
 
         {loadingDelete && <LoadingBox></LoadingBox>}
         {loading ? (
@@ -111,7 +247,7 @@ const ReservationListScreen = () => {
                 </tbody>
             </table>
         )}
-    </div>
+    </div>)
 
 }
 
