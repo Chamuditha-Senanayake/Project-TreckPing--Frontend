@@ -7,7 +7,7 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
-import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch } from 'react-icons/fa';
+import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch, FaRetweet, FaArrowCircleDown, FaUndo } from 'react-icons/fa';
 import moment from 'moment';
 
 const reducer = (state, action) => {
@@ -22,12 +22,19 @@ const reducer = (state, action) => {
             };
         case 'FETCH_FAIL':
             return { ...state, loading: false, error: action.payload };
-        case 'FETCH_SUCCESS_ORDERS':
+        case 'FETCH_SUCCESS_SUMMARY':
             return {
                 ...state,
                 summary: action.payload,
             };
-        case 'FETCH_FAIL_ORDERS':
+        case 'FETCH_FAIL_SUMMARY':
+            return { ...state, loading: false, error: action.payload };
+        case 'FETCH_SUCCESS_FILTER':
+            return {
+                ...state,
+                summary: action.payload,
+            };
+        case 'FETCH_FAIL_FILTER':
             return { ...state, loading: false, error: action.payload };
         default:
             return state;
@@ -50,58 +57,77 @@ const ReservationListScreen = () => {
         });
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                dispatch({ type: 'FETCH_REQUEST' });
-                const { data } = await axios.get(`/api/reservations`, {
-                    headers: { Authorization: `Bearer ${userInfo.token}` },
-                });
-                dispatch({ type: 'FETCH_SUCCESS', payload: data });
-            } catch (err) {
-                dispatch({
-                    type: 'FETCH_FAIL',
-                    payload: getError(err),
-                });
-            }
-        };
         fetchData();
-
-        const fetchDataSummary = async () => {
-            try {
-                dispatch({ type: 'FETCH_REQUEST' });
-                const { data } = await axios.get('/api/orders/summary', {
-                    headers: { Authorization: `Bearer ${userInfo.token}` },
-                });
-                dispatch({ type: 'FETCH_SUCCESS_ORDERS', payload: data });
-                //setSummary(data);
-            } catch (err) {
-                dispatch({
-                    type: 'FETCH_FAIL_ORDERS',
-                    payload: getError(err),
-                });
-            }
-        };
         fetchDataSummary();
-
     }, [userInfo]);
 
-    console.log(startDate)
-    console.log(endDate)
+    const fetchData = async () => {
+        try {
+            dispatch({ type: 'FETCH_REQUEST' });
+            const { data } = await axios.get(`/api/reservations`, {
+                headers: { Authorization: `Bearer ${userInfo.token}` },
+            });
+            dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        } catch (err) {
+            dispatch({
+                type: 'FETCH_FAIL',
+                payload: getError(err),
+            });
+        }
+    };
+
+    const fetchDataSummary = async () => {
+        try {
+            dispatch({ type: 'FETCH_REQUEST' });
+            const { data } = await axios.get('/api/orders/summary', {
+                headers: { Authorization: `Bearer ${userInfo.token}` },
+            });
+            dispatch({ type: 'FETCH_SUCCESS_SUMMARY', payload: data });
+        } catch (err) {
+            dispatch({
+                type: 'FETCH_FAIL_SUMMARY',
+                payload: getError(err),
+            });
+        }
+    };
+
+    const fetchDataFilter = async () => {
+        try {
+            dispatch({ type: 'FETCH_REQUEST' });
+            const { data } = await axios.post('/api/orders/filter-by-date',
+                {
+                    startDate,
+                    endDate
+                },
+                {
+                    headers: { Authorization: `Bearer ${userInfo.token}` },
+                });
+            dispatch({ type: 'FETCH_SUCCESS_FILTER', payload: data });
+        } catch (err) {
+            dispatch({
+                type: 'FETCH_FAIL_FILTER',
+                payload: getError(err),
+            });
+        }
+        fetchData();
+    }
+
     return (<div>
         <Helmet>
             <title>Reservations</title>
         </Helmet>
-        <Row className="mb-5">
-            <Col md={5} className="mt-4 mb-2"><h2 >Reservations</h2></Col>
-            <Col md={3} className="mb-3">
+        <Row className="mb-5 ">
+            <Col md={6} className="mt-4 mb-2"><h2 >Reservations</h2></Col>
+            <Col md={2} className="mb-3">
                 <Form.Label >From :</Form.Label>
                 <Form.Control type="date" name="startingDate" placeholder="DateRange" onChange={(e) => { setStartDate(e.target.value); moment(endDate).diff(startDate, 'days') > 0 ? setEndDate(endDate) : setEndDate(e.target.value) }}></Form.Control>
             </Col>
-            <Col md={3} className="mb-3">
+            <Col md={2} className="mb-3">
                 <Form.Label >To :</Form.Label>
                 <Form.Control type="date" name="endingDate" min={startDate} placeholder="DateRange" onChange={(e) => setEndDate(e.target.value)}></Form.Control>
             </Col>
-            <Col md={1} className="mt-4 mb-2"><Button variant='light' className="mt-2"><FaSearch></FaSearch></Button></Col>
+            <Col md={1} className="mt-4 mb-2"><Button variant='light' className="mt-2" onClick={fetchDataFilter}><FaSearch></FaSearch></Button></Col>
+            <Col md={1} className="mt-4 mb-2 d-flex justify-content-end"><Button variant='light' className="mt-2" onClick={fetchDataSummary}> <FaUndo></FaUndo></Button></Col>
         </Row>
         <hr />
         <Row className="mb-5 mt-5">
