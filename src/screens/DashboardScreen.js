@@ -55,7 +55,7 @@ const DashboardScreen = () => {
 
     return (
         <div className='dashboard'>
-            <h2 className="mb-5">Dashboard</h2>
+            <h2 className="mb-4">Dashboard</h2>
 
             {loading ? (
                 <LoadingBox />
@@ -63,13 +63,15 @@ const DashboardScreen = () => {
                 <MessageBox variant="danger">{error}</MessageBox>
             ) : (
                 <>
+                    <hr />
                     <Row>
                         <Col md={3}>
-                            <Card>
+                            <Card className='dashboard-card-users'>
                                 <Card.Body>
                                     <Card.Title>
                                         <Row>
-                                            <Col xs={9}>
+                                            <Col xs={1}></Col>
+                                            <Col xs={8} >
                                                 {
                                                     summary.users && summary.users[0]
                                                         ? summary.users[0].numUsers
@@ -81,16 +83,17 @@ const DashboardScreen = () => {
                                             </Col>
                                         </Row>
                                     </Card.Title>
-                                    <Card.Text> Users</Card.Text>
+                                    <Card.Text className='mx-3'>Total Users</Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
                         <Col md={3}>
-                            <Card>
+                            <Card className='dashboard-card-orders'>
                                 <Card.Body>
                                     <Card.Title>
                                         <Row>
-                                            <Col xs={9}>
+                                            <Col xs={1}></Col>
+                                            <Col xs={8} >
                                                 {
                                                     summary.orders && summary.users[0]
                                                         ? summary.orders[0].numOrders
@@ -102,16 +105,17 @@ const DashboardScreen = () => {
                                             </Col>
                                         </Row>
                                     </Card.Title>
-                                    <Card.Text> Orders</Card.Text>
+                                    <Card.Text className='mx-3'>Total Orders</Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
                         <Col md={3}>
-                            <Card>
+                            <Card className='dashboard-card-reservations '>
                                 <Card.Body>
-                                    <Card.Title>
+                                    <Card.Title >
                                         <Row>
-                                            <Col xs={9}>
+                                            <Col xs={1}></Col>
+                                            <Col xs={8} >
                                                 {
                                                     summary.reservations && summary.reservations[0]
                                                         ? summary.reservations[0].numOrders
@@ -123,12 +127,12 @@ const DashboardScreen = () => {
                                             </Col>
                                         </Row>
                                     </Card.Title>
-                                    <Card.Text> Reservations</Card.Text>
+                                    <Card.Text className='mx-3'>Total Reservations</Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
                         <Col md={3}>
-                            <Card>
+                            <Card className='dashboard-card-sales '>
                                 <Card.Body>
                                     <Card.Title>
                                         <Row>
@@ -144,14 +148,17 @@ const DashboardScreen = () => {
                                             </Col>
                                         </Row>
                                     </Card.Title>
-                                    <Card.Text> Total Sales</Card.Text>
+                                    <Card.Text className='mt-3'> <h3>Total Sales</h3></Card.Text>
                                 </Card.Body>
                             </Card>
                         </Col>
                     </Row>
+
+                    <hr />
+
                     <Row>
                         <Col md={6}>
-                            <div className="my-5">
+                            <div className="my-4 ">
                                 <h3>Income from orders</h3>
                                 {summary.dailyOrders.length === 0 ? (
                                     <MessageBox>No Sale</MessageBox>
@@ -172,7 +179,7 @@ const DashboardScreen = () => {
                         </Col>
 
                         <Col md={6}>
-                            <div className="my-5">
+                            <div className="my-4">
                                 <h3>Income from Reservations</h3>
                                 {summary.dailyReservations.length === 0 ? (
                                     <MessageBox>No Sale</MessageBox>

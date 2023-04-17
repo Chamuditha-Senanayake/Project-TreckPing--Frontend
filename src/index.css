@@ -124,6 +124,31 @@ main {
   font-size: 150%;
 }
 
+.dashboard-card-users {
+  background-color: #bbe6dbcc;
+  font-size: 150%;
+}
+
+.dashboard-card-orders {
+  background-color: #acdb9e91;
+  font-size: 150%;
+}
+
+.dashboard-card-reservations {
+  background-color: #aeafea8f;
+  font-size: 150%;
+}
+
+.dashboard-card-sales {
+  background-color: #eaee8078;
+  font-size: 100%;
+  height: 102%;
+}
+
+.card-color {
+  background-color: #ecfaea;
+}
+
 .cart-item-name {
   font-size: 1.2rem;
 }

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react'
+import React, { useContext, useEffect, useReducer, useRef } from 'react'
 import { Button, Col, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -9,6 +9,8 @@ import MessageBox from '../components/MessageBox';
 import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
+import { FaPrint } from 'react-icons/fa';
+import ReactToPrint from 'react-to-print';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -80,7 +82,7 @@ const ProductListScreen = () => {
 
     const { state } = useContext(Store);
     const { userInfo } = state;
-
+    const componentRef = useRef();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -181,7 +183,7 @@ const ProductListScreen = () => {
             ) : error ? (
                 <MessageBox variant="danger">{error}</MessageBox>
             ) : (
-                <>
+                <><div ref={componentRef}>
                     <table className="table product-tbl">
                         <thead>
                             <tr>
@@ -228,17 +230,32 @@ const ProductListScreen = () => {
                             ))}
                         </tbody>
                     </table>
+                </div>
                     <div>
-                        {[...Array(pages).keys()].map((x) => (
-                            <Link
-                                className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
-                                key={x + 1}
-                                to={`/admin/products?page=${x + 1}`}
-                            >
-                                {x + 1}
-                            </Link>
-                        ))}
+                        <Row>
+                            <Col md={11} >
+                                {[...Array(pages).keys()].map((x) => (
+                                    <Link
+                                        className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
+                                        key={x + 1}
+                                        to={`/admin/products?page=${x + 1}`}
+                                    >
+                                        {x + 1}
+                                    </Link>
+                                ))}
+
+                            </Col>
+                            <Col md={1}>
+
+                                <div>
+                                    <ReactToPrint
+                                        trigger={() => <Button variant='light' ><FaPrint></FaPrint></Button>}
+                                        content={() => componentRef.current}
+                                    />
+                                </div>
+                            </Col></Row>
                     </div>
+
                 </>
             )}
         </div >
