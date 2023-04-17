@@ -10,6 +10,7 @@ import MessageBox from '../components/MessageBox';
 import Rating from '../components/Rating';
 import { Store } from '../Store';
 import getError from '../utils';
+import ReactImageMagnify from 'react-image-magnify';
 
 const reducer = (state, action) => {
     switch (action.type) {
@@ -120,9 +121,29 @@ const ProductScreen = () => {
                 : (
                     <div>
                         <Row>
+
                             <Col md={6}>
-                                <img className='img-large' src={product.image} alt={product.name} />
+                                <ReactImageMagnify style={{ position: 'relative', zIndex: '1', maxWidth: "100%" }}{...{
+                                    smallImage: {
+                                        alt: product.name,
+                                        isFluidWidth: true,
+                                        width: 600,
+                                        height: 600,
+                                        src: product.image,
+                                    },
+                                    largeImage: {
+                                        src: product.image,
+                                        width: 800,
+                                        height: 800
+                                    },
+                                    enlargedImagePosition: "beside",
+                                    enlargedImageContainerDimensions: {
+                                        width: '100%',
+                                        height: '100%'
+                                    }
+                                }} />
                             </Col>
+
                             <Col md={3}>
                                 <ListGroup variant='flush'>
                                     <ListGroup.Item>

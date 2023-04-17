@@ -2,7 +2,7 @@ import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import axios from 'axios';
 import moment from 'moment';
 import React, { useContext, useEffect, useReducer, useState } from 'react'
-import { Button, Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
+import { Badge, Button, Card, Col, Form, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -56,7 +56,7 @@ export default function ReservationScreen() {
     const params = useParams();
     const { id: orderId } = params;
     const navigate = useNavigate();
-    const today = moment().add(1, 'day').format('YYYY-MM-DD');
+    const today = moment().format('YYYY-MM-DD');
 
     const [{ loading, error, order, successPay, loadingPay, loadingDeliver, successDeliver }, dispatch] = useReducer(reducer, {
         loading: true,
@@ -374,10 +374,6 @@ export default function ReservationScreen() {
                             {order.isPaid ? (
                                 <div>
                                     <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LLL')}</MessageBox>
-                                    {order.deliveryStatus == "Released" && true ?
-                                        <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LLL')}</MessageBox>
-                                        : <></>}
-
                                 </div>
 
                             ) : (
@@ -400,12 +396,17 @@ export default function ReservationScreen() {
                                                 <Row>
                                                     <Col md={6}><Link to={`/product/${item.slug}`} className='card-title-link'>{item.name}</Link></Col>
                                                     <Col md={2}><span>{item.quantity}</span></Col>
-                                                    <Col md={2}>{item.price}</Col>
+                                                    <Col md={2}>{item.rent}</Col>
                                                 </Row>
                                                 <br />
                                                 <Row>
-                                                    <Col md={5}><Form.Label > <strong>From : </strong></Form.Label><strong> {moment(item.pickupDate).utc().format('DD/MM/YYYY')} </strong></Col>
-                                                    <Col md={5}><Form.Label > <strong>To : </strong></Form.Label><strong>  {moment(item.returnDate).utc().format('DD/MM/YYYY')} </strong></Col>
+                                                    <Col md={4}><Form.Label > <strong>From : </strong></Form.Label><strong> {moment(item.pickupDate).utc().format('DD/MM/YYYY')} </strong></Col>
+                                                    <Col md={4}><Form.Label > <strong>To : </strong></Form.Label><strong>  {moment(item.returnDate).utc().format('DD/MM/YYYY')} </strong></Col>
+                                                    <Col md={2}>
+                                                        {order.deliveryStatus == "Released" && moment(item.returnDate).diff(today, 'days') < 0 ?
+                                                            <Badge bg='warning' text='dark'>+{(moment(today).diff(item.returnDate, 'days') * item.penalty)} Penalty</Badge>
+                                                            : <p>aa</p>}
+                                                    </Col>
                                                 </Row>
                                             </Col>
                                         </Row>
