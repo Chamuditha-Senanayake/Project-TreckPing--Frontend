@@ -9,7 +9,7 @@ import MessageBox from '../components/MessageBox';
 import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
-import { FaPrint } from 'react-icons/fa';
+import { FaDownload } from 'react-icons/fa';
 import ReactToPrint from 'react-to-print';
 
 const reducer = (state, action) => {
@@ -249,7 +249,7 @@ const ProductListScreen = () => {
 
                                 <div>
                                     <ReactToPrint
-                                        trigger={() => <Button variant='light' ><FaPrint></FaPrint></Button>}
+                                        trigger={() => <Button variant='light' ><FaDownload></FaDownload></Button>}
                                         content={() => componentRef.current}
                                     />
                                 </div>

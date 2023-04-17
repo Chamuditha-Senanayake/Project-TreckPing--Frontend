@@ -7,7 +7,7 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
-import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch, FaUndo, FaPrint } from 'react-icons/fa';
+import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch, FaUndo, FaDownload } from 'react-icons/fa';
 import moment from 'moment';
 import ReactToPrint from 'react-to-print';
 
@@ -154,7 +154,7 @@ const ReservationListScreen = () => {
             <Col md={1} className="mt-4 mb-2">
                 <div>
                     <ReactToPrint
-                        trigger={() => <Button variant='light' className="mt-2" ><FaPrint></FaPrint></Button>}
+                        trigger={() => <Button variant='light' className="mt-2" ><FaDownload></FaDownload></Button>}
                         content={() => componentRef.current}
                     />
                 </div>

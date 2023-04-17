@@ -159,42 +159,49 @@ const DashboardScreen = () => {
                     <Row>
                         <Col md={6}>
                             <div className="my-4 ">
-                                <h3>Income from orders</h3>
-                                {summary.dailyOrders.length === 0 ? (
-                                    <MessageBox>No Sale</MessageBox>
-                                ) : (
-                                    <Chart
-                                        width="100%"
-                                        height="400px"
-                                        chartType="ColumnChart"
-                                        loader={<div>Loading Chart...</div>}
-                                        data={[
-                                            ['Date', 'Sales'],
-                                            ...summary.dailyOrders.map((x) => [x._id, x.sales]),
-                                        ]}
-
-                                    ></Chart>
+                                {summary.monthlyOrders.length === 0 ? (
+                                    <MessageBox>Income from orders</MessageBox>
+                                ) : (<Card>
+                                    <Card.Body>
+                                        <center><h2 className='mt-2'>Income from Orders</h2></center>
+                                        <Chart
+                                            width="100%"
+                                            height="400px"
+                                            chartType="ColumnChart"
+                                            options={{ legend: "none" }}
+                                            loader={<div>Loading Chart...</div>}
+                                            data={[
+                                                ['Month', 'Sales'],
+                                                ...summary.monthlyOrders.map((x) => [x.month + " " + x.year, x.totalAmount]),
+                                            ]}
+                                        ></Chart>
+                                    </Card.Body>
+                                </Card>
                                 )}
                             </div>
                         </Col>
 
                         <Col md={6}>
                             <div className="my-4">
-                                <h3>Income from Reservations</h3>
-                                {summary.dailyReservations.length === 0 ? (
+                                {summary.monthlyReservations.length === 0 ? (
                                     <MessageBox>No Sale</MessageBox>
-                                ) : (
-                                    <Chart
-                                        width="100%"
-                                        height="400px"
-                                        chartType="ColumnChart"
-                                        loader={<div>Loading Chart...</div>}
-                                        data={[
-                                            ['Date', 'Sales'],
-                                            ...summary.dailyReservations.map((x) => [x._id, x.sales]),
-                                        ]}
+                                ) : (<Card>
+                                    <Card.Body>
+                                        <center><h2 className='mt-2'>Income from Reservations</h2></center>
+                                        <Chart
+                                            width="100%"
+                                            height="400px"
+                                            chartType="ColumnChart"
+                                            options={{ legend: "none" }}
+                                            loader={<div>Loading Chart...</div>}
+                                            data={[
+                                                ['Month', 'Sales'],
+                                                ...summary.monthlyReservations.map((x) => [x.month + " " + x.year, x.totalAmount]),
+                                            ]}
 
-                                    ></Chart>
+                                        ></Chart>
+                                    </Card.Body>
+                                </Card>
                                 )}
                             </div>
                         </Col>
@@ -203,68 +210,103 @@ const DashboardScreen = () => {
                     <Row>
                         <Col md={4}>
                             <div className="my-3">
-                                <h2>Categories</h2>
                                 {summary.productCategories.length === 0 ? (
                                     <MessageBox>No Category</MessageBox>
-                                ) : (
-                                    <Chart
-                                        width="100%"
-                                        height="400px"
-                                        chartType="PieChart"
-                                        loader={<div>Loading Chart...</div>}
-                                        data={[
-                                            ['Category', 'Products'],
-                                            ...summary.productCategories.map((x) => [x._id, x.count]),
-                                        ]}
-                                    ></Chart>
+                                ) : (<Card>
+                                    <Card.Body>
+                                        <center><h2 className='mt-2'>Categories</h2></center>
+                                        <Chart
+                                            width="100%"
+                                            height="400px"
+                                            chartType="PieChart"
+                                            options={{
+                                                is3D: true, legend: { position: "bottom" }, pieSliceText: "label",
+                                                slices: {
+                                                    0: { color: "#4B4B66" },
+                                                    1: { color: "#7FDD92" },
+                                                    3: { color: "#34BBD2" },
+                                                    5: { color: "#FFF181" },
+                                                    7: { color: "#64A4ED" },
+                                                },
+                                            }}
+                                            loader={<div>Loading Chart...</div>}
+                                            data={[
+                                                ['Category', 'Products'],
+                                                ...summary.productCategories.map((x) => [x._id, x.count]),
+                                            ]}
+                                        ></Chart>
+                                    </Card.Body>
+                                </Card>
                                 )}
                             </div>
                         </Col>
 
                         <Col md={4}>
                             <div className="my-3">
-                                <h2>Top Selling Products</h2>
+
                                 {summary.productCategories.length === 0 ? (
                                     <MessageBox>No Category</MessageBox>
-                                ) : (
-                                    <Chart
-                                        width="100%"
-                                        height="400px"
-                                        chartType="PieChart"
-                                        loader={<div>Loading Chart...</div>}
-                                        data={[
-                                            ['Product', 'Sells'],
-                                            ["Folding BBQ Grill", 8], ["Paracord 550 Rope", 12], ["High Ankle Hiking Boots", 15],
-                                        ]}
-                                    ></Chart>
+                                ) : (<Card>
+                                    <Card.Body>
+                                        <center><h2 className='mt-2'>Top Selling Products</h2></center>
+                                        <Chart
+                                            width="100%"
+                                            height="400px"
+                                            chartType="PieChart"
+                                            options={{
+                                                is3D: true, legend: { position: "bottom" }, pieSliceText: "label",
+                                                slices: {
+                                                    0: { color: "#4B4B66" },
+                                                    1: { color: "#7FDD92" },
+                                                },
+                                            }}
+                                            loader={<div>Loading Chart...</div>}
+                                            data={[
+                                                ['Product', 'Sells'],
+                                                ["Webr BBQ Grill", 8], ["Paracord 550 Rope", 12], ["High Ankle Boots", 15],
+                                            ]}
+                                        ></Chart>
+                                    </Card.Body>
+                                </Card>
                                 )}
                             </div>
                         </Col>
 
                         <Col md={4}>
                             <div className="my-3">
-                                <h2>Best Selling Locations</h2>
+
                                 {summary.productCategories.length === 0 ? (
                                     <MessageBox>No Category</MessageBox>
                                 ) : (
-                                    <Chart
-                                        width="100%"
-                                        height="400px"
-                                        chartType="PieChart"
-                                        loader={<div>Loading Chart...</div>}
-                                        data={[
-                                            ['City', 'Sells'],
-                                            ["Kandy", 32], ["Colombo", 21], ["Galle", 18],
-                                        ]}
-                                    ></Chart>
+                                    <Card>
+                                        <center><h2 className='mt-2'>Best Selling Locations</h2></center>
+                                        <Chart
+                                            width="100%"
+                                            height="400px"
+                                            chartType="PieChart"
+                                            options={{
+                                                is3D: true, legend: { position: "bottom" }, pieSliceText: "label",
+                                                slices: {
+                                                    0: { color: "#4B4B66" },
+                                                    1: { color: "#7FDD92" },
+                                                },
+                                            }}
+                                            loader={<div>Loading Chart...</div>}
+                                            data={[
+                                                ['City', 'Sells'],
+                                                ["Kandy", 28], ["Colombo", 21], ["Galle", 18],
+                                            ]}
+                                        ></Chart>
+                                    </Card>
                                 )}
                             </div>
                         </Col>
                     </Row>
                 </>
-            )}
+            )
+            }
 
-        </div>
+        </div >
     )
 }
 

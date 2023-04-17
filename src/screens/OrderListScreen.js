@@ -7,7 +7,7 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
-import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch, FaUndo, FaPrint } from 'react-icons/fa';
+import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch, FaUndo, FaDownload } from 'react-icons/fa';
 import moment from 'moment';
 import ReactToPrint, { useReactToPrint } from 'react-to-print';
 
@@ -151,7 +151,7 @@ const OrderListScreen = () => {
             <Col md={1} className="mt-4 mb-2">
                 <div>
                     <ReactToPrint
-                        trigger={() => <Button variant='light' className="mt-2" ><FaPrint></FaPrint></Button>}
+                        trigger={() => <Button variant='light' className="mt-2" ><FaDownload></FaDownload></Button>}
                         content={() => componentRef.current}
                     />
                 </div>
@@ -178,7 +178,7 @@ const OrderListScreen = () => {
                                 </Col>
                             </Row>
                         </Card.Title>
-                        <Card.Text>Total Reservations</Card.Text>
+                        <Card.Text>Total Orders</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
@@ -200,7 +200,7 @@ const OrderListScreen = () => {
                                 </Col>
                             </Row>
                         </Card.Title>
-                        <Card.Text>Preparing Reservations</Card.Text>
+                        <Card.Text>Preparing Orders</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>
@@ -222,7 +222,7 @@ const OrderListScreen = () => {
                                 </Col>
                             </Row>
                         </Card.Title>
-                        <Card.Text>Completed Reservations</Card.Text>
+                        <Card.Text>Completed Orders</Card.Text>
                     </Card.Body>
                 </Card>
             </Col>

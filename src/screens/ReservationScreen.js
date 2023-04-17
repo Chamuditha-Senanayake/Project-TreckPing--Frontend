@@ -56,6 +56,7 @@ export default function ReservationScreen() {
     const params = useParams();
     const { id: orderId } = params;
     const navigate = useNavigate();
+    const today = moment().add(1, 'day').format('YYYY-MM-DD');
 
     const [{ loading, error, order, successPay, loadingPay, loadingDeliver, successDeliver }, dispatch] = useReducer(reducer, {
         loading: true,
@@ -151,25 +152,6 @@ export default function ReservationScreen() {
         }
     }, [order, userInfo, orderId, navigate, paypalDispatch, successPay, successDeliver]);
 
-    // async function deliverOrderHandler() {
-    //     try {
-    //         dispatch({ type: 'DELIVER_REQUEST' });
-    //         const { data } = await axios.put(
-    //             `/api/reservations/${order._id}/deliver`,
-    //             {},
-    //             {
-    //                 headers: { authorization: `Bearer ${userInfo.token}` },
-    //             }
-    //         );
-    //         dispatch({ type: 'DELIVER_SUCCESS', payload: data });
-    //         toast.success('Order is delivered');
-    //     } catch (err) {
-    //         toast.error(getError(err));
-    //         dispatch({ type: 'DELIVER_FAIL' });
-    //     }
-    // }
-
-    //handle dispatched orders
     async function dispatchOrderHandler() {
         swal({
             title: "Are you sure?",
@@ -390,7 +372,14 @@ export default function ReservationScreen() {
                                 <strong>Method:</strong> {order.paymentMethod}
                             </Card.Text>
                             {order.isPaid ? (
-                                <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LLL')}</MessageBox>
+                                <div>
+                                    <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LLL')}</MessageBox>
+                                    {order.deliveryStatus == "Released" && true ?
+                                        <MessageBox variant='success'>Paid at {moment(order.paidAt).format('LLL')}</MessageBox>
+                                        : <></>}
+
+                                </div>
+
                             ) : (
                                 <MessageBox variant='danger'>Not paid</MessageBox>
                             )}
@@ -606,27 +595,6 @@ export default function ReservationScreen() {
                     </Card>
                 </Col>
             </Row >
-            {/* <Row>
-                <Card className='mb-3'>
-                    <Card.Body>
-                        <Card.Title>Items</Card.Title>
-                        <ListGroup variant='flush'>
-                            {order.orderItems.map((item) => (
-                                <ListGroup.Item key={item._id}>
-                                    <Row className='align-items-center'>
-                                        <Col md={8}>
-                                            <img src={item.image} alt={item.name} className='img-fluid rounded img-thumbnail'></img>{' '}
-                                            <Link to={`/product/${item.slug}`} className='card-title-link'>{item.name}</Link>
-                                        </Col>
-                                        <Col md={2}><span>{item.quantity}</span></Col>
-                                        <Col md={2}>{item.price}</Col>
-                                    </Row>
-                                </ListGroup.Item>
-                            ))}
-                        </ListGroup>
-                    </Card.Body>
-                </Card>
-            </Row> */}
         </div >)
 
 
