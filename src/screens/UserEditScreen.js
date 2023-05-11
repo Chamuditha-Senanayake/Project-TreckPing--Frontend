@@ -9,6 +9,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -28,6 +29,7 @@ const reducer = (state, action) => {
     }
 };
 
+//User Status Edit Screen
 const UserEditScreen = () => {
     const [{ loading, error, loadingUpdate }, dispatch] = useReducer(reducer, {
         loading: true,
@@ -50,6 +52,7 @@ const UserEditScreen = () => {
         const fetchData = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
+                //get user by id
                 const { data } = await axios.get(`/api/users/${userId}`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });
@@ -58,10 +61,6 @@ const UserEditScreen = () => {
                 setIsAdmin(data.isAdmin == "true" ? true : false);
                 setIsAgent(data.isAgent == 'true' ? true : false);
                 dispatch({ type: 'FETCH_SUCCESS' });
-                console.log(typeof (data.isAdmin))
-                console.log(data.isAdmin)
-                console.log(typeof (isAdmin))
-                console.log(isAdmin)
             } catch (err) {
                 dispatch({
                     type: 'FETCH_FAIL',
@@ -76,6 +75,7 @@ const UserEditScreen = () => {
         e.preventDefault();
         try {
             dispatch({ type: 'UPDATE_REQUEST' });
+            //update user status by user id
             await axios.put(
                 `/api/users/${userId}`,
                 { _id: userId, name, email, isAdmin, isAgent },
@@ -93,6 +93,7 @@ const UserEditScreen = () => {
             dispatch({ type: 'UPDATE_FAIL' });
         }
     };
+
     return (
         <Container className="small-container">
             <Helmet>

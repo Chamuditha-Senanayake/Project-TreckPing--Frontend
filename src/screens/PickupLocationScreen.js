@@ -8,6 +8,7 @@ import axios from 'axios';
 import getError from '../utils';
 import { toast } from 'react-toastify';
 
+//Pickup Location Screen
 const PickupLocationScreen = () => {
     const navigate = useNavigate();
     const { state, dispatch: ctxDispacth } = useContext(Store)
@@ -34,6 +35,7 @@ const PickupLocationScreen = () => {
     useEffect(() => {
         const fetchLoactionData = async () => {
             try {
+                //get all locations
                 const { data } = await axios.get(`/api/locations/get-all`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` }
                 }

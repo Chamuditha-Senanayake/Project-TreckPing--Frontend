@@ -11,6 +11,7 @@ import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch, 
 import moment from 'moment';
 import ReactToPrint from 'react-to-print';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -42,7 +43,7 @@ const reducer = (state, action) => {
     }
 };
 
-
+//Reservation List Screen
 const ReservationListScreen = () => {
 
     const navigate = useNavigate();
@@ -66,6 +67,7 @@ const ReservationListScreen = () => {
     const fetchData = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });
+            //get all reservations
             const { data } = await axios.get(`/api/reservations`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` },
             });
@@ -81,6 +83,7 @@ const ReservationListScreen = () => {
     const fetchDataByDate = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });
+            //get reservations by date
             const { data } = await axios.post('/api/reservations/reservations-by-date',
                 {
                     startDate,
@@ -101,6 +104,7 @@ const ReservationListScreen = () => {
     const fetchDataSummary = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });
+            //get reservation summary
             const { data } = await axios.get('/api/orders/summary', {
                 headers: { Authorization: `Bearer ${userInfo.token}` },
             });
@@ -116,6 +120,7 @@ const ReservationListScreen = () => {
     const fetchDataFilter = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });
+            //get reservation summary by date
             const { data } = await axios.post('/api/reservations/filter-by-date',
                 {
                     startDate,

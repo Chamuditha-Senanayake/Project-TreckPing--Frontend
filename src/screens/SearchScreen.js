@@ -12,7 +12,7 @@ import Product from '../components/product';
 import Rating from '../components/Rating';
 import getError from '../utils';
 
-
+//reducer for handle states
 function reducer(state, action) {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -34,6 +34,7 @@ function reducer(state, action) {
     }
 }
 
+//price range
 const prices = [
     {
         name: 'Less than 1000 LKR',
@@ -50,6 +51,7 @@ const prices = [
 
 ]
 
+//ratings
 const ratings = [
     {
         name: '4stars & up',
@@ -70,6 +72,7 @@ const ratings = [
 
 ]
 
+//Search Screen
 const SearchScreen = () => {
     const navigate = useNavigate();
     const { search } = useLocation();
@@ -89,6 +92,7 @@ const SearchScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                //get filtered data
                 const { data } = await axios.get(
                     `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
                 );
@@ -109,6 +113,7 @@ const SearchScreen = () => {
     useEffect(() => {
         const fetchCategories = async () => {
             try {
+                //get categories
                 const { data } = await axios.get(`/api/products/categories`);
                 setCategories(data);
             } catch (err) {

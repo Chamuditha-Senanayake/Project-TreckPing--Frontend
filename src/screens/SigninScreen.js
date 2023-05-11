@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import getError from '../utils';
 
+//Signin Screen
 const SigninScreen = () => {
     const navigate = useNavigate();
     const { search } = useLocation();
@@ -22,6 +23,7 @@ const SigninScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
+            //signin handler
             const { data } = await Axios.post('/api/users/signin', {
                 email,
                 password,

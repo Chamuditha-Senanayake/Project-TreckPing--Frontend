@@ -1,6 +1,7 @@
 import React from 'react'
 import { Col, Row } from 'react-bootstrap'
 
+//checkoutSteps css changer
 const CheckoutSteps = (props) => {
     return (
         <Row className='checkout-steps'>

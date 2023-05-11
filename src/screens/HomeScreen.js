@@ -7,9 +7,7 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 
-//import Hero from '../hero-1.png'
-//import data from '../data';
-
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -23,15 +21,15 @@ const reducer = (state, action) => {
     }
 }
 
+//Home Screen
 const HomeScreen = () => {
-
     const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
         products: [],
         loading: true,
         error: ''
     })
-    //const [products, setProducts] = useState([]);
 
+    //get all products
     useEffect(() => {
         const fetchData = async () => {
             dispatch({ _type: 'FETCH_REQUEST' })
@@ -41,7 +39,6 @@ const HomeScreen = () => {
             } catch (err) {
                 dispatch({ type: 'FETCH_FAIL', payload: err.message });
             }
-            //setProducts(result.data);
         };
         fetchData();
     }, [])

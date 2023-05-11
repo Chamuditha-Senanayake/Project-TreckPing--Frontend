@@ -12,6 +12,7 @@ import { Store } from '../Store';
 import getError from '../utils';
 import ReactImageMagnify from 'react-image-magnify';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'REFRESH_PRODUCT':
@@ -33,6 +34,7 @@ const reducer = (state, action) => {
     }
 }
 
+//ProductScreen
 const ProductScreen = () => {
     let reviewsRef = useRef();
 
@@ -54,6 +56,7 @@ const ProductScreen = () => {
         const fetchData = async () => {
             dispatch({ _type: 'FETCH_REQUEST' })
             try {
+                //get product by slug
                 const result = await axios.get(`/api/products/slug/${slug}`);
                 dispatch({ type: 'FETCH_SUCCESS', payload: result.data })
             } catch (err) {
@@ -69,6 +72,7 @@ const ProductScreen = () => {
     const addToCartHandler = async () => {
         const existItem = cart.cartItems.find((x) => x._id === product._id);
         const quantity = existItem ? existItem.quantity + 1 : 1;
+        //get product by id
         const { data } = await axios.get(`/api/products/${product._id}`);
         if (data.countInStock < quantity) {
             toast.error('Sorry. Product is out of stock');
@@ -78,7 +82,6 @@ const ProductScreen = () => {
         navigate('/cart');
     }
 
-
     const submitHandler = async (e) => {
         e.preventDefault();
         if (!comment || !rating) {
@@ -86,6 +89,7 @@ const ProductScreen = () => {
             return;
         }
         try {
+            //get product reviews
             const { data } = await axios.post(
                 `/api/products/${product._id}/reviews`,
                 { rating, comment, name: userInfo.name },

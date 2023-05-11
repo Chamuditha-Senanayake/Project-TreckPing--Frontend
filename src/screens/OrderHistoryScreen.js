@@ -8,6 +8,7 @@ import MessageBox from '../components/MessageBox'
 import { Store } from '../Store'
 import getError from '../utils'
 
+//reducer for handle states
 function reducer(state, action) {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -22,6 +23,7 @@ function reducer(state, action) {
     }
 }
 
+//Order History Screen
 const OrderHistoryScreen = () => {
     const { state } = useContext(Store);
     const { userInfo } = state;
@@ -33,10 +35,10 @@ const OrderHistoryScreen = () => {
     });
 
     useEffect(() => {
-
         const fetchData = async () => {
             dispatch({ type: 'FETCH_REQUEST' });
             try {
+                //orders of the customer
                 const { data } = await axios.get(
                     `/api/orders/mine`,
                     { headers: { authorization: `Bearer ${userInfo.token}` } }

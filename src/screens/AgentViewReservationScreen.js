@@ -11,6 +11,7 @@ import { Store } from '../Store';
 import getError from '../utils';
 import moment from 'moment';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -42,8 +43,8 @@ const reducer = (state, action) => {
     }
 };
 
+//View Reservation Screen
 const AgentViewReservationScreen = () => {
-
     const [
         {
             loading,
@@ -72,6 +73,7 @@ const AgentViewReservationScreen = () => {
     const { state } = useContext(Store);
     const { userInfo } = state;
 
+    //fetch Orders By location
     const fetchOrdersBylocation = async () => {
         try {
             const { data } = await axios.post(`/api/reservations/by-location?page=${page} `,
@@ -88,7 +90,7 @@ const AgentViewReservationScreen = () => {
         }
     };
 
-
+    //fetch Not Delivered Orders By location
     const fetchNotDeliveredOrdersBylocation = async () => {
         try {
             const { data } = await axios.post(`/api/reservations/by-location/not-delivered `,

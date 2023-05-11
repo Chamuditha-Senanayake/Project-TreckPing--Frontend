@@ -8,6 +8,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -26,6 +27,7 @@ const reducer = (state, action) => {
     }
 };
 
+//Staff List Screen
 const StaffListScreen = () => {
 
     const navigate = useNavigate();
@@ -42,6 +44,7 @@ const StaffListScreen = () => {
         const fetchData = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
+                //get all staff
                 const { data } = await axios.get(`/api/users/staff/get-all-staff`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });

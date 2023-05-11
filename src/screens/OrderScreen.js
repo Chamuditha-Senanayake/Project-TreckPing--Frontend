@@ -14,6 +14,7 @@ import { Store } from '../Store';
 import getError from '../utils';
 
 
+//reducer for handle states
 function reducer(state, action) {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -48,6 +49,7 @@ function reducer(state, action) {
     }
 }
 
+//OrderScreen
 export default function OrderScreen() {
 
     const { state } = useContext(Store);
@@ -83,6 +85,7 @@ export default function OrderScreen() {
         return actions.order.capture().then(async function (details) {
             try {
                 dispatch({ type: 'PAY_REQUEST' });
+                //update order
                 const { data } = await axios.put(
                     `/api/orders/${order._id}/pay`,
                     details,
@@ -109,6 +112,7 @@ export default function OrderScreen() {
         const fetchOrder = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
+                //get order by id
                 const { data } = await axios.get(
                     `/api/orders/${orderId}`,
                     { headers: { authorization: `Bearer ${userInfo.token}` } }
@@ -126,7 +130,6 @@ export default function OrderScreen() {
         if (!order._id || successPay || successDeliver || (order._id && order._id !== orderId)) {
             fetchOrder();
             if (successPay) {
-                //localStorage.removeItem('paymentMethod');                
                 dispatch({ type: 'PAY_RESET' })
             }
             if (successDeliver) {
@@ -134,6 +137,7 @@ export default function OrderScreen() {
             }
 
         } else {
+            //paypal api
             const loadPaypalScript = async () => {
                 const { data: clientId } = await axios.get('/api/keys/paypal', {
                     headers: { authorization: `Bearer ${userInfo.token}` }
@@ -164,6 +168,7 @@ export default function OrderScreen() {
                 if (willYes) {
                     try {
                         dispatch({ type: 'DELIVER_REQUEST' });
+                        //update order status
                         const { data } = await axios.put(
                             `/api/orders/${order._id}/dispatch`,
                             {},
@@ -184,7 +189,6 @@ export default function OrderScreen() {
 
 
     async function deliverOrderHandler() {
-
         swal({
             title: "Are you sure?",
             text: "Delivery status of this order will be changed as Delivered !",
@@ -195,6 +199,7 @@ export default function OrderScreen() {
             .then(async (willYes) => {
                 if (willYes) {
                     try {
+                        //update order status
                         dispatch({ type: 'DELIVER_REQUEST' });
                         const { data } = await axios.put(
                             `/api/orders/${order._id}/deliver`,
@@ -211,10 +216,7 @@ export default function OrderScreen() {
                     }
                 }
             })
-
-
     }
-
 
     return loading ? (
         <LoadingBox></LoadingBox>

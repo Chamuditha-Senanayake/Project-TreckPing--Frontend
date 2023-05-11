@@ -9,7 +9,7 @@ import LoadingBox from '../components/LoadingBox'
 import { Store } from '../Store'
 import getError from '../utils'
 
-
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'CREATE_REQUEST':
@@ -24,6 +24,8 @@ const reducer = (state, action) => {
     }
 }
 
+
+//Place Order Screen
 const PlaceOrderScreen = () => {
 
     const navigate = useNavigate();
@@ -33,7 +35,6 @@ const PlaceOrderScreen = () => {
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart, userInfo } = state;
 
-    //const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
     cart.itemsPrice = cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0);
     cart.shippingPrice = cart.itemsPrice > 62500 ? 5000 : cart.itemsPrice * 8 / 100;
     cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
@@ -41,6 +42,7 @@ const PlaceOrderScreen = () => {
     const placeOrderHandler = async () => {
         try {
             dispatch({ type: 'CREATE_REQUEST' });
+            //create order
             const { data } = await Axios.post(
                 '/api/orders',
                 {
@@ -75,7 +77,6 @@ const PlaceOrderScreen = () => {
             navigate('/payment');
         }
     }, [cart, navigate])
-
 
     return (
         <div>

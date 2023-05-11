@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Store } from '../Store'
 
+//Rent Payment Method Selection Screen
 const RentPaymentMethodScreen = () => {
 
     const navigate = useNavigate();
@@ -21,6 +22,7 @@ const RentPaymentMethodScreen = () => {
     const submitHandler = (e) => {
         e.preventDefault();
         ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName });
+        //set payment method in local storage
         localStorage.setItem('paymentMethod', paymentMethodName);
         navigate('/reservation')
     }

@@ -49,7 +49,7 @@ function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, rentCart, userInfo } = state;
 
-
+  //signout handler
   const signoutHandler = () => {
     ctxDispatch({ type: "USER_SIGNOUT" });
     localStorage.removeItem('userInfo');
@@ -67,6 +67,7 @@ function App() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        //get product categories
         const { data } = await axios.get(`/api/products/categories`);
         setCategories(data);
       } catch (err) {
@@ -117,6 +118,7 @@ function App() {
 
                 <Nav className='ms-auto w-100 justify-content-end '>
 
+                  {/* Handle buy or rent button */}
                   {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                     <ToggleButtonGroup type="radio" name="options" onChange={navigateRentorBuy}>
                       <ToggleButton id="tbg-radio-1" className={localStorage.getItem('BuyOrRent') == "Buy" ? 'bg-success ' : 'bg-secondary '} onClick={() => setBuyOrRent("Buy")}>
@@ -152,6 +154,7 @@ function App() {
                     </NavDropdown>
                   }
 
+                  {/* view shopping cart */}
                   {(userInfo == null || (userInfo.isAdmin === "false" && userInfo.isAgent === "false")) &&
                     (localStorage.getItem('BuyOrRent') == "Buy" ?
                       (<Link to='/cart' className='nav-link'>
@@ -265,6 +268,7 @@ function App() {
 
         <main className={userInfo && (userInfo.isAdmin === 'true' || userInfo.isAgent === 'true') && 'dashboard pt-5 pt-3'}>
           <Container className='mt-3'>
+            {/* user routes */}
             <Routes>
               <Route path='/product/:slug' element={<ProductScreen />} />
               <Route path='/signin' element={<SigninScreen />} />
@@ -391,6 +395,7 @@ function App() {
           </Container>
         </main>
 
+        {/* footer */}
         <footer class="bg-dark text-center text-white mt-5">
           <div class="container p-4 pb-0">
             <section class="mb-4">

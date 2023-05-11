@@ -6,7 +6,7 @@ import { toast } from 'react-toastify';
 import { Store } from '../Store';
 import getError from '../utils';
 
-
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'UPDATE_REQUEST':
@@ -21,6 +21,7 @@ const reducer = (state, action) => {
     }
 }
 
+//Profile Screen
 const ProfileScreen = () => {
 
     const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -38,6 +39,7 @@ const ProfileScreen = () => {
     const submitHandler = async (e) => {
         e.preventDefault();
         try {
+            //update user profile
             const { data } = await axios.put(
                 'api/users/profile/edit',
                 {

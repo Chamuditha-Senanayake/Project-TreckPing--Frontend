@@ -10,6 +10,7 @@ import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -53,6 +54,7 @@ const reducer = (state, action) => {
     }
 };
 
+//Pickup Locations List Screen
 const PickupLocationsListScreen = () => {
 
     const [
@@ -83,6 +85,7 @@ const PickupLocationsListScreen = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                //get all locations
                 const { data } = await axios.get(`/api/locations/admin?page=${page} `, {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });
@@ -124,6 +127,7 @@ const PickupLocationsListScreen = () => {
             .then(async (willDelete) => {
                 if (willDelete) {
                     try {
+                        //delete location
                         await axios.delete(`/api/locations/${location._id}`, {
                             headers: { Authorization: `Bearer ${userInfo.token}` },
                         });

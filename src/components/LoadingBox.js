@@ -1,6 +1,7 @@
 import React from 'react'
 import { Spinner } from 'react-bootstrap'
 
+//loading box component
 const LoadingBox = () => {
     return (
         <Spinner animation='border' role='status'>

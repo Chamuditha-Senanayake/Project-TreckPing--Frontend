@@ -8,6 +8,7 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 import getError from '../utils';
 
+//Shipping Address Screen
 const ShippingAddressScreen = () => {
     const navigate = useNavigate();
     const { state, dispatch: ctxDispacth } = useContext(Store)
@@ -23,7 +24,6 @@ const ShippingAddressScreen = () => {
     const [city, setCity] = useState(shippingAddress.city || '');
     const [postalCode, setPostalCode] = useState(shippingAddress.postalCode || '');
     const [locationList, setLocationList] = useState([]);
-    //const savedLocation = localStorage.getItem("shippingAddress")
 
     useEffect(() => {
         if (!userInfo) {
@@ -34,6 +34,7 @@ const ShippingAddressScreen = () => {
     useEffect(() => {
         const fetchLoactionData = async () => {
             try {
+                //get all locations
                 const { data } = await axios.get(`/api/locations/get-all`, {
                     headers: { Authorization: `Bearer ${userInfo.token}` }
                 }
@@ -62,6 +63,7 @@ const ShippingAddressScreen = () => {
                 postalCode
             }
         });
+        //set shipping address in local storage
         localStorage.setItem(
             'shippingAddress',
             JSON.stringify({
@@ -87,6 +89,7 @@ const ShippingAddressScreen = () => {
                 postalCode: ""
             }
         });
+        //set shipping address in local storage
         localStorage.setItem(
             'shippingAddress',
             JSON.stringify({

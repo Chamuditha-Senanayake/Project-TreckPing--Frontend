@@ -7,13 +7,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
+//Cart Screen
 const CartScreen = () => {
     const navigate = useNavigate();
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { cart: { cartItems } } = state;
 
+    //fetch product by id
     const updateCartHandler = async (item, quantity) => {
-        //get data from api/products/${item._id} and store it in {data} object
         const { data } = await axios.get(`/api/products/${item._id}`);
         if (data.countInStock < quantity) {
             toast.error('Sorry. Product is out of stock');

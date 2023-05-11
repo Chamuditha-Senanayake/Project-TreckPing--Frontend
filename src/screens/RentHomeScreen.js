@@ -6,9 +6,8 @@ import RentProduct from '../components/RentProduct';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-//import Hero from '../hero-1.png'
-//import data from '../data';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -22,6 +21,7 @@ const reducer = (state, action) => {
     }
 }
 
+//Rent Home Screen
 const RentHomeScreen = () => {
 
     const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
@@ -35,12 +35,12 @@ const RentHomeScreen = () => {
         const fetchData = async () => {
             dispatch({ _type: 'FETCH_REQUEST' })
             try {
+                //get all products
                 const result = await axios.get('/api/products');
                 dispatch({ type: 'FETCH_SUCCESS', payload: result.data })
             } catch (err) {
                 dispatch({ type: 'FETCH_FAIL', payload: err.message });
             }
-            //setProducts(result.data);
         };
         fetchData();
     }, [])

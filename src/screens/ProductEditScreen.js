@@ -9,6 +9,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import getError from '../utils';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -41,6 +42,7 @@ const reducer = (state, action) => {
     }
 };
 
+//Product Edit Screen
 const ProductEditScreen = () => {
 
     const navigate = useNavigate();
@@ -61,7 +63,6 @@ const ProductEditScreen = () => {
     const [rent, setRent] = useState('');
     const [penalty, setPenalty] = useState('');
     const [image, setImage] = useState('');
-    //const [images, setImages] = useState([]);
     const [category, setCategory] = useState('');
     const [countInStock, setCountInStock] = useState('');
     const [countInStockForRent, setCountInStockForRent] = useState('');
@@ -72,6 +73,7 @@ const ProductEditScreen = () => {
         const fetchData = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
+                //get product by id
                 const { data } = await axios.get(`/api/products/${productId}`);
                 setName(data.name);
                 setSlug(data.slug);
@@ -79,7 +81,6 @@ const ProductEditScreen = () => {
                 setRent(data.rent);
                 setPenalty(data.penalty);
                 setImage(data.image);
-                //setImages(data.images);
                 setCategory(data.category);
                 setCountInStock(data.countInStock);
                 setCountInStockForRent(data.countInStockForRent);
@@ -100,6 +101,7 @@ const ProductEditScreen = () => {
         e.preventDefault();
         try {
             dispatch({ type: 'UPDATE_REQUEST' });
+            //update product by id
             await axios.put(
                 `/api/products/${productId}`,
                 {
@@ -110,7 +112,6 @@ const ProductEditScreen = () => {
                     rent,
                     penalty,
                     image,
-                    //images,
                     category,
                     brand,
                     countInStock,
@@ -139,6 +140,7 @@ const ProductEditScreen = () => {
         bodyFormData.append('file', file);
         try {
             dispatch({ type: 'UPLOAD_REQUEST' });
+            //upload image for cloudinary
             const { data } = await axios.post('/api/upload', bodyFormData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
@@ -146,7 +148,6 @@ const ProductEditScreen = () => {
                 },
             });
             dispatch({ type: 'UPLOAD_SUCCESS' });
-
             toast.success('Image uploaded successfully');
             setImage(data.secure_url);
         } catch (err) {
@@ -208,15 +209,6 @@ const ProductEditScreen = () => {
                             required
                         />
                     </Form.Group>
-                    {/* <Form.Group className="mb-3" controlId="image">
-                        <Form.Label>Image File</Form.Label>
-                        <Form.Control
-                            value={image}
-                            onChange={(e) => setImage(e.target.value)}
-                            required
-                        />
-                    </Form.Group> */}
-
 
                     <Form.Group className="mb-3" controlId="imageFile">
                         <Form.Label>Upload Image</Form.Label>
@@ -225,31 +217,6 @@ const ProductEditScreen = () => {
                         />
                         {loadingUpload && <LoadingBox></LoadingBox>}
                     </Form.Group>
-
-                    {/* <Form.Group className="mb-3" controlId="additionalImage">
-                        <Form.Label>Additional Images</Form.Label>
-                        {images.length === 0 && <MessageBox>No image</MessageBox>}
-                        <ListGroup variant="flush">
-                            {images.map((x) => (
-                                <ListGroup.Item key={x}>
-                                    {x}
-                                    <Button variant="light"
-                                    onClick={() => deleteFileHandler(x)}
-                                    >
-                                        <i className="fa fa-times-circle"></i>
-                                    </Button>
-                                </ListGroup.Item>
-                            ))}
-                        </ListGroup>
-                    </Form.Group>
-                    <Form.Group className="mb-3" controlId="additionalImageFile">
-                        <Form.Label>Upload Aditional Image</Form.Label>
-                        <Form.Control
-                            type="file"
-                        onChange={(e) => uploadFileHandler(e, true)}
-                        />
-                        {loadingUpload && <LoadingBox></LoadingBox>}
-                    </Form.Group> */}
 
                     <Form.Group className="mb-3" controlId="category">
                         <Form.Label>Category</Form.Label>
@@ -270,6 +237,7 @@ const ProductEditScreen = () => {
                     <Form.Group className="mb-3" controlId="countInStock">
                         <Form.Label>Count In Stock</Form.Label>
                         <Form.Control
+                            type='number'
                             value={countInStock}
                             onChange={(e) => setCountInStock(e.target.value)}
                             required
@@ -279,6 +247,7 @@ const ProductEditScreen = () => {
                     <Form.Group className="mb-3" controlId="countInStockForRent">
                         <Form.Label>Count In Stock For Rent</Form.Label>
                         <Form.Control
+                            type='number'
                             value={countInStockForRent}
                             onChange={(e) => setCountInStockForRent(e.target.value)}
                             required

@@ -8,13 +8,14 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import moment from 'moment';
 
+//Rent Cart Screen
 const RentCartScreen = () => {
     const navigate = useNavigate();
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { rentCart: { rentCartItems } } = state;
 
+    //get product by id
     const updateCartHandler = async (item, quantity) => {
-        //get data from api/products/${item._id} and store it in {data} object
         const { data } = await axios.get(`/api/products/${item._id}`);
         if (data.countInStockForRent < quantity) {
             toast.error('Sorry. Product is out of stock');

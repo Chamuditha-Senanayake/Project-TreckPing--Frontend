@@ -13,7 +13,7 @@ import swal from 'sweetalert';
 import { Store } from '../Store';
 import getError from '../utils';
 
-
+//reducer for handle states
 function reducer(state, action) {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -48,6 +48,7 @@ function reducer(state, action) {
     }
 }
 
+//Reservation Screen
 export default function ReservationScreen() {
 
     const { state } = useContext(Store);
@@ -84,6 +85,7 @@ export default function ReservationScreen() {
         return actions.order.capture().then(async function (details) {
             try {
                 dispatch({ type: 'PAY_REQUEST' });
+                //update reservation
                 const { data } = await axios.put(
                     `/api/reservations/${order._id}/pay`,
                     details,
@@ -109,6 +111,7 @@ export default function ReservationScreen() {
         const fetchOrder = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
+                //get reservations by id
                 const { data } = await axios.get(
                     `/api/reservations/${orderId}`,
                     { headers: { authorization: `Bearer ${userInfo.token}` } }
@@ -135,6 +138,7 @@ export default function ReservationScreen() {
             }
 
         } else {
+            //load paypal data
             const loadPaypalScript = async () => {
                 const { data: clientId } = await axios.get('/api/keys/paypal', {
                     headers: { authorization: `Bearer ${userInfo.token}` }
@@ -152,6 +156,7 @@ export default function ReservationScreen() {
         }
     }, [order, userInfo, orderId, navigate, paypalDispatch, successPay, successDeliver]);
 
+    //handle dispatched orders
     async function dispatchOrderHandler() {
         swal({
             title: "Are you sure?",
@@ -164,6 +169,7 @@ export default function ReservationScreen() {
                 if (willYes) {
                     try {
                         dispatch({ type: 'DELIVER_REQUEST' });
+                        //update reservation status to dispatched
                         const { data } = await axios.put(
                             `/api/reservations/${order._id}/dispatch`,
                             {},
@@ -196,6 +202,7 @@ export default function ReservationScreen() {
                 if (willYes) {
                     try {
                         dispatch({ type: 'DELIVER_REQUEST' });
+                        //update reservation status to delivered
                         const { data } = await axios.put(
                             `/api/reservations/${order._id}/deliver`,
                             {},
@@ -227,6 +234,7 @@ export default function ReservationScreen() {
                 if (willYes) {
                     try {
                         dispatch({ type: 'DELIVER_REQUEST' });
+                        //update reservation status to released
                         const { data } = await axios.put(
                             `/api/reservations/${order._id}/release`,
                             {},
@@ -258,6 +266,7 @@ export default function ReservationScreen() {
                 if (willYes) {
                     try {
                         dispatch({ type: 'DELIVER_REQUEST' });
+                        //update reservation status to received
                         const { data } = await axios.put(
                             `/api/reservations/${order._id}/receive`,
                             {},
@@ -289,6 +298,7 @@ export default function ReservationScreen() {
                 if (willYes) {
                     try {
                         dispatch({ type: 'DELIVER_REQUEST' });
+                        //update reservation status to returned
                         const { data } = await axios.put(
                             `/api/reservations/${order._id}/return`,
                             {},
@@ -320,6 +330,7 @@ export default function ReservationScreen() {
                 if (willYes) {
                     try {
                         dispatch({ type: 'DELIVER_REQUEST' });
+                        //update reservation status to completed
                         const { data } = await axios.put(
                             `/api/reservations/${order._id}/complete`,
                             {},
@@ -405,7 +416,7 @@ export default function ReservationScreen() {
                                                     <Col md={2}>
                                                         {order.deliveryStatus == "Released" && moment(item.returnDate).diff(today, 'days') < 0 ?
                                                             <Badge bg='warning' text='dark'>+{(moment(today).diff(item.returnDate, 'days') * item.penalty)} Penalty</Badge>
-                                                            : <p>aa</p>}
+                                                            : <></>}
                                                     </Col>
                                                 </Row>
                                             </Col>

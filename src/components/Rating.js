@@ -1,5 +1,7 @@
 import React from 'react'
 
+
+//View rating starts and comments according to total rate for a product
 const Rating = (props) => {
     const { rating, numReviews, caption } = props;
     return (

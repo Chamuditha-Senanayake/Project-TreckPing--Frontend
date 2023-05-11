@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { Store } from '../Store'
 
+//Payment Method Selection Screen
 const PaymentMethodScreen = () => {
 
     const navigate = useNavigate();
@@ -18,6 +19,7 @@ const PaymentMethodScreen = () => {
         }
     }, [shippingAddress, navigate]);
 
+    //set payment method in local storage
     const submitHandler = (e) => {
         e.preventDefault();
         ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName });

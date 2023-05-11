@@ -10,7 +10,7 @@ import LoadingBox from '../components/LoadingBox'
 import { Store } from '../Store'
 import getError from '../utils'
 
-
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'CREATE_REQUEST':
@@ -21,27 +21,26 @@ const reducer = (state, action) => {
             return { ...state, loading: false };
         default:
             return state;
-
     }
 }
 
+//Make Reservation Screen
 const MakeReservationScreen = () => {
-
     const navigate = useNavigate();
     const [{ loading }, dispatch] = useReducer(reducer, {
         loading: false
     });
     const { state, dispatch: ctxDispatch } = useContext(Store);
     const { rentCart, userInfo } = state;
-
-    //const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
     rentCart.itemsPrice = rentCart.rentCartItems.reduce((a, c) => a + c.rent * c.quantity * (moment(c.returnDate).diff(c.pickupDate, 'days') != 0 ? moment(c.returnDate).diff(c.pickupDate, 'days') : 1), 0);
     rentCart.shippingPrice = rentCart.itemsPrice > 62500 ? 5000 : rentCart.itemsPrice * 8 / 100;
     rentCart.totalPrice = rentCart.itemsPrice + rentCart.shippingPrice;
 
+    //Handle reservations
     const placeOrderHandler = async () => {
         try {
             dispatch({ type: 'CREATE_REQUEST' });
+            //get all reservations
             const { data } = await Axios.post(
                 '/api/reservations',
                 {

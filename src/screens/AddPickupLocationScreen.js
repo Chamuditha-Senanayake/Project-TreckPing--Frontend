@@ -9,6 +9,7 @@ import { Store } from '../Store';
 import getError from '../utils';
 
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'CREATE_REQUEST':
@@ -35,6 +36,7 @@ const reducer = (state, action) => {
     }
 }
 
+//Add Pickup Location Screen
 const AddPickupLocationScreen = () => {
 
     const { state } = useContext(Store)
@@ -60,7 +62,7 @@ const AddPickupLocationScreen = () => {
     const [enabledAsDeliveryLocation, setEnabledAsDeliveryLocation] = useState(true);
 
     useEffect(() => {
-
+        //fetch all agents
         const fetchAgentData = async () => {
             try {
                 const { data } = await axios.get(`/api/users/agents/get-all-agents`, {
@@ -75,6 +77,7 @@ const AddPickupLocationScreen = () => {
             }
         };
 
+        //fetch location by id
         const fetchData = async () => {
             try {
                 dispatch({ type: 'FETCH_REQUEST' });
@@ -105,8 +108,10 @@ const AddPickupLocationScreen = () => {
     }, [locationId]);
 
 
+    //Handle add new location and update location
     const submitHandler = async (e) => {
         e.preventDefault();
+        //update location by id
         if (locationId != null) {
             try {
                 dispatch({ type: 'UPDATE_REQUEST' });
@@ -140,6 +145,7 @@ const AddPickupLocationScreen = () => {
             }
         }
 
+        //add new location
         else {
             try {
                 await axios.post(

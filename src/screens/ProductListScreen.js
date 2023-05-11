@@ -12,6 +12,7 @@ import getError from '../utils';
 import { FaDownload } from 'react-icons/fa';
 import ReactToPrint from 'react-to-print';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -36,7 +37,6 @@ const reducer = (state, action) => {
         case 'CREATE_FAIL':
             return { ...state, loadingCreate: false };
 
-
         case 'DELETE_REQUEST':
             return { ...state, loadingDelete: true, successDelete: false };
         case 'DELETE_SUCCESS':
@@ -55,6 +55,7 @@ const reducer = (state, action) => {
     }
 };
 
+//Product List Screen
 const ProductListScreen = () => {
 
     const [
@@ -72,7 +73,6 @@ const ProductListScreen = () => {
         loading: true,
         error: '',
     });
-
 
     //pagination
     const navigate = useNavigate();
@@ -107,6 +107,7 @@ const ProductListScreen = () => {
         if (true) {
             try {
                 dispatch({ type: 'CREATE_REQUEST' });
+                //create product
                 const { data } = await axios.post(
                     '/api/products',
                     {},
@@ -136,6 +137,7 @@ const ProductListScreen = () => {
             .then(async (willDelete) => {
                 if (willDelete) {
                     try {
+                        //delete product
                         await axios.delete(`/api/products/${product._id}`, {
                             headers: { Authorization: `Bearer ${userInfo.token}` },
                         });
@@ -153,9 +155,7 @@ const ProductListScreen = () => {
 
                 }
             })
-
     };
-
 
     return (
         <div>

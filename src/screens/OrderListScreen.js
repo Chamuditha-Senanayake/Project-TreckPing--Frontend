@@ -11,6 +11,7 @@ import { FaHourglassHalf, FaCoins, FaClipboardList, FaClipboardCheck, FaSearch, 
 import moment from 'moment';
 import ReactToPrint, { useReactToPrint } from 'react-to-print';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -42,6 +43,7 @@ const reducer = (state, action) => {
     }
 };
 
+//Order List Screen
 const OrderListScreen = () => {
 
     const navigate = useNavigate();
@@ -62,6 +64,7 @@ const OrderListScreen = () => {
         fetchDataSummary();
     }, [userInfo]);
 
+    //get orders
     const fetchData = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });
@@ -77,6 +80,7 @@ const OrderListScreen = () => {
         }
     };
 
+    //get orders by date
     const fetchDataByDate = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });
@@ -97,6 +101,7 @@ const OrderListScreen = () => {
         }
     }
 
+    //get order summary
     const fetchDataSummary = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });
@@ -112,6 +117,7 @@ const OrderListScreen = () => {
         }
     };
 
+    //get order summary by date
     const fetchDataFilter = async () => {
         try {
             dispatch({ type: 'FETCH_REQUEST' });

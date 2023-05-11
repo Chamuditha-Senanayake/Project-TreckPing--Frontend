@@ -8,6 +8,7 @@ import { Store } from '../Store';
 import getError from '../utils';
 import { FaClipboardList, FaCoins, FaFileImport, FaUserAlt } from 'react-icons/fa';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -25,8 +26,8 @@ const reducer = (state, action) => {
     }
 }
 
+//Dashboard Screen 
 const DashboardScreen = () => {
-
     const [{ loading, summary, error }, dispatch] = useReducer(reducer, {
         loading: true,
         error: '',
@@ -35,6 +36,7 @@ const DashboardScreen = () => {
     const { state } = useContext(Store);
     const { userInfo } = state;
 
+    //fetch order summary
     useEffect(() => {
         const fetchData = async () => {
             try {

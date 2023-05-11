@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import getError from '../utils';
 
+//Signup Screen
 const SignupScreen = () => {
     const navigate = useNavigate();
     const { search } = useLocation();
@@ -23,11 +24,13 @@ const SignupScreen = () => {
 
     const submitHandler = async (e) => {
         e.preventDefault();
+        //compare password field with confirmPassword field
         if (password !== confirmPassword) {
             toast.error('Your passwords do not match. Try again..');
             return;
         }
         try {
+            //signup handler
             const { data } = await Axios.post('/api/users/signup', {
                 name,
                 email,

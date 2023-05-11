@@ -8,6 +8,7 @@ import Rating from './Rating';
 import Moment from 'moment';
 import moment from 'moment';
 
+//rent product card component
 const RentProduct = (props) => {
     const { product } = props;
 
@@ -19,6 +20,7 @@ const RentProduct = (props) => {
     const [endDate, setEndDate] = useState(today);         //Moment().format('YYYY-MM-DD')
     const [reserveOrCheck, setReserveOrCheck] = useState('Reserve');
 
+    //add to cart button handler
     const addToCartHandler = async (item) => {
         reserveOrCheck === "Reserve" ? setReserveOrCheck("Check Availability") : setReserveOrCheck("Add to cart")
         console.log(startDate + "  " + endDate)
@@ -35,21 +37,26 @@ const RentProduct = (props) => {
     }
 
     return (
+        // start of the product card
         <Card className='home-card'>
             <Link to={`/product/${product.slug}`}>
                 <img src={product.image} className='card-img-top cart-img card-img pt-4' alt={product.name} width='auto' height='225px' />
             </Link>
+            {/* card Body */}
             <Card.Body>
                 <Link to={`/product/${product.slug}`} className='card-title-link'>
                     <Card.Title className='card-title card-ttl'>{product.name}</Card.Title>
                 </Link>
+                {/* ratings for the product */}
                 <Rating rating={product.rating} numReviews={product.numReviews} />
                 <Card.Text>{product.rent} LKR per day</Card.Text>
                 <hr className='mt-4' />
+                {/*only alowed to set end date after the start date */}
                 <Form.Label className={reserveOrCheck === "Reserve" ? 'd-none' : ''}>Starting Date</Form.Label>
                 <Form.Control className={reserveOrCheck === "Reserve" ? 'd-none mb-3' : 'mb-3'} type="date" min={today} name="startingDate" placeholder="DateRange" value={startDate} onChange={(e) => { setStartDate(e.target.value); moment(endDate).diff(startDate, 'days') > 0 ? setEndDate(endDate) : setEndDate(e.target.value) }}></Form.Control>
                 <Form.Label className={reserveOrCheck === "Reserve" ? 'd-none' : ''}>Ending Date</Form.Label>
                 <Form.Control className={reserveOrCheck === "Reserve" ? 'd-none mb-5' : 'mb-5'} type="date" min={startDate} name="endingDate" placeholder="DateRange" value={endDate} onChange={(e) => setEndDate(e.target.value)}></Form.Control>
+                {/* add to cart button displays if products are available in the stock*/}
                 {product.countInStockForRent === 0 ? (
                     <Button variant='light' disabled>Out of Stock</Button>
                 )

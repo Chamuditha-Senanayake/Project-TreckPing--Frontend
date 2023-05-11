@@ -11,6 +11,7 @@ import { Store } from '../Store';
 import getError from '../utils';
 import moment from 'moment';
 
+//reducer for handle states
 const reducer = (state, action) => {
     switch (action.type) {
         case 'FETCH_REQUEST':
@@ -42,6 +43,8 @@ const reducer = (state, action) => {
     }
 };
 
+
+//View Order Screen
 const AgentViewOrderScreen = () => {
 
     const [
@@ -71,6 +74,7 @@ const AgentViewOrderScreen = () => {
     const { state } = useContext(Store);
     const { userInfo } = state;
 
+    //Fetch Orders By location
     const fetchOrdersBylocation = async () => {
         try {
             const { data } = await axios.post(`/api/orders/by-location?page=${page} `,
@@ -80,14 +84,13 @@ const AgentViewOrderScreen = () => {
                 {
                     headers: { Authorization: `Bearer ${userInfo.token}` },
                 });
-
             dispatch({ type: 'FETCH_SUCCESS', payload: data });
         } catch (err) {
             toast.error(getError(err))
         }
     };
 
-
+    //Fetch Not Delivered Orders By Location
     const fetchNotDeliveredOrdersBylocation = async () => {
         try {
             const { data } = await axios.post(`/api/orders/by-location/not-delivered `,
